@@ -5,6 +5,9 @@ Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat.
 
 *List of features:*
+- User interface (nav, search, UI. )
+
+
 User registration and login with email verification. 
 User can edit his profile. 
 User can search for other users.  
