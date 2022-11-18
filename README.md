@@ -2,7 +2,7 @@
 
 *Stack:*
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
-Socket.io for chat?
+Socket.io for chat.
 
 *List of features:*
 User registration and login with email verification
