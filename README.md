@@ -4,6 +4,15 @@
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat.
 
+
+*Order of actions*:
+- set up database (mongodb, atlas), set up some "fake users" (ex: https://youtu.be/Q70IMS-Qnjk?t=850)
+- installs and dependencies (delete extra files)
+- set up files (one index.css) and structure (pages: dashboard, bome, onboarding ...)
+- set up Router and routes on app.js
+- Homepage UI
+- Login / Auth
+
 *List of features:*
 - User interface (nav, search, UI. )
 User registration and login with email verification. 
