@@ -6,12 +6,17 @@ Socket.io for chat.
 
 
 *Order of actions*:
+SETUP
 - set up database (mongodb, atlas), set up some "fake users" (ex: https://youtu.be/Q70IMS-Qnjk?t=850)
 - installs and dependencies (delete extra files)
 - set up files (one index.css) and structure (pages: dashboard, bome, onboarding ...)
+
+UI FIRST (JUST THE MINIMUM FIRST, COPY TINDER IF IN DOUBT)
 - set up Router and routes on app.js
 - Homepage UI
 - Login / Auth
+- onboarding (create account)
+- dashboard (where you swipe, includes chat container)
 
 *List of features:*
 - User interface (nav, search, UI. )
