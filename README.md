@@ -3,7 +3,7 @@
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat.
-
+Architectural pattern: MVC.
 
 **Order of actions**:
 SETUP
