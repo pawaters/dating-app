@@ -6,19 +6,32 @@ Socket.io for chat.
 Architectural pattern: MVC.
 
 **Order of actions**:
+IN GENERAL:
+- start with structure
+- then do each file with comments first
+- divide into component, do code bit by bit
+
 SETUP
 - set up database (mongodb, atlas), set up some "fake users" (ex: https://youtu.be/Q70IMS-Qnjk?t=850)
 - installs and dependencies (delete extra files)
 - set up files (client / server, within client the usual components, services ... and one index.css) and structure (pages: dashboard, bome, onboarding ...)
 
 FRONT-END(JUST THE MINIMUM FIRST, COPY TINDER IF IN DOUBT)
-- set up Router and routes on app.js
+- design front on paper, basing it on tinder, but without adding any bonuses
+- screenshots of end result UI we want
+
+- set up Router and routes on app.js (switch?)
+- set up as comments the structure of the react components on App.js
+use Material UI to fill it up to start with
+- check npmjs for examples in https://www.npmjs.com/search?q=tinder
+
 - Homepage UI
 - Login / Auth
 - onboarding (create account)
 - dashboard (where you swipe, includes chat container)
 
 BACK-END
+- write down 
 - install dependencies: install express mongodb dotenv bcrypt cors uuid josnwebtoken (check notes/dependencies for exact list)
 - index.js in backend - Route Express server
 - Add "Signup" on backend where we add a user from UI to backend (insertOne())
@@ -56,5 +69,7 @@ BACK-END
 - how to ensure my partner has same environment to work on - docker or just make sure installs are the same?
 - can go through your file structure and explain what is in each and what was the reasoning?
 - why and how MCV ?
+- how did you choose your front end ? did you draw?
+- how did define your the MVC elements?
 
 
