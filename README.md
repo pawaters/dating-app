@@ -9,14 +9,30 @@ Socket.io for chat.
 SETUP
 - set up database (mongodb, atlas), set up some "fake users" (ex: https://youtu.be/Q70IMS-Qnjk?t=850)
 - installs and dependencies (delete extra files)
-- set up files (one index.css) and structure (pages: dashboard, bome, onboarding ...)
+- set up files (client / server, within client the usual components, services ... and one index.css) and structure (pages: dashboard, bome, onboarding ...)
 
-UI FIRST (JUST THE MINIMUM FIRST, COPY TINDER IF IN DOUBT)
+FRONT-END(JUST THE MINIMUM FIRST, COPY TINDER IF IN DOUBT)
 - set up Router and routes on app.js
 - Homepage UI
 - Login / Auth
 - onboarding (create account)
 - dashboard (where you swipe, includes chat container)
+
+BACK-END
+- install dependencies: install express mongodb dotenv bcrypt cors uuid josnwebtoken (check notes/dependencies for exact list)
+- index.js in backend - Route Express server
+- Add "Signup" on backend where we add a user from UI to backend (insertOne())
+- cookies after signing up (react-cookie)
+- login for an existing user
+- onboarding ( create full user)
+- updating user (profile)
+- getting one user (for potential match)
+- getting users by gender
+- Listing matches
+- chat: display messages first, then add new, make sure they can chat only if both swiped
+- add .env file for secrets: URI, 
+
+
 
 *List of features:*
 - User interface (nav, search, UI. )
