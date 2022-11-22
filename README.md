@@ -3,8 +3,14 @@
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat.
-Architectural pattern: MVC.
+Architectural pattern: MVC. Basically:
+- View: The react front end part, each with components for each part
+- Models: db. (no ORM like MongoDB allowed by subject)
+- 
 Design pattern: Single-Page Application.
+Forbidden tech:
+- ORM : we have to make our own 
+DB: relational or graph-oriented (no Mongo - it is a document-oriented platform)
 
 
 **Order of actions**:
@@ -67,6 +73,8 @@ BACK-END
 - Start with APP js, descirbe routes, components, choices, then backend
 - which state in store you used to keep track of stuff?
 - how did you organise your css - one main then some tailwin with each element?
+- How did you do your own queries without ORM ? can you show me your DB ? 
+- did you define the objects you will use before?
 
 - What list of todos would you use to do the project? (review ours)
 - What main sources/examples would you use?
