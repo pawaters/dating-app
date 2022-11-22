@@ -9,7 +9,9 @@ Architectural pattern: MVC. Basically:
 - 
 Design pattern: Single-Page Application.
 Forbidden tech:
-- ORM : we have to make our own 
+- ORM : we have to make our own request, no use ORMs
+- Validators: do our owns, same
+- User Accounts manager: do you own!
 DB: relational or graph-oriented (no Mongo - it is a document-oriented platform)
 
 
@@ -75,6 +77,7 @@ BACK-END
 - how did you organise your css - one main then some tailwin with each element?
 - How did you do your own queries without ORM ? can you show me your DB ? 
 - did you define the objects you will use before?
+- we are not allowed ORMs, Validators, User Account managers. How about react-tinder-card from npmjs?
 
 - What list of todos would you use to do the project? (review ours)
 - What main sources/examples would you use?
