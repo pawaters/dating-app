@@ -6,13 +6,14 @@ Socket.io for chat.
 Architectural pattern: MVC. Basically:
 - View: The react front end part, each with components for each part
 - Models: db. (no ORM like MongoDB allowed by subject)
-- 
+- Controllers: How you use the data and give it to frontend.
 Design pattern: Single-Page Application.
 Forbidden tech:
 - ORM : we have to make our own request, no use ORMs
 - Validators: do our owns, same
 - User Accounts manager: do you own!
-DB: relational or graph-oriented (no Mongo - it is a document-oriented platform)
+DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented platform) --> PostgreSQL.
+- how to divide: front/back; define method and end points.
 
 
 **Order of actions**:
@@ -72,14 +73,17 @@ BACK-END
 - Chat room that saves conversations (maybe not needed).  
 
 **Questions**
+- can you go through your stack choices and reasoning behind?
 - Start with APP js, descirbe routes, components, choices, then backend
 - which state in store you used to keep track of stuff?
+    - authSlice
+    - 
 - how did you organise your css - one main then some tailwin with each element?
 - How did you do your own queries without ORM ? can you show me your DB ? 
 - did you define the objects you will use before?
 - we are not allowed ORMs, Validators, User Account managers. How about react-tinder-card from npmjs?
 
-- What list of todos would you use to do the project? (review ours)
+- What list of todos would you use to do the project? (review ours, right order?)
 - What main sources/examples would you use?
 - What was the hardest?
 - What would you do differently?
@@ -88,5 +92,14 @@ BACK-END
 - why and how MCV ?
 - how did you choose your front end ? did you draw?
 - how did define your the MVC elements?
+
+**Notes from Javi call**
+- docker compose down/up  (LOOK IT UP)
+- look at login.js and routes
+- react-collapse from npmjs 
+- use a query builder for seeding the db with knex
+- store in cookie or local storage (careful with refresh and states)
+- insomnia to test Restful api (or Postman)
+
 
 
