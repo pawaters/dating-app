@@ -4,6 +4,8 @@
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat.
 Architectural pattern: MVC.
+Design pattern: Single-Page Application.
+
 
 **Order of actions**:
 IN GENERAL:
@@ -62,6 +64,10 @@ BACK-END
 - Chat room that saves conversations (maybe not needed).  
 
 **Questions**
+- Start with APP js, descirbe routes, components, choices, then backend
+- which state in store you used to keep track of stuff?
+- how did you organise your css - one main then some tailwin with each element?
+
 - What list of todos would you use to do the project? (review ours)
 - What main sources/examples would you use?
 - What was the hardest?
