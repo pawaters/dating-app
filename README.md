@@ -14,6 +14,7 @@ Forbidden tech:
 - User Accounts manager: do you own!
 DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented platform) --> PostgreSQL.
 - how to divide: front/back; define method and end points.
+- Model for UI: https://tinder.com/
 
 
 **Order of actions**:
