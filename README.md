@@ -5,7 +5,7 @@ Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat.
 Architectural pattern: MVC. Basically:
 - View: The react front end part, each with components for each part
-- Models: db. (no ORM like MongoDB allowed by subject)
+- Models: db. (no ORM like Mongoose allowed by subject)
 - Controllers: How you use the data and give it to frontend.
 Design pattern: Single-Page Application.
 Forbidden tech:
