@@ -1,0 +1,12 @@
+version: '3.8'
+
+# common variables to not have to retype
+x-common-variables: &common-variables
+  MYSQL_DATABASE: ''
+  MYSQL_USER: ''
+  MYSQL_PASSWORD: ''
+  REACT_APP_SERVER_PORT: 8000
+
+services:
+  server:
+  build
