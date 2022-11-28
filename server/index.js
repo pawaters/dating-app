@@ -12,7 +12,7 @@ const db = mysql.createPool({
 const app = express ()
 
 app.get('/', (request, response) => {
-    response.send('<h1>nodemon working?</h1>')
+    response.send('<h1>app.get / working</h1>')
   })
 
 app.listen(3001, () => {
