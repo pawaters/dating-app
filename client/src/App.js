@@ -1,6 +1,6 @@
 import React from "react"
 import "./style/App.css"
-import { useState, useEffect } from "react"
+import { useState} from "react"
 import Axios from 'axios'
 
 function App() {
