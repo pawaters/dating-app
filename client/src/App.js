@@ -7,7 +7,9 @@ function App() {
             <h1>SIGN UP TEST WITH SQL DB</h1> 
 
             <div className="form">
+                <label>First Name: </label>
                 <input type="text" name="First Name"/>
+                <label>Last Name: </label>
                 <input type="text" name="Last Name"/>
             </div>
         </div>
@@ -21,4 +23,4 @@ function App() {
     // chats screen
     // indiv chat screen
 
-export default App
+export default App 
