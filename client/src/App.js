@@ -11,6 +11,7 @@ function App() {
                 <input type="text" name="First Name"/>
                 <label>Last Name: </label>
                 <input type="text" name="Last Name"/>
+                <button>Submit</button>
             </div>
         </div>
     )
