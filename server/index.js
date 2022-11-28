@@ -1,19 +1,34 @@
 const express = require("express")
-const mysql = require('mysql2')
+const mysql = require('mysql')
 const cors = require('cors');
 
 const db = mysql.createPool({
-	host: 'mysql_db', // the host name MYSQL_DATABASE: node_mysql
-	user: 'MYSQL_USER', // database user MYSQL_USER: MYSQL_USER
-	password: 'MYSQL_PASSWORD', // database user password MYSQL_PASSWORD: MYSQL_PASSWORD
-	database: 'books' // database name MYSQL_HOST_IP: mysql_db
-})
+	host: "127.0.0.1", // does not work with localhost for some reason!
+	user: "root", 
+	password: "password", 
+	database: "matcha",
+	// port: '3306'
+});
 
-const app = express ()
+// con.connect(function(err) {
+// 	if (err) throw err;
+// 	console.log("connected");
+// })
+
+const app = express()
+// app.use(cors);
+// app.use(express.json);
 
 app.get('/', (request, response) => {
-    response.send('<h1>app.get / working</h1>')
-  })
+	const sqlInsert = "INSERT INTO users (name, surname) VALUES ('from2', 'indexjs');";
+
+	db.query(sqlInsert, (err, result) => {
+		console.log(err);
+		response.send('<h1>app.get / working</h1>');
+		console.log(err);
+	});
+    
+});
 
 app.listen(3001, () => {
     console.log("Server running on port 3001")
