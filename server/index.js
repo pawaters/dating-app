@@ -33,15 +33,15 @@ app.get("/api/get", (req, res) => {
 //CREATE A USER
 app.post("/api/insert", async(req, res) => {
 
-	const firstName = req.body.firstName;
-	const lastName = req.body.lastName;
-	console.log('first name : ', firstName);
-	console.log('last name : ', lastName);
+	// const firstName = req.body.firstName;
+	// const lastName = req.body.lastName;
+	// console.log('first name : ', firstName);
+	// console.log('last name : ', lastName);
 	
-	const sqlInsert = "INSERT INTO users (firstName, lastName) VALUES (?, ?)"
+	// const sqlInsert = "INSERT INTO users (firstName, lastName) VALUES (?, ?)"
 
 	try{
-
+		console.log(req.body)
 	} catch (err) {
 		console.error(err.message)
 	}
