@@ -55,7 +55,6 @@ app.post("/users", async(req, res) => {
 		); 
 
 		res.json(newUser.rows[0])
-		console.log("user :", req.body);
 	} catch (err) {
 		console.error(err.message)
 	}
@@ -63,7 +62,25 @@ app.post("/users", async(req, res) => {
 
 //UPDATE A USER
 
-app.put("")
+app.put("/users/:id", async (req, res) => {
+
+	try {
+		// define const we use
+		const firstName = req.body.first_name
+		const { id }= req.params
+ 
+		// const with query result
+		const updatedUser = await pool.query(
+			"UPDATE users SET first_name = $1 WHERE users_id = $2",
+			[firstName, id]
+		) 
+
+		res.json("user updated")
+
+	} catch {
+		console.error(err.message)
+	}
+})
 
 //DELETE A USER
 
