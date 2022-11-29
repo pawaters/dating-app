@@ -21,7 +21,7 @@ const pool = new Pool({
 
 
 //GET ALL USERS
-app.get("/api/get", async(req, res) => {
+app.get("/users", async(req, res) => {
 	try {
 		const allUsers = await pool.query("SELECT * FROM users")
 		res.json(allUsers.rows)
@@ -31,7 +31,7 @@ app.get("/api/get", async(req, res) => {
 });
 
 //GET A SPECIFIC USER
-app.get("/api/get/:id", async(req, res) => {
+app.get("/users/:id", async(req, res) => {
 	try {
 		const { id } = req.params
 		const user = await pool.query("SELECT * FROM users WHERE users_id = $1", [id])
@@ -44,7 +44,7 @@ app.get("/api/get/:id", async(req, res) => {
 
 
 //CREATE A USER  
-app.post("/api/insert", async(req, res) => {
+app.post("/users", async(req, res) => {
 
 	try{
 		const firstName = req.body.first_name;
@@ -62,6 +62,8 @@ app.post("/api/insert", async(req, res) => {
 })
 
 //UPDATE A USER
+
+app.put("")
 
 //DELETE A USER
 
