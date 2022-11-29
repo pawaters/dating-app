@@ -1,11 +1,6 @@
 const express = require("express")
-const mysql = require('mysql')
 const app = express();
 const cors = require('cors');
-
-// middleware
-app.use(cors());
-app.use(express.json());
 
 const Pool = require("pg").Pool;
 
@@ -17,6 +12,12 @@ const pool = new Pool({
     database: "matcha"
 });
 
+// middleware
+app.use(cors());
+app.use(express.json());
+
+
+
 //ROUTES
 
 
@@ -26,7 +27,7 @@ app.get("/users", async(req, res) => {
 		const allUsers = await pool.query("SELECT * FROM users")
 		res.json(allUsers.rows)
 	} catch (err) {
-		console.error(err.message)
+		console.error(err.message) 
 	}
 });
 
@@ -88,8 +89,9 @@ app.delete("/users/:id", async (req, res) => {
 	try {
 		const {id} = req.params
 		const deleteUser = await pool.query("DELETE FROM users WHERE users_id = $1",
-		[id]
-	)} catch (err) {
+		[id])
+		res.json('user deleted')
+	} catch (err) {
 		console.error(err.message)
 	}
 })
