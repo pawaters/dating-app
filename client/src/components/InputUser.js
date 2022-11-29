@@ -27,7 +27,7 @@ const InputUser = () => {
 
     return( 
         <div className="App"> 
-            <h1>SIGN UP TEST WITH POSTGRES</h1> 
+            <h1>INPUT DATA TEST WITH POSTGRES</h1> 
 
             <div className="form">
                 <label>First Name: </label>
