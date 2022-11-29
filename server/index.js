@@ -21,27 +21,27 @@ const pool = new Pool({
 
 
 //GET ALL USERS
-app.get("/api/get", (req, res) => {
-	const sqlSelect = 
-		"SELECT * FROM users";
-	db.query(sqlSelect, (err, result) => {
-		console.log('result: ', result)
-		console.log('error: ', err)
-	})
-} );
+app.get("/api/get", async(req, res) => {
+	try {
+		const allUsers = await pool.query("SELECT * FROM users")
+		res.json(allUsers.rows)
+	} catch (err) {
+		console.error(err.message)
+	}
+});
 
-//CREATE A USER
+//CREATE A USER  
 app.post("/api/insert", async(req, res) => {
 
 	try{
 		const firstName = req.body.first_name;
 
 		const newUser = await pool.query(
-			"INSERT INTO users (first_name) VALUES($1)", 
+			"INSERT INTO users (first_name) VALUES($1) RETURNING *", 
 			[firstName]
 		); 
 
-		res.json(newUser)
+		res.json(newUser.rows[0])
 		console.log("user :", req.body);
 	} catch (err) {
 		console.error(err.message)
