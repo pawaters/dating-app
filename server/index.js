@@ -67,22 +67,32 @@ app.put("/users/:id", async (req, res) => {
 	try {
 		// define const we use
 		const firstName = req.body.first_name
-		const { id }= req.params
+		const {id} = req.params
  
 		// const with query result
 		const updatedUser = await pool.query(
 			"UPDATE users SET first_name = $1 WHERE users_id = $2",
 			[firstName, id]
 		) 
+		
+		res.json(id);
 
-		res.json("user updated")
-
-	} catch {
+	} catch (err) {
 		console.error(err.message)
 	}
 })
 
 //DELETE A USER
+
+app.delete("/users/:id", async (req, res) => {
+	try {
+		const {id} = req.params
+		const deleteUser = await pool.query("DELETE FROM users WHERE users_id = $1",
+		[id]
+	)} catch (err) {
+		console.error(err.message)
+	}
+})
 
 app.listen(3001, () => {
     console.log("Server running on port 3001")
