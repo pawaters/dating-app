@@ -1,68 +1,34 @@
 version: '3.8'
 
-x-common-variables:
-  &common-variables
-  MYSQL_DATABASE: 'matcha'
-  MYSQL_USER: 'matcha'
-  MYSQL_PASSWORD: 'root'
-  REACT_APP_SERVER_PORT: 8000
-
 services:
-  server:
-    build: ./server
-    container_name: node_server_container
-    depends_on:
-      - postgres-db
-    env_file:
-      - .env
+  postgres: 
+    image: 'postgres:latest'
     environment:
-      <<: *common-variables
-      MYSQL_HOST_IP: mysql-db
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      -5432:5432
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: './server'
+    volumes:
+      - /app/nodes_modules
+      - ./server:/app
+    environment:
+      - PGUSER=postgres
+      - PGHOST=localhost
+      - PGDATABASE=matcha
+      - PGPASSWORD=postgres
+      - PGPORT=5432
     ports:
       - 3001:3001
+  client: 
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile.dev
+      context: './client'
     volumes:
-      - /app/node_modules
-      - ./server:/app
-    command: npm run dev
-
-  client:
-    build: ./client
-    container_name: client_container
-    environment:
-      <<: *common-variables
-      NODE_PATH: src
+      - /app/nodes_modules
+      - ./client:/app
     ports:
-      - 3000:3000
-    volumes:
-      - ./client/src:/app/src
-    links:
-      - server
-    command: npm start
-
-  postgres-db:
-    container_name: pg_container
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: matcha
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: matcha
-    volumes:
-      - ./db/sample.sql:/docker-entrypoint-initdb.d/sample.sql
-    ports:
-      - "5432:5432"
-  
-  pgadmin:
-    container_name: pgadmin4_container
-    image: dpage/pgadmin4
-    restart: always
-    environment: 
-      PGADMIN_DEFAULT_EMAIL: matcha@matcha.com
-      PGADMIN_DEFAULT_USER: matcha
-      PGADMIN_DEFAULT_PASSWORD: root
-    ports:
-      - "8080:80"
-    volumes:
-      - ./db/servers.json:/pgadmin4/servers.json
-    logging:
-      driver: none
+      -3000:3000
