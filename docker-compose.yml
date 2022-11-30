@@ -6,7 +6,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
     ports:
-      -5432:5432
+      - 5432:5432
   api:
     build:
       dockerfile: Dockerfile.dev
@@ -31,4 +31,4 @@ services:
       - /app/nodes_modules
       - ./client:/app
     ports:
-      -3000:3000
+      - 3000:3000
