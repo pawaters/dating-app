@@ -1,21 +1,37 @@
 const express = require("express")
-const app = express();
-const cors = require('cors');
-
-const Pool = require("pg").Pool;
-
-const pool = new Pool({
-    user: "postgres",
-    password: "postgres",
-    host: "localhost",
-    port: 5433,
-    database: "matcha"
-});
+const app = express()
+const cors = require('cors')
+const keys = require("./keys")
 
 // middleware
 app.use(cors());
 app.use(express.json());
 
+// POSTGRES SETUP
+const Pool = require("pg").Pool;
+
+// const pool = new Pool({
+//     user: "postgres",
+//     password: "postgres",
+//     host: "localhost",
+//     port: 5433,
+//     database: "matcha"
+// });
+// env to do with info above
+const pool = new Pool({
+    user: keys.pgUser,
+    password: keys.pgPassword,
+    host: keys.pgHost,
+    port: keys.pgPort,
+    database: keys.pgDatabase
+});
+
+// TO DO: BETTER DEFINE BEHAVIOR IF NOT EXIST
+pool.on("connect", client => {
+	client
+		.query("CREATE TABLE IF NOT EXISTS users( users_id SERIAL PRIMARY KEY, first_name VARCHAR(255) NOT NULL);")
+		.catch(err => console.log(err))
+})
 
 
 //ROUTES
