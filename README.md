@@ -2,7 +2,6 @@
 
 **How to set up**:
 1) make sure you have Docker installed on your machine.
-
 2) Clone the repository
 3) Run docker-compose up --build in the root directory
 4) Go to localhost:3000 in your browser for front end, localhost:3001 for backend
@@ -98,7 +97,7 @@ BACK-END
 - What would you do differently?
 - how to ensure my partner has same environment to work on - docker or just make sure installs are the same?
 - can go through your file structure and explain what is in each and what was the reasoning?
-- why and how MCV ?
+- why and how MVC ?
 - how did you choose your front end ? did you draw?
 - how did define your the MVC elements?
 
@@ -110,5 +109,16 @@ BACK-END
 - store in cookie or local storage (careful with refresh and states)
 - insomnia to test Restful api (or Postman)
 
+**ROUTES**
 
-
+/api/login - POST, GET
+/api/browsing/sorted - POST
+/api/browsing/likeuser/:id - POST
+/api/resetpassword - POST
+/api/setnewpassword - POST
+/api/signup - POST
+/api/signup/verifyuser - POST
+/api/profile/deletepicture/:id - DELETE
+/api/profile/notifications - GET
+/api/chat/chat_connections - GET
+/api/chat/room_messages - POST
