@@ -1,27 +1,29 @@
 version: '3.8'
 
 services:
-  postgres: 
-    image: 'postgres:latest'
+  postgres:
+    image: postgres
     environment:
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
     ports:
-      - 5432:5432
-  api:
+      - '5432:5432'
+  adminer:
+    image: adminer
+    restart: always
+    ports: 
+      - 8080:8080
+  server:
     build:
       dockerfile: Dockerfile.dev
       context: './server'
     volumes:
-      - /app/nodes_modules
+      - /app/nodes_modules 
       - ./server:/app
-    environment:
-      - PGUSER=postgres
-      - PGHOST=localhost
-      - PGDATABASE=matcha
-      - PGPASSWORD=postgres
-      - PGPORT=5432
     ports:
-      - 3001:3001
+      - "3001:3001"
   client: 
     stdin_open: true
     build:
