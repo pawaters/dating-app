@@ -1,5 +1,13 @@
 # matcha - plan for our project 
 
+**How to set up**:
+1) make sure you have Docker installed on your machine.
+
+2) Clone the repository
+3) Run docker-compose up --build in the root directory
+4) Go to localhost:3000 in your browser for front end, localhost:3001 for backend
+
+
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat.
