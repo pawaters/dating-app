@@ -1,11 +1,12 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  postgres:
+  db:
     image: postgres
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
+      POSTGRES_DB: matcha
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     ports:
@@ -14,7 +15,7 @@ services:
     image: adminer
     restart: always
     ports: 
-      - 8080:8080
+      - '8080:8080'
   server:
     build:
       dockerfile: Dockerfile.dev
@@ -25,7 +26,6 @@ services:
     ports:
       - "3001:3001"
   client: 
-    stdin_open: true
     build:
       dockerfile: Dockerfile.dev
       context: './client'
@@ -33,4 +33,4 @@ services:
       - /app/nodes_modules
       - ./client:/app
     ports:
-      - 3000:3000
+      - '3000:3000'

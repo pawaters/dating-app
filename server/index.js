@@ -19,11 +19,10 @@ const Pool = require("pg").Pool;
 // });
 // env to do with info above
 const pool = new Pool({
-    user: keys.pgUser,
-    password: keys.pgPassword,
-    host: keys.pgHost,
-    port: keys.pgPort,
-    database: keys.pgDatabase
+    user: 'postgres',
+    password: 'postgres',
+    host: 'db',
+    database: 'matcha'
 });
 
 // TO DO: BETTER DEFINE BEHAVIOR IF NOT EXIST
