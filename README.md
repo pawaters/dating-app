@@ -9,8 +9,7 @@
 
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
-Socket.io for chat.
-OAuth for 
+Socket.io for chat. OAuth. Docker (docker-compose).
 Architectural pattern: MVC. Basically:
 - View: The react front end part, each with components for each part
 - Models: db. (no ORM like Mongoose allowed by subject)
@@ -18,6 +17,8 @@ Architectural pattern: MVC. Basically:
 Design pattern: Single-Page Application.
 - how to divide: front/back; define method and end points.
 - Model for UI: https://tinder.com/
+Project Management: Jira.
+
 
 **Project constraints:**
 Forbidden tech:
@@ -83,7 +84,7 @@ BACK-END
 - After liking, if the other user likes the current user back, they are able to chat. 
 - Chat room that saves conversations (maybe not needed).  
 
-**ROUTES**
+**API ROUTES**
 
 /api/login - POST, GET
 /api/browsing/sorted - POST
@@ -113,6 +114,20 @@ General Components:
 - notification (part of navbar)
 - PathNotExists
 
-In terms of UI/design, my goal is to make it look as close to tinder as possible:
+In terms of UI/design, the goal is to make it look as close to tinder as possible:
 - screenshots of what each page should look like:  https://docs.google.com/document/d/1c18F3lTgLd5f-Wyzs96uWyAMgPfUeKDstlJScuaYvVk/edit?usp=sharing
+
+**Backend Structure**
+- recommended file structure and explanations: https://medium.com/codechef-vit/a-better-project-structure-with-express-and-node-js-c23abc2d736f
+
+--> read, and decide what is best for you, lets keep it simple.
+
+**Database schema**
+- Look at db/init.sql. To be adapted to our use case. 
+- diagram: https://dbdiagram.io/d/638a0414bae3ed7c45445946
+
+**best examples**
+- github repos list: https://github.com/stars/pawaters/lists/matcha
+- youtube list: https://youtube.com/playlist?list=PL4tYF4IwV9AtvZdZjP1cVs1p83KeMrEAn
+
 
