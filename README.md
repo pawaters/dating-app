@@ -10,18 +10,21 @@
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat.
+OAuth for 
 Architectural pattern: MVC. Basically:
 - View: The react front end part, each with components for each part
 - Models: db. (no ORM like Mongoose allowed by subject)
 - Controllers: How you use the data and give it to frontend.
 Design pattern: Single-Page Application.
+- how to divide: front/back; define method and end points.
+- Model for UI: https://tinder.com/
+
+**Project constraints:**
 Forbidden tech:
 - ORM : we have to make our own request, no use ORMs
 - Validators: do our owns, same
 - User Accounts manager: do you own!
 DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented platform) --> PostgreSQL.
-- how to divide: front/back; define method and end points.
-- Model for UI: https://tinder.com/
 
 
 **Order of actions**:
@@ -80,35 +83,6 @@ BACK-END
 - After liking, if the other user likes the current user back, they are able to chat. 
 - Chat room that saves conversations (maybe not needed).  
 
-**Questions**
-- can you go through your stack choices and reasoning behind?
-- Start with APP js, descirbe routes, components, choices, then backend
-- which state in store you used to keep track of stuff?
-    - authSlice
-    - 
-- how did you organise your css - one main then some tailwin with each element?
-- How did you do your own queries without ORM ? can you show me your DB ? 
-- did you define the objects you will use before?
-- we are not allowed ORMs, Validators, User Account managers. How about react-tinder-card from npmjs?
-
-- What list of todos would you use to do the project? (review ours, right order?)
-- What main sources/examples would you use?
-- What was the hardest?
-- What would you do differently?
-- how to ensure my partner has same environment to work on - docker or just make sure installs are the same?
-- can go through your file structure and explain what is in each and what was the reasoning?
-- why and how MVC ?
-- how did you choose your front end ? did you draw?
-- how did define your the MVC elements?
-
-**Notes from Javi call**
-- docker compose down/up  (LOOK IT UP)
-- look at login.js and routes
-- react-collapse from npmjs 
-- use a query builder for seeding the db with knex
-- store in cookie or local storage (careful with refresh and states)
-- insomnia to test Restful api (or Postman)
-
 **ROUTES**
 
 /api/login - POST, GET
@@ -122,3 +96,23 @@ BACK-END
 /api/profile/notifications - GET
 /api/chat/chat_connections - GET
 /api/chat/room_messages - POST
+
+**List of pages/UI/components**
+Pages/views (Single page application with different urls):
+- signup.js
+- profileSetUpForm.js
+- profile.js
+- browsing.js
+- chat.js
+
+General Components:
+- navbar
+- footer
+- login
+- logout
+- notification (part of navbar)
+- PathNotExists
+
+In terms of UI/design, my goal is to make it look as close to tinder as possible:
+- screenshots of what each page should look like:  https://docs.google.com/document/d/1c18F3lTgLd5f-Wyzs96uWyAMgPfUeKDstlJScuaYvVk/edit?usp=sharing
+
