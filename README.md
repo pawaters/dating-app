@@ -35,7 +35,7 @@ IN GENERAL:
 - divide into component, do code bit by bit
 
 SETUP
-- set up database (mongodb, atlas), set up some "fake users" (ex: https://youtu.be/Q70IMS-Qnjk?t=850)
+- set up database, set up some "fake users" (ex: https://youtu.be/Q70IMS-Qnjk?t=850)
 - installs and dependencies (delete extra files)
 - set up files (client / server, within client the usual components, services ... and one index.css) and structure (pages: dashboard, bome, onboarding ...)
 
