@@ -10,6 +10,7 @@ import NoPage from "./pages/NoPage"
 import Onboarding from "./pages/Onboarding"
 import Profile from "./pages/Profile"
 import Swipe from "./pages/Swipe"
+import RedirectPage from "./pages/RedirectPage"
 
 //components 
 import InitialTest from "./components/InitialTest"
