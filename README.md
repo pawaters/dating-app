@@ -58,6 +58,7 @@ DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented
 
 **List of pages/UI/components**
 Pages/views (Single page application with different urls):
+- home.js
 - signup.js
 - profileSetUpForm.js
 - profile.js
