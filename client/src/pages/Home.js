@@ -1,12 +1,25 @@
+import Button from '@mui/material/button'
+
 const Home = () => {
+
+    // all the variables needed before the return
+    const authToken = true
+    
+    const handleClick = () => {
+        console.log('clicked')
+    } 
+
+    // after return, no logic, just the minimum, components
     return (
         // // when doing a new page:
-        // 1) put down the new Elements, with 
-        //
+        //  put down the new Elements, with 
+        // 
         // 
         <div className="home">
             <h1>Swipe Right®</h1>
-            <button></button>
+            <Button variant="contained" onClick={handleClick}>
+                {authToken ? 'Signout' : 'Create Account'}
+            </Button>
         </div>
     )
 }

@@ -4,15 +4,16 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 //pages
 import Home from "./pages/Home.js"
-
-//components 
-import InputUser from "./components/InputUser"
 import Signup from "./pages/Signup"
 import Browsing from "./pages/Signup"
 import NoPage from "./pages/NoPage"
 import Onboarding from "./pages/Onboarding"
 import Profile from "./pages/Profile"
 import Swipe from "./pages/Swipe"
+
+//components 
+import InitialTest from "./components/InitialTest"
+
 
 function App() {
    return (
@@ -26,7 +27,7 @@ function App() {
             <Route path={"/swipe"} element={<Swipe/>}/>
             <Route path={"*"} element={<NoPage/>}/>
         </Routes>
-        <InputUser></InputUser>
+        <InitialTest></InitialTest>
     </BrowserRouter>
    )
 }

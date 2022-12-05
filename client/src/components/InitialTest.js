@@ -2,7 +2,7 @@ import React from "react"
 import { useState} from "react"
 import Axios from 'axios'
 
-const InputUser = () => {
+const InitialTest = () => {
 
     //creating a stage to get what we are writing in inputs
     const [firstName, setFirstName] = useState('')
@@ -38,4 +38,4 @@ const InputUser = () => {
     )
 }
 
-export default InputUser
+export default InitialTest
