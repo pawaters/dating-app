@@ -1,4 +1,5 @@
 import Button from '@mui/material/button'
+import Navbar from '../components/navbar/Navbar'
 
 const Home = () => {
 
@@ -11,16 +12,15 @@ const Home = () => {
 
     // after return, no logic, just the minimum, components
     return (
-        // // when doing a new page:
-        //  put down the new Elements, with 
-        // 
-        // 
+        <>
+        <Navbar/>
         <div className="home">
             <h1>Swipe Right®</h1>
             <Button variant="contained" onClick={handleClick}>
                 {authToken ? 'Signout' : 'Create Account'}
             </Button>
         </div>
+        </>
     )
 }
 
