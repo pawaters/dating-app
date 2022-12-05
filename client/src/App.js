@@ -1,11 +1,22 @@
 import React from "react"
 import "./style/App.css"
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+
+//pages
+import Home from "./pages/Home.js"
 
 //components 
 import InputUser from "./components/InputUser"
 
 function App() {
-   return <InputUser></InputUser>
+   return (
+    <BrowserRouter>
+        <Routes>
+            <Route path={"/"} element={<Home/>}/>
+        </Routes>
+        <InputUser></InputUser>
+    </BrowserRouter>
+   )
 }
  
 // REACT COMPONENTS TO DEFINE AND CREATE
