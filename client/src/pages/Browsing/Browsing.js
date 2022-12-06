@@ -8,3 +8,5 @@ const Browsing = () => {
     )
 
 }
+
+export default Browsing
