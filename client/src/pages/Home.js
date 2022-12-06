@@ -1,6 +1,5 @@
 import Button from '@mui/material/button'
 import Footer from '../components/Footer'
-import Navbar from '../components/navbar/Navbar'
 
 const Home = () => {
 
