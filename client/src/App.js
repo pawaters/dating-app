@@ -54,7 +54,5 @@ function App() {
     </BrowserRouter>
    )
 }
- 
-// REACT COMPONENTS TO DEFINE AND CREATE
 
 export default App 
