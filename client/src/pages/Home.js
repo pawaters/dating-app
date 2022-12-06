@@ -15,7 +15,6 @@ const Home = () => {
     return (
         <>
         {/* Background image */}
-        <Navbar/>
         <div className="home">
             <h1>Swipe Right®</h1>
             <Button variant="contained" onClick={handleClick}>

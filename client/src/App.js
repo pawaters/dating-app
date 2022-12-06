@@ -1,6 +1,6 @@
 import React from "react"
 import "./style/App.css"
-import {Router, Routes, Route} from 'react-router-dom'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 //pages & components
 import Home from "./pages/Home.js"
@@ -27,7 +27,7 @@ import DeleteUser from "./pages/Profile/DeleteUser"
 
 function App() {
    return (
-    <Router>
+    <BrowserRouter>
         <RedirectPage />
         <Navbar />
         <Routes>
@@ -51,7 +51,7 @@ function App() {
             <Route path={"*"} element={<NoPage/>}/>
         </Routes>
         <InitialTest></InitialTest>
-    </Router>
+    </BrowserRouter>
    )
 }
  
