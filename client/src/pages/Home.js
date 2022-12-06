@@ -1,4 +1,5 @@
 import Button from '@mui/material/button'
+import Footer from '../components/Footer'
 import Navbar from '../components/navbar/Navbar'
 
 const Home = () => {
@@ -13,6 +14,7 @@ const Home = () => {
     // after return, no logic, just the minimum, components
     return (
         <>
+        {/* Background image */}
         <Navbar/>
         <div className="home">
             <h1>Swipe Right®</h1>
@@ -20,6 +22,7 @@ const Home = () => {
                 {authToken ? 'Signout' : 'Create Account'}
             </Button>
         </div>
+        <Footer/>
         </>
     )
 }
