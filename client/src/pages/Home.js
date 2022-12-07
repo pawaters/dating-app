@@ -1,5 +1,6 @@
+import { Typography } from '@mui/material'
 import Button from '@mui/material/button'
-import Footer from '../components/Footer'
+import { Container } from '@mui/system'
 
 const Home = () => {
 
@@ -14,13 +15,12 @@ const Home = () => {
     return (
         <>
         {/* Background image */}
-        <div className="home">
-            <h1>Swipe Right®</h1>
+        <Container maxWidth='sm' sx={{ pt:5, pb: 5}}>
+            <Typography variant='h1'>Swipe Right®</Typography>
             <Button variant="contained" onClick={handleClick}>
                 {authToken ? 'Signout' : 'Create Account'}
             </Button>
-        </div>
-        <Footer/>
+        </Container>
         </>
     )
 }

@@ -1,10 +1,12 @@
+import { Container, Typography } from "@mui/material"
+
 const Navbar = () => {
     return (
-        <div>
-            <h1>
+        <Container>
+            <Typography>
                 Navbar
-            </h1>
-        </div>
+            </Typography>
+        </Container>
     )
 }
 

@@ -17,6 +17,11 @@ body {
 
 }
 
+.content-wrap {
+	padding-bottom: 80px;
+	/* Height of the footer */
+}
+
 .App {
 	text-align: center;
 }
