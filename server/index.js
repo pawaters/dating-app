@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors')
 const config = require('./src/utils/config')
 const logger = require('./src/utils/logger')
+const { pgUser, pgPassword, pgDatabase, pgHost } = require('./src/utils/config')
 
 // middleware
 app.use(cors())
@@ -11,19 +12,11 @@ app.use(express.json())
 // POSTGRES SETUP
 const Pool = require('pg').Pool
 
-// const pool = new Pool({
-//     user: "postgres",
-//     password: "postgres",
-//     host: "localhost",
-//     port: 5433,
-//     database: "matcha"
-// });
-// env to do with info above
 const pool = new Pool({
-  user: 'postgres',
-  password: 'postgres',
-  host: 'db',
-  database: 'matcha'
+  user: pgUser,
+  password: pgPassword,
+  host: pgHost,
+  database: pgDatabase
 })
 
 // TO DO: BETTER DEFINE BEHAVIOR IF NOT EXIST
