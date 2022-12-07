@@ -22,6 +22,7 @@ Design pattern: Single-Page Application.
 - how to divide: front/back; define method and end points.
 - Model for UI: https://tinder.com/
 Project Management: Jira.
+Style guide: Airbnb Javascript style guide, implemented thanks to Airbnb's ESLint config.
 
 
 **Project constraints:**
