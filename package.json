@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dotenv": "^16.0.3",
     "psql": "^0.0.1"
   },
   "devDependencies": {

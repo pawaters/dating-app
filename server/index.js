@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-// SETUP KEYS / .ENV in a safe way
-// const keys = require('./keys')
+const config = require('./src/utils/config')
+const logger = require('./src/utils/logger')
 
 // middleware
 app.use(cors())
@@ -112,6 +112,6 @@ app.delete('/users/:id', async (req, res) => {
   }
 })
 
-app.listen(3001, () => {
-  console.log('Server running on port 3001')
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
 })
