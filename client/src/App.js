@@ -11,7 +11,7 @@ import NoPage from "./pages/NoPage"
 import Onboarding from "./pages/Onboarding"
 import Profile from "./pages/Profile/Profile"
 import Swipe from "./pages/Swipe"
-import RedirectPage from "./pages/RedirectPage"
+// import RedirectPage from "./pages/RedirectPage"
 import InitialTest from "./components/InitialTest"
 import Navbar from "./components/navbar/Navbar"
 import Login from "./pages/Login/Login"
@@ -25,15 +25,28 @@ import Chat from "./pages/Chat/Chat"
 import Logout from "./pages/Logout"
 import DeleteUser from "./pages/Profile/DeleteUser"
 import Footer from "./components/Footer"
-import { grey, pink } from "@mui/material/colors"
+import { grey, pink} from "@mui/material/colors"
+import { borderRadius } from "@mui/system"
 
 const theme = createTheme({
     palette: {
         primary: {
-            main: pink[500],
+            main: pink[500], 
+            // TO DO: GRADIENT TO IMPLEMENT
+            // mainGradient: "linear-gradient(to right, tomato, cyan)"
         },
         secondary: {
             main: grey[500],
+        }
+    },
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '30px',
+                    border: 'none'
+                }
+            }
         }
     }
 })
