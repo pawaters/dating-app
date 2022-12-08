@@ -6,11 +6,6 @@
 3) Run docker-compose up --build in the root directory
 4) Go to localhost:3000 in your browser for front end, localhost:3001 for backend
 
-**File structure**
-Client:
-We create a separate pages folder. We move all the page components and their children there. Only components that are shown on multiple pages stay in the components folder.
-Server: 
-
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat. OAuth. Docker (docker-compose).
@@ -21,8 +16,8 @@ Architectural pattern: MVC. Basically:
 Design pattern: Single-Page Application.
 - how to divide: front/back; define method and end points.
 - Model for UI: https://tinder.com/
-Project Management: Jira.
-Style guide: Airbnb Javascript style guide, implemented thanks to Airbnb's ESLint config.
+- Project Management: Jira.
+- Style guide: Airbnb Javascript style guide, implemented thanks to Airbnb's ESLint config.
 
 
 **Project constraints:**
