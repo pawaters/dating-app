@@ -44,10 +44,14 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     borderRadius: '30px',
-                    border: 'none'
+                    border: 'none',
+                    textTransform: 'none'
                 }
             }
         }
+    },
+    typography: {
+        fontFamily: ['Readex Pro']
     }
 })
 
@@ -79,7 +83,7 @@ function App() {
                     <Route path={"/deleteuser"} element={<DeleteUser/>}/>
                     <Route path={"*"} element={<NoPage/>}/>
                 </Routes>
-                <InitialTest></InitialTest>
+                {/* <InitialTest></InitialTest> */}
             </BrowserRouter>
             <Footer />
         </Container>

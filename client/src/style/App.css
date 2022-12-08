@@ -1,6 +1,8 @@
 /* only one CSS file. for general styling */
 /* All component specific style is done with MUI in the component */
 
+/* GENERIC */
+
 @import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200;300;400;500;700&display=swap');
 
 html {
@@ -14,7 +16,7 @@ html {
 
 body {
     min-height: 100vh;
-
+	text-align: center;
 }
 
 .content-wrap {
@@ -48,6 +50,8 @@ h1 {
 	margin: 10px; 
 	font-size: large;
 }
+
+/* ELEMENTS */
 
 .footer {
 	position: absolute;

@@ -5,7 +5,7 @@ import { Container } from '@mui/system'
 const Home = () => {
 
     // all the variables needed before the return
-    const authToken = true
+    const authToken = false
     
     const handleClick = () => {
         console.log('clicked')
@@ -16,8 +16,8 @@ const Home = () => {
         <>
         {/* Background image */}
         <Container maxWidth='sm' sx={{ pt:5, pb: 5}}>
-            <Typography variant='h1'>Swipe Right®</Typography>
-            <Button variant="contained" onClick={handleClick}>
+            <Typography variant='h1' sx={{ pt:5, pb:5 }}>Swipe Right®</Typography>
+            <Button variant="contained" size="large" onClick={handleClick}>
                 {authToken ? 'Signout' : 'Create Account'}
             </Button>
         </Container>

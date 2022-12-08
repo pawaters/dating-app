@@ -1,10 +1,23 @@
+import React from "react"
+import { BottomNavigation, BottomNavigationAction } from "@mui/material"
+
 const Footer = () => {
+
+    const [value, setValue] = React.useState(0);
+
     return (
-        <div>
-            <h1>
-                Footer
-            </h1>
-        </div>
+        <BottomNavigation
+            showLabels
+            value={value}
+            onchange={(event, newValue) => {
+                setValue(newValue)
+            }}
+        >
+            <BottomNavigationAction label="About" />
+            <BottomNavigationAction label="Hive" />
+            <BottomNavigationAction label="Contact" />
+
+        </BottomNavigation>
     )
 }
 
