@@ -16,7 +16,7 @@ Architectural pattern: MVC. Basically:
 Design pattern: Single-Page Application.
 - how to divide: front/back; define method and end points.
 - Model for UI: https://tinder.com/
-- Project Management: Jira.
+- Project Management: Jira: https://pawaters.atlassian.net/jira/core/projects/MA/board
 - Style guide: Airbnb Javascript style guide, implemented thanks to Airbnb's ESLint config.
 
 
