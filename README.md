@@ -44,17 +44,17 @@ DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented
 
 **API ROUTES**
 
-/api/login - POST, GET
-/api/browsing/sorted - POST
-/api/browsing/likeuser/:id - POST
-/api/resetpassword - POST
-/api/setnewpassword - POST
-/api/signup - POST
-/api/signup/verifyuser - POST
-/api/profile/deletepicture/:id - DELETE
-/api/profile/notifications - GET
-/api/chat/chat_connections - GET
-/api/chat/room_messages - POST
+- /api/login - POST, GET
+- /api/browsing/sorted - POST
+- /api/browsing/likeuser/:id - POST
+- /api/resetpassword - POST
+- /api/setnewpassword - POST
+- /api/signup - POST
+- /api/signup/verifyuser - POST
+- /api/profile/deletepicture/:id - DELETE
+- /api/profile/notifications - GET
+- /api/chat/chat_connections - GET
+- /api/chat/room_messages - POST
 
 **List of pages/UI/components**
 Pages/views (Single page application with different urls):
