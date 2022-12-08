@@ -1,7 +1,7 @@
 import React from "react"
 import "./style/App.css"
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import { ThemeProvider, createTheme, Container  } from "@mui/material"
+import { ThemeProvider, createTheme, Container, responsiveFontSizes  } from "@mui/material"
 
 //pages & components
 import Home from "./pages/Home.js"
@@ -50,19 +50,21 @@ const theme = createTheme({
             }
         }
     },
-    typography: {
-        fontFamily: ['Readex Pro']
-    }
+    // root: {
+    //     display: "flex",
+    //     flexDirection: "column",
+    //     justifyContent: "center"
+    // }
 })
+
 
 function App() {
    return (
-    <div className="content-wrap">
     <ThemeProvider theme={theme}>
-        <Container >
+        <Container sx={{height: 'auto', width: 'auto' }}>
             <BrowserRouter>
                 {/* <RedirectPage /> */}
-                <Navbar />
+                {/* <Navbar /> */}
                 <Routes>
                     <Route path={"/"} element={<Home/>}/>
                     <Route path={"/login"} element={<Login/>}/>
@@ -88,7 +90,6 @@ function App() {
             <Footer />
         </Container>
     </ThemeProvider>
-    </div>
    )
 }
 
