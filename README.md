@@ -6,11 +6,6 @@
 3) Run docker-compose up --build in the root directory
 4) Go to localhost:3000 in your browser for front end, localhost:3001 for backend
 
-**File structure**
-Client:
-We create a separate pages folder. We move all the page components and their children there. Only components that are shown on multiple pages stay in the components folder.
-Server: 
-
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat. OAuth. Docker (docker-compose).
@@ -21,8 +16,8 @@ Architectural pattern: MVC. Basically:
 Design pattern: Single-Page Application.
 - how to divide: front/back; define method and end points.
 - Model for UI: https://tinder.com/
-Project Management: Jira.
-Style guide: Airbnb Javascript style guide, implemented thanks to Airbnb's ESLint config.
+- Project Management: Jira: https://pawaters.atlassian.net/jira/core/projects/MA/board
+- Style guide: Airbnb Javascript style guide, implemented thanks to Airbnb's ESLint config.
 
 
 **Project constraints:**
@@ -49,17 +44,17 @@ DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented
 
 **API ROUTES**
 
-/api/login - POST, GET
-/api/browsing/sorted - POST
-/api/browsing/likeuser/:id - POST
-/api/resetpassword - POST
-/api/setnewpassword - POST
-/api/signup - POST
-/api/signup/verifyuser - POST
-/api/profile/deletepicture/:id - DELETE
-/api/profile/notifications - GET
-/api/chat/chat_connections - GET
-/api/chat/room_messages - POST
+- /api/login - POST, GET
+- /api/browsing/sorted - POST
+- /api/browsing/likeuser/:id - POST
+- /api/resetpassword - POST
+- /api/setnewpassword - POST
+- /api/signup - POST
+- /api/signup/verifyuser - POST
+- /api/profile/deletepicture/:id - DELETE
+- /api/profile/notifications - GET
+- /api/chat/chat_connections - GET
+- /api/chat/room_messages - POST
 
 **List of pages/UI/components**
 Pages/views (Single page application with different urls):
