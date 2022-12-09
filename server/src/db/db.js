@@ -1,11 +1,7 @@
 // const Pool = require("pg").Pool;
 
 // const pool = new Pool({
-//     user: "postgres",
-//     password: "postgres",
-//     host: "localhost",
-//     port: 5433,
-//     database: "matcha"
+// TO DEFINE HERE AND TAKE OUT OF OTHER PLACES
 // });
 
 // module.exports = pool;

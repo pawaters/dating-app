@@ -42,19 +42,38 @@ DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented
 - After liking, if the other user likes the current user back, they are able to chat. 
 - Chat room that saves conversations (maybe not needed).  
 
-**API ROUTES**
+**API END POINTS (see services)**
+baseUrl = '/api/
+- login - POST, GET
+- resetpassword - POST
+- setnewpassword - POST
 
-- /api/login - POST, GET
-- /api/browsing/sorted - POST
-- /api/browsing/likeuser/:id - POST
-- /api/resetpassword - POST
-- /api/setnewpassword - POST
-- /api/signup - POST
-- /api/signup/verifyuser - POST
-- /api/profile/deletepicture/:id - DELETE
-- /api/profile/notifications - GET
-- /api/chat/chat_connections - GET
-- /api/chat/room_messages - POST
+baseUrl = '/api/browsing/
+- sorted - POST
+- likeuser/:id - POST
+
+baseUrl = '/api/signup/
+- / - POST
+- verifyuser - POST
+
+baseUrl = '/api/profile/
+- / - GET
+- deletepicture/:id - DELETE
+- notifications - GET, DELETE
+- notifications/:id - DELETE
+- readnotification/:id - PATCH
+- readnotifications - PATCH
+- setprofilepic - POST
+- imageupload - POST
+- deletepicture/${PictureId} - DELETE
+- deleteuser - DELETE
+- setup - POST
+- editsettings - POST
+- changepassword - POST
+
+baseUrl = '/api/chat/
+- chat_connections - GET
+- room_messages - POST
 
 **List of pages/UI/components**
 Pages/views (Single page application with different urls):
