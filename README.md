@@ -117,5 +117,5 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 - youtube list: https://youtube.com/playlist?list=PL4tYF4IwV9AtvZdZjP1cVs1p83KeMrEAn
 
 **Summary of task division**
-- Pierre: Frontend, "putting things together", organisation
+- Pierre: Frontend, organisation
 - Joonas: Backend, testing
