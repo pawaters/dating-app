@@ -7,6 +7,9 @@ const Home = () => {
 
     // all the variables needed before the return
     const authToken = false
+
+    const vartest = () => {
+    }
     
     const handleClick = () => {
         console.log('clicked')

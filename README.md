@@ -51,12 +51,6 @@ baseUrl = '/
 baseUrl = '/browsing/
 - sorted - POST
 - likeuser/:id - POST
-- unlikeuser/:id - POST
-- blockuser/:id - POST
-- reportuser/:id - POST
-- userlists - GET
-- tags - GET
-- profile/:id - GET
 
 baseUrl = '/signup/
 - / - POST
@@ -81,7 +75,6 @@ baseUrl = '/chat/
 - usernames - POST
 - chat_connections - GET
 - room_messages - POST
-- check_username - POST
 
 **List of pages/UI/components**
 Pages/views (Single page application with different urls):
