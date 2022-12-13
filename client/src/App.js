@@ -78,9 +78,9 @@ function App() {
                     <Route path={"/swipe"} element={<Swipe/>}/>
                     <Route path={"/logout"} element={<Logout/>}/>
                     <Route path={"/deleteuser"} element={<DeleteUser/>}/>
+                    <Route path={"/initialtest"} element={<InitialTest/>}/>
                     <Route path={"*"} element={<NoPage/>}/>
                 </Routes>
-                {/* <InitialTest></InitialTest> */}
             </BrowserRouter>
             <Footer />
         </Container>

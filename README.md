@@ -42,13 +42,13 @@ DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented
 - After liking, if the other user likes the current user back, they are able to chat. 
 - Chat room that saves conversations (maybe not needed).  
 
-**API END POINTS (see services)**
-baseUrl = '/api/
+**API END POINTS (see services):** baseUrl = '/api/
+baseUrl = '/
 - login - POST, GET
 - resetpassword - POST
 - setnewpassword - POST
 
-baseUrl = '/api/browsing/
+baseUrl = '/browsing/
 - sorted - POST
 - likeuser/:id - POST
 - unlikeuser/:id - POST
@@ -58,11 +58,11 @@ baseUrl = '/api/browsing/
 - tags - GET
 - profile/:id - GET
 
-baseUrl = '/api/signup/
+baseUrl = '/signup/
 - / - POST
 - verifyuser - POST
 
-baseUrl = '/api/profile/
+baseUrl = '/profile/
 - / - GET
 - deletepicture/:id - DELETE
 - notifications - GET, DELETE
@@ -77,7 +77,7 @@ baseUrl = '/api/profile/
 - editsettings - POST
 - changepassword - POST
 
-baseUrl = '/api/chat/
+baseUrl = '/chat/
 - usernames - POST
 - chat_connections - GET
 - room_messages - POST
@@ -116,4 +116,6 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 - github repos list: https://github.com/stars/pawaters/lists/matcha
 - youtube list: https://youtube.com/playlist?list=PL4tYF4IwV9AtvZdZjP1cVs1p83KeMrEAn
 
-
+**Summary of task division**
+- Pierre: Frontend, "putting things together", organisation
+- Joonas: Backend, testing
