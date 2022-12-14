@@ -27,14 +27,15 @@ pool.on('connect', client => {
 })
 
 
-//ROUTES
+//ROUTES CRUD
 
 
 //GET ALL USERS
 app.get('/users', async(req, res) => {
   try {
     const allUsers = await pool.query('SELECT * FROM users')
-    res.json(allUsers.rows)
+    res.json(allUsers.rowCount)
+    // console.log(allUsers)
   } catch (err) {
     console.error(err.message)
   }
@@ -106,5 +107,5 @@ app.delete('/users/:id', async (req, res) => {
 })
 
 app.listen(config.PORT, () => {
-  logger.info(`Server running on port ${config.PORT}`)
+  logger.info(` Server running on port ${config.PORT}`)
 })
