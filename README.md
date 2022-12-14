@@ -1,7 +1,7 @@
 # matcha - plan for our project 
 
 ## ⚙️ Installation:
-Please make sure you have [Docker](https://www.docker.com/) installed on your machine.
+Prep: Please make sure you have [Docker](https://www.docker.com/) installed on your machine.
 
 1. Clone the repository
 2. Create `.env` file is required to run the project in the root directory.
