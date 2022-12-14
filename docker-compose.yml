@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile.dev
       context: './server'
     volumes:
-      - /app/nodes_modules 
+      - /app/node_modules 
       - ./server:/app
     ports:
       - "3001:3001"
@@ -31,7 +31,7 @@ services:
       dockerfile: Dockerfile.dev
       context: './client'
     volumes:
-      - /app/nodes_modules
+      - /app/node_modules
       - ./client:/app
     ports:
       - '3000:3000'
