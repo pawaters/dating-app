@@ -1,11 +1,12 @@
 # matcha - plan for our project 
 
-**How to set up**:
-1) make sure you have Docker installed on your machine.
-2) Clone the repository
-3) Run npm install both in /matcha and /matcha/client to get the frontend working.
-4) Run `docker-compose up --build` in the root directory
-5) Go to localhost:3000 in your browser for front end, localhost:3001 for backend
+## ⚙️ Installation:
+Please make sure you have [Docker](https://www.docker.com/) installed on your machine.
+
+1. Clone the repository
+2. Create `.env` file is required to run the project in the root directory.
+3. Run `docker-compose up --build` in the root directory
+4. Go to `localhost:3000` in your browser, `localhost:3001` for the backend
 
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
