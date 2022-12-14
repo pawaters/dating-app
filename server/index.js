@@ -34,8 +34,7 @@ pool.on('connect', client => {
 app.get('/users', async(req, res) => {
   try {
     const allUsers = await pool.query('SELECT * FROM users')
-    res.json(allUsers.rowCount)
-    // console.log(allUsers)
+    res.json(allUsers.rows)
   } catch (err) {
     console.error(err.message)
   }
