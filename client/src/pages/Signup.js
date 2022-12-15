@@ -1,5 +1,6 @@
-import { Paper, TextField, Typography } from "@mui/material"
+import { Button, Paper, TextField, Typography } from "@mui/material"
 import { Container } from "@mui/system"
+import { Navigate } from "react-router-dom"
 import signUpService from '../services/signUpService'
 
 const submitUser = async (event) => {
@@ -17,23 +18,27 @@ const submitUser = async (event) => {
     signUpService.createUser(signedUpUser)
         .then(result => {
             if (result === true) {
-                
+                //create reducers for notifications: changeSeverity, changeNotification
+                Navigate('/login')
+            } else {
+                //notif
             }
         })
 }
 
 const Signup = () => {
     return (
-        <Container maxWidth='sm'>
-            <Paper elevation={10}>
+        <Container maxWidth='sm' sx={{pt: 5, pb: 5}}>
+            <Paper elevation={10} sx={{ padding: 3}}>
                 <Typography> <h1>Signup</h1> </Typography>
                 <form onSubmit={submitUser}>
-                    <TextField name='username' label='Username' placeholder="Username" autoComplete="nickname" required> </TextField>
-                    <TextField name='firstname' label='First name' placeholder="First name" autoComplete="given-name" required> </TextField>
-                    <TextField name='lastname' label='Last name' placeholder="Last name" autoComplete="family-name" required> </TextField>
-                    <TextField type="email" name='email' label='E-mail' placeholder="E-mail" autoComplete="email" required> </TextField>
-                    <TextField type="password" name='password' label='Password' placeholder="Password" autoComplete="new-password" required> </TextField>
-                    <TextField type="password" name='confirm_password' label='Confirm Password' placeholder="Confirm Password" autoComplete="confirm-password" required> </TextField>
+                    <TextField fullWidth margin='normal' name='username' label='Username' placeholder="Username" autoComplete="nickname" required> </TextField>
+                    <TextField sx={{ width: '49%', mr: '1%' }} margin='normal' name='firstname' label='First name' placeholder="First name" autoComplete="given-name" required> </TextField>
+                    <TextField sx={{ width: '50%'}} margin='normal' name='lastname' label='Last name' placeholder="Last name" autoComplete="family-name" required> </TextField>
+                    <TextField fullWidth margin='normal'  name='email' label='E-mail' placeholder="E-mail" autoComplete="email" required> </TextField>
+                    <TextField sx={{ width: '49%', mr: '1%' }} margin='normal' type="password" name='password' label='Password' placeholder="Password" autoComplete="new-password" required> </TextField>
+                    <TextField sx={{ width: '50%'}} margin='normal' type="password" name='confirm_password' label='Confirm Password' placeholder="Confirm Password" autoComplete="confirm-password" required> </TextField>
+                    <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Submit </Button>
                     
                 </form>
             </Paper>
