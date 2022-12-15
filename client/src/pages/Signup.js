@@ -17,6 +17,7 @@ const submitUser = async (event) => {
 
     signUpService.createUser(signedUpUser)
         .then(result => {
+            console.log(signedUpUser)
             if (result === true) {
                 //create reducers for notifications: changeSeverity, changeNotification
                 Navigate('/login')
@@ -28,8 +29,18 @@ const submitUser = async (event) => {
 
 const Signup = () => {
     return (
-        <Container maxWidth='sm' sx={{pt: 5, pb: 5}}>
-            <Paper elevation={10} sx={{ padding: 3}}>
+        <Container 
+        sx={{ 
+            pt:5, 
+            pb: 5,
+            backgroundImage: `url("https://assets.materialup.com/uploads/cd7deaa7-e263-4c1b-98c9-132d248fc0d4/preview.png")`,
+            backgroundSize: 'cover',
+            width: 'auto',
+            height: 'auto',
+            minHeight: '80vh',
+        }}
+        >
+            <Paper elevation={10} sx={{ padding: 3, width:'50%', margin: 'auto'}} >
                 <Typography> <h1>Signup</h1> </Typography>
                 <form onSubmit={submitUser}>
                     <TextField fullWidth margin='normal' name='username' label='Username' placeholder="Username" autoComplete="nickname" required> </TextField>
