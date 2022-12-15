@@ -1,12 +1,13 @@
-import { Container } from "@mui/system"
+import { Alert } from "@mui/material"
+import { useSelector } from "react-redux"
+
+const notification = useSelector(state => state.notification)
 
 const Notification = () => {
     return (
-        <Container maxWidth='sm'>
-            
-
-            <h1>Notification</h1>
-        </Container>
+        <Alert>
+            {notification}
+        </Alert>
     )
 }
 
