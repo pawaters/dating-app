@@ -70,6 +70,24 @@ app.post('/users', async(req, res) => {
   }
 })
 
+
+//CREATE A USER
+app.post('/signup', async(req, res) => {
+
+  try{
+    const firstName = req.body.first_name
+
+    const newUser = await pool.query(
+      'INSERT INTO users (first_name) VALUES($1) RETURNING *',
+      [firstName]
+    )
+
+    res.json(newUser.rows[0])
+  } catch (err) {
+    console.error(err.message)
+  }
+})
+
 //UPDATE A USER - THERE FOR TESTING
 
 app.put('/users/:id', async (req, res) => {
@@ -96,9 +114,9 @@ app.put('/users/:id', async (req, res) => {
 
 app.delete('/users/:id', async (req, res) => {
   try {
-    // const { id } = req.params
-    // const deleteUser = await pool.query('DELETE FROM users WHERE users_id = $1',
-    //   [id])
+    const { id } = req.params
+    const deleteUser = await pool.query('DELETE FROM users WHERE users_id = $1',
+      [id])
     res.json('user deleted')
   } catch (err) {
     console.error(err.message)
