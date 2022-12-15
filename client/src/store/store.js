@@ -8,6 +8,7 @@ const store = configureStore({
 		user: userReducer,
 		// notification: notificationReducer,
 		// severity: severityReducer,
+		// SHORTCUT FOR PUSHIng
 	}
 })
 
