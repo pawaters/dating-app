@@ -5,7 +5,7 @@ const Footer = () => {
 
     return (
         <BottomNavigation showLabels sx={{ width: '80%', position: 'absolute', bottom: 0, justifyContent: 'center' }}>
-            <BottomNavigationAction label="Github" href='http://www.google.com' />
+            <BottomNavigationAction label="Github" href='https://github.com/pawaters/matcha' />
             <BottomNavigationAction label="Contact" href='mailto:pierre.alban.waters@gmail.com' />
         </BottomNavigation>
     )
