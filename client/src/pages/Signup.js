@@ -12,7 +12,6 @@ import signUpService from '../services/signUpService'
 
 const Signup = () => {
 
-    // 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
