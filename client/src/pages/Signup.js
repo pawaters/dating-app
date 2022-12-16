@@ -1,33 +1,43 @@
 import { Button, Paper, TextField, Typography } from "@mui/material"
 import { Container } from "@mui/system"
-import { Navigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Navigate, useNavigate } from "react-router-dom"
+import Notification from "../components/notification/Notification"
 import signUpService from '../services/signUpService'
 
-const submitUser = async (event) => {
-    event.preventDefault()
 
-    const signedUpUser = {
-        username: event.target.username.value,
-        firstname: event.target.firstname.value,
-        lastname: event.target.lastname.value,
-        email: event.target.email.value,
-        password: event.target.password.value,
-        confirmPassword: event.target.confirm_password.value,
-    }
-
-    signUpService.createUser(signedUpUser)
-        .then(result => {
-            console.log(signedUpUser)
-            if (result === true) {
-                //create reducers for notifications: changeSeverity, changeNotification
-                Navigate('/login')
-            } else {
-                //notif
-            }
-        })
-}
 
 const Signup = () => {
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const user = useSelector(state => state.user)
+
+    const submitUser = async (event) => {
+        event.preventDefault()
+    
+        const signedUpUser = {
+            username: event.target.username.value,
+            firstname: event.target.firstname.value,
+            lastname: event.target.lastname.value,
+            email: event.target.email.value,
+            password: event.target.password.value,
+            confirmPassword: event.target.confirm_password.value,
+        }
+    
+        signUpService.createUser(signedUpUser)
+            .then(result => {
+                console.log(signedUpUser)
+                if (result === true) {
+                    
+                    navigate('/login')
+                } else {
+                    //notif
+                }
+            })
+    }
+
     return (
         <Container 
         sx={{ 
@@ -52,6 +62,7 @@ const Signup = () => {
                     <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Submit </Button>
                     
                 </form>
+                <Notification />
             </Paper>
         </Container>
     )
