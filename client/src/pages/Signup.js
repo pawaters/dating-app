@@ -35,7 +35,7 @@ const Signup = () => {
             password: event.target.password.value,
             confirmPassword: event.target.confirm_password.value,
         }
-        
+        // console.log('user:', user,'empty space right before that?')
         // console.log(signedUpUser)
 
         signUpService.createUser(signedUpUser)
