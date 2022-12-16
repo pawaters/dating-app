@@ -21,7 +21,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "WATCHPACK_POLLING=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -32,6 +32,7 @@
       "react-app/jest"
     ]
   },
+  "proxy": "http://host.docker.internal:3001",
   "browserslist": {
     "production": [
       ">0.2%",

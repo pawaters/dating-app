@@ -31,9 +31,10 @@ pool.on('connect', client => {
 
 
 //GET ALL USERS
-app.get('/users', async(req, res) => {
+app.get('/users', async (req, res) => {
   try {
-    const allUsers = await pool.query('SELECT * FROM users')
+    // const allUsers = await pool.query('SELECT * FROM test_users')
+    const allUsers = await pool.query('SELECT * FROM test_users')
     res.json(allUsers.rows)
   } catch (err) {
     console.error(err.message)
@@ -41,10 +42,10 @@ app.get('/users', async(req, res) => {
 })
 
 //GET A SPECIFIC USER
-app.get('/users/:id', async(req, res) => {
+app.get('/users/:id', async (req, res) => {
   try {
     const { id } = req.params
-    const user = await pool.query('SELECT * FROM users WHERE users_id = $1', [id])
+    const user = await pool.query('SELECT * FROM test_users WHERE users_id = $1', [id])
 
     res.json(user.rows[0])
   } catch (err) {
@@ -54,13 +55,13 @@ app.get('/users/:id', async(req, res) => {
 
 
 //CREATE A USER
-app.post('/users', async(req, res) => {
+app.post('/users', async (req, res) => {
 
-  try{
+  try {
     const firstName = req.body.first_name
 
     const newUser = await pool.query(
-      'INSERT INTO users (first_name) VALUES($1) RETURNING *',
+      'INSERT INTO test_users (first_name) VALUES($1) RETURNING *',
       [firstName]
     )
 
@@ -71,18 +72,44 @@ app.post('/users', async(req, res) => {
 })
 
 
-//CREATE A USER
-app.post('/signup', async(req, res) => {
+//CREATE A USER IN SIGNUP
+app.post('/api/signup', async (req, res) => {
 
-  try{
-    const firstName = req.body.first_name
+  try {
+    const userName = req.body.username
+    const firstName = req.body.firstname
+    const lastName = req.body.lastname
+    const email = req.body.email
+    const password = req.body.password
 
     const newUser = await pool.query(
-      'INSERT INTO users (first_name) VALUES($1) RETURNING *',
-      [firstName]
+      'INSERT INTO users (username, firstname, lastname, email, password) VALUES($1, $2, $3, $4, $5) RETURNING *',
+      [userName, firstName, lastName, email, password]
     )
-
     res.json(newUser.rows[0])
+  } catch (err) {
+    console.error(err.message)
+  }
+})
+
+// VIEW USERS CREATED IN SIGNUP
+app.get('/signup/users', async (req, res) => {
+
+  try {
+    const allUsers = await pool.query('SELECT * FROM users')
+    res.json(allUsers.rows)
+  } catch (err) {
+    console.error(err.message)
+  }
+})
+
+// GET A SPECIFIC SIGNED UP USER
+app.get('/signup/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const user = await pool.query('SELECT * FROM users WHERE id = $1', [id])
+
+    res.json(user.rows[0])
   } catch (err) {
     console.error(err.message)
   }
