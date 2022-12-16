@@ -39,11 +39,10 @@ const Login = () => {
                 
                 if (result.userid) {
                     const sessionUser = { name: result.username, id: result.userid}
-                    // dispatch(changeSeverity('success'))
-                    // dispatch(changeNotification('User created successfully (PENDING EMAIL CONFIRMATION SETUP'))
+                    dispatch(setUser(sessionUser))
+                    
                 } else {
-                    // dispatch(changeSeverity('error'))
-                    // dispatch(changeNotification(result))
+
                 }
             })
     }
