@@ -8,6 +8,7 @@ import { changeNotification } from "../../reducers/notificationReducer"
 import { changeSeverity } from "../../reducers/severityReducer"
 import signUpService from "../../services/signUpService"
 import { setUser } from "../../reducers/userReducer"
+import { getUserLists } from "../../reducers/userListsReducer"
 
 
 
@@ -40,9 +41,11 @@ const Login = () => {
                 if (result.userid) {
                     const sessionUser = { name: result.username, id: result.userid}
                     dispatch(setUser(sessionUser))
-                    
-                } else {
+                    dispatch(getUserLists())
 
+                } else {
+                    dispatch(changeSeverity('error'))
+                    dispatch(changeNotification(result))
                 }
             })
     }
