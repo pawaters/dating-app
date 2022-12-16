@@ -42,10 +42,14 @@ const Login = () => {
                     const sessionUser = { name: result.username, id: result.userid}
                     dispatch(setUser(sessionUser))
                     dispatch(getUserLists())
+                    //pending: getting notifications of user, 
+                    // profile data
+                    // being live for chat
 
                 } else {
                     dispatch(changeSeverity('error'))
                     dispatch(changeNotification(result))
+                    
                 }
             })
     }
