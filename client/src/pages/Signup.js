@@ -1,18 +1,28 @@
 import { Button, Paper, TextField, Typography } from "@mui/material"
 import { Container } from "@mui/system"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Navigate, useNavigate } from "react-router-dom"
 import Notification from "../components/notification/Notification"
+import { changeNotification } from "../reducers/notificationReducer"
+import { changeSeverity } from "../reducers/severityReducer"
 import signUpService from '../services/signUpService'
 
 
 
 const Signup = () => {
 
+    // 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const user = useSelector(state => state.user)
+
+    useEffect( () => {
+        if (user !== undefined && user !== '') {
+            navigate('/profile')
+        }
+    }, [user, navigate])
 
     const submitUser = async (event) => {
         event.preventDefault()
@@ -25,15 +35,19 @@ const Signup = () => {
             password: event.target.password.value,
             confirmPassword: event.target.confirm_password.value,
         }
-    
+        
+        // console.log(signedUpUser)
+
         signUpService.createUser(signedUpUser)
             .then(result => {
-                console.log(signedUpUser)
+                
                 if (result === true) {
-                    
+                    dispatch(changeSeverity('success'))
+                    dispatch(changeNotification('User created successfully (PENDING EMAIL CONFIRMATION SETUP'))
                     navigate('/login')
                 } else {
-                    //notif
+                    dispatch(changeSeverity('error'))
+                    dispatch(changeNotification(result))
                 }
             })
     }
