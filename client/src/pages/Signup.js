@@ -64,7 +64,7 @@ const Signup = () => {
         }}
         >
             <Paper elevation={10} sx={{ padding: 3, width:'50%', margin: 'auto'}} >
-                <Typography> <h1>Signup</h1> </Typography>
+                <Typography variant="h2"> Signup </Typography>
                 <form onSubmit={submitUser}>
                     <TextField fullWidth margin='normal' name='username' label='Username' placeholder="Username" autoComplete="nickname" required> </TextField>
                     <TextField sx={{ width: '49%', mr: '1%' }} margin='normal' name='firstname' label='First name' placeholder="First name" autoComplete="given-name" required> </TextField>

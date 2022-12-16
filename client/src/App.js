@@ -30,6 +30,8 @@ import Footer from "./components/Footer"
 import { grey, pink} from "@mui/material/colors"
 import { borderRadius } from "@mui/system"
 
+const font = "'Readex Pro', sans-serif";
+
 const theme = createTheme({
     palette: {
         primary: {
@@ -52,6 +54,9 @@ const theme = createTheme({
             }
         }
     },
+    typography: {
+        fontFamily: font,
+    }
 })
 
 
