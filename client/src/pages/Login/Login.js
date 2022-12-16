@@ -2,11 +2,12 @@ import { Button, Paper, TextField, Typography } from "@mui/material"
 import { Container } from "@mui/system"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Notification from "../../components/notification/Notification"
 import { changeNotification } from "../../reducers/notificationReducer"
 import { changeSeverity } from "../../reducers/severityReducer"
 import signUpService from "../../services/signUpService"
+import { setUser } from "../../reducers/userReducer"
 
 
 
@@ -30,22 +31,25 @@ const Login = () => {
             username: event.target.username.value,
             password: event.target.password.value,
         }
-        // console.log('user:', user,'empty space right before that?')
-        // console.log(signedUpUser)
+        console.log('user:', user,'empty space right before that?')
+        console.log(signedUpUser)
 
         signUpService.logInUser(signedUpUser)
             .then(result => {
                 
                 if (result.userid) {
                     const sessionUser = { name: result.username, id: result.userid}
-                    dispatch(changeSeverity('success'))
-                    dispatch(changeNotification('User created successfully (PENDING EMAIL CONFIRMATION SETUP'))
-                    navigate('/login')
+                    // dispatch(changeSeverity('success'))
+                    // dispatch(changeNotification('User created successfully (PENDING EMAIL CONFIRMATION SETUP'))
                 } else {
-                    dispatch(changeSeverity('error'))
-                    dispatch(changeNotification(result))
+                    // dispatch(changeSeverity('error'))
+                    // dispatch(changeNotification(result))
                 }
             })
+    }
+
+    const navigateToReset = () => {
+        navigate('/login/resetpassword')
     }
 
     return (
@@ -67,7 +71,7 @@ const Login = () => {
                     <TextField fullWidth margin='normal' type="password" name='password' label='Password' placeholder="Password" autoComplete="new-password" required> </TextField>
                     <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Submit </Button>
                 </form>
-                <Button> Forgot Password?</Button>
+                <Button onClick={navigateToReset} sx={{mt: 1}}> Forgot Password?</Button>
                 <Notification />
             </Paper>
         </Container>
