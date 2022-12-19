@@ -1,11 +1,17 @@
-const Loader = () => {
+import { Typography } from "@mui/material"
+import { Box } from "@mui/system"
+import React from "react"
+
+const Loader = ({text}) => {
     return (
-        <div>
-            <h1>
-                Loader
-            </h1>
-        </div>
+        <Box>
+            <Typography>
+                {text}
+            </Typography>
+        </Box>
     )
+       
+    
 }
 
 export default Loader
