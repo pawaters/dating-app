@@ -1,4 +1,4 @@
-import { Button, FormControl, FormControlLabel, FormLabel, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material"
+import { Button, FormControl, FormControlLabel, FormLabel, InputLabel, Menu, MenuItem, Paper, Radio, RadioGroup, Select, TextField, Typography } from "@mui/material"
 import { Container } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -107,13 +107,16 @@ const Onboarding = () => {
 							<FormControlLabel value='other' control={<Radio />} label='Other' />
                         </RadioGroup>
                     </FormControl>
-                    
-                    {/* <TextField fullWidth margin='normal' name='username' label='Username' placeholder="Username" autoComplete="nickname" required> </TextField>
-                    <TextField sx={{ width: '49%', mr: '1%' }} margin='normal' name='firstname' label='First name' placeholder="First name" autoComplete="given-name" required> </TextField>
-                    <TextField sx={{ width: '50%'}} margin='normal' name='lastname' label='Last name' placeholder="Last name" autoComplete="family-name" required> </TextField>
-                    <TextField fullWidth margin='normal'  name='email' label='E-mail' placeholder="E-mail" autoComplete="email" required> </TextField>
-                    <TextField sx={{ width: '49%', mr: '1%' }} margin='normal' type="password" name='password' label='Password' placeholder="Password" autoComplete="new-password" required> </TextField>
-                    <TextField sx={{ width: '50%'}} margin='normal' type="password" name='confirm_password' label='Confirm Password' placeholder="Confirm Password" autoComplete="confirm-password" required> </TextField> */}
+                    <FormControl fullWidth>
+                        <InputLabel id='age' required>Age</InputLabel>
+                        <Select labelId="age" id='age' name="age" value={age} onChange={handleAge} required> 
+                            {[...Array(103).keys()].map((i) => (
+                                <MenuItem value={i + 18} key={i + 18}> {i + 18} </MenuItem>
+                            ))}
+                        </Select>
+
+                    </FormControl>
+                   
                     <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Submit </Button>
                 </form>
                 <Notification />
