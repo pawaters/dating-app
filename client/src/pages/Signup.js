@@ -4,6 +4,9 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Navigate, useNavigate } from "react-router-dom"
 import signUpService from '../services/signUpService'
+import { changeSeverity } from "../reducers/severityReducer"
+import { changeNotification } from "../reducers/notificationReducer"
+import Notification from "../components/notification/Notification"
 
 
 
@@ -34,14 +37,17 @@ const Signup = () => {
             password: event.target.password.value,
             confirmPassword: event.target.confirm_password.value,
         }
-    
+
         signUpService.createUser(signedUpUser)
             .then(result => {
                 // console.log(signedUpUser)
-                if (result === true) {
-                    Navigate('/login')
+                if (result) {
+                    dispatch(changeSeverity('success'))
+                    dispatch(changeNotification('User created successfully [PENDING DEVELOPMENT OF EMAIL CONFIRMATION]' ))
+                    navigate('/login')
                 } else {
-                    //notif
+                    dispatch(changeSeverity('error'))
+                    dispatch(changeNotification(result))
                 }
             })
     }
@@ -59,7 +65,7 @@ const Signup = () => {
         }}
         >
             <Paper elevation={10} sx={{ padding: 3, width:'50%', margin: 'auto'}} >
-                <Typography> <h1>Signup</h1> </Typography>
+                <Typography variant="h2"> Signup </Typography>
                 <form onSubmit={submitUser}>
                     <TextField fullWidth margin='normal' name='username' label='Username' placeholder="Username" autoComplete="nickname" required> </TextField>
                     <TextField sx={{ width: '49%', mr: '1%' }} margin='normal' name='firstname' label='First name' placeholder="First name" autoComplete="given-name" required> </TextField>
@@ -70,6 +76,7 @@ const Signup = () => {
                     <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Submit </Button>
                     
                 </form>
+                <Notification />
             </Paper>
         </Container>
     )
