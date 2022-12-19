@@ -1,33 +1,51 @@
 import { Button, Paper, TextField, Typography } from "@mui/material"
 import { Container } from "@mui/system"
-import { Navigate } from "react-router-dom"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Navigate, useNavigate } from "react-router-dom"
 import signUpService from '../services/signUpService'
 
-const submitUser = async (event) => {
-    event.preventDefault()
 
-    const signedUpUser = {
-        username: event.target.username.value,
-        firstname: event.target.firstname.value,
-        lastname: event.target.lastname.value,
-        email: event.target.email.value,
-        password: event.target.password.value,
-        confirmPassword: event.target.confirm_password.value,
-    }
-
-    signUpService.createUser(signedUpUser)
-        .then(result => {
-            console.log(signedUpUser)
-            if (result === true) {
-                //create reducers for notifications: changeSeverity, changeNotification
-                Navigate('/login')
-            } else {
-                //notif
-            }
-        })
-}
 
 const Signup = () => {
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    // useSelector is to access state in redux and map it
+    const user = useSelector(state => state.user)
+
+    // useEffect is called after the page is rendered 
+    // if you want to call it whenever there is change in the stage: pass the values into the array of 2d parameter
+    useEffect(() => {
+        if (user !== undefined && user !== '') {
+            navigate('/profile')
+        }
+    }, [user, navigate])
+
+    const submitUser = async (event) => {
+        event.preventDefault()
+    
+        const signedUpUser = {
+            username: event.target.username.value,
+            firstname: event.target.firstname.value,
+            lastname: event.target.lastname.value,
+            email: event.target.email.value,
+            password: event.target.password.value,
+            confirmPassword: event.target.confirm_password.value,
+        }
+    
+        signUpService.createUser(signedUpUser)
+            .then(result => {
+                // console.log(signedUpUser)
+                if (result === true) {
+                    Navigate('/login')
+                } else {
+                    //notif
+                }
+            })
+    }
+
     return (
         <Container 
         sx={{ 
