@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormControlLabel, FormLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Radio, RadioGroup, Select, TextField, Tooltip, Typography } from "@mui/material"
+import { Box, Button, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Radio, RadioGroup, Select, TextareaAutosize, TextField, Tooltip, Typography } from "@mui/material"
 import { Container } from "@mui/system"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -79,7 +79,7 @@ const Onboarding = () => {
             gps: [event.target.gps_lat.value, event.target.gps_lon.value],
             sexual_pref: event.target.sexual_pref.value,
             biography: event.target.biography.value,
-            tags: tags
+            // tags: tags -> to do after profile settings page
         }
         // console.log('user:', user,'empty space right before that?')
         // console.log(ProfileSettings)
@@ -127,6 +127,47 @@ const Onboarding = () => {
 		getLocationData()
 	}
 
+    // const uploadImage = async (event) => {
+    //     const image = event.target.files[0]
+    //     if (image.size > 5242880) {
+    //         dispatch(changeSeverity('error'))
+	// 		dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
+    //     } else {
+    //         let formData = new FormData()
+    //         formData.append('file', image)
+    //         const result = await profileService.uploadPicture(formData)
+    //         if (result === true) {
+    //             dispatch(getProfileData())
+	// 			dispatch(changeSeverity('success'))
+	// 			dispatch(changeNotification("Image uploaded successfully!"))
+	// 		} else {
+	// 			dispatch(changeSeverity('error'))
+	// 			dispatch(changeNotification(result))
+	// 		}
+    //     }
+    //     event.target.value = ''
+    // }
+
+    // const setProfilePicture = async (event) => {
+    //     const image = event.target.files[0]
+    //     if (image.size > 5242880) {
+    //         dispatch(changeSeverity('error'))
+	// 		dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
+    //     } else {
+    //         let formData = new FormData()
+    //         formData.append('file', image)
+    //         const result = await profileService.setProfilePic(formData)
+    //         if (result === true) {
+    //             dispatch(getProfileData())
+	// 			dispatch(changeSeverity('success'))
+	// 			dispatch(changeNotification("Profile picture set!"))
+	// 		} else {
+	// 			dispatch(changeSeverity('error'))
+	// 			dispatch(changeNotification(result))
+    //         }
+    //     }
+    //     event.target.value = ''
+    // }
 
     return (
         <Container 
@@ -143,12 +184,12 @@ const Onboarding = () => {
             <Paper elevation={10} sx={{ padding: 3, width:'50%', margin: 'auto'}} >
                 <Typography variant="h2"> Complete your profile </Typography>
                 <form onSubmit={submitUserInfo}>
-                    <FormControl>
-                        <FormLabel id="gender">gender</FormLabel>
-                        <RadioGroup row name="gender" value={gender} onChange={handleGender}>
+                    <FormControl margin="dense"> 
+                        <FormLabel id="gender" labelPlacement="start">Gender:</FormLabel>
+                        <RadioGroup row aria-labelledby='gender' name="gender" value={gender} onChange={handleGender}>
                             <FormControlLabel value='female' control={<Radio />} label='Female' />
-							<FormControlLabel value='male' control={<Radio />} label='Male' />
-							<FormControlLabel value='other' control={<Radio />} label='Other' />
+                            <FormControlLabel value='male' control={<Radio />} label='Male' />
+                            <FormControlLabel value='other' control={<Radio />} label='Other' />
                         </RadioGroup>
                     </FormControl>
                     <FormControl fullWidth margin="normal">
@@ -166,13 +207,38 @@ const Onboarding = () => {
                         onChange={handleGPSLat} required />
                         <TextField fullWidth margin="normal" name="gps_lon" label="GPS longitude" value={GPSlocation.longitude}
                         onChange={handleGPSLon} required />
-                        <Tooltip>
+                        <Tooltip title="Locate with GPS">
                             <IconButton onClick={handleLocationSearch}>
                                 <LocationSearchIcon />
                             </IconButton>
                         </Tooltip>
                     </Box>
-                   
+                    <FormControl margin="dense"> 
+                        <FormLabel id="sexual_pref" labelPlacement="start">Sexual Preference:</FormLabel>
+                        <RadioGroup row aria-labelledby='sexual_pref' name="sexual_pref" value={sexual_pref} onChange={handleSexpref}>
+                            <FormControlLabel value='bisexual' control={<Radio />} label='Bisexual' />
+                            <FormControlLabel value='male' control={<Radio />} label='Male' />
+                            <FormControlLabel value='female' control={<Radio />} label='Female' />
+                        </RadioGroup>
+                    </FormControl>
+                    <br />
+                    <FormLabel id='bio' required margin="dense">Biography:</FormLabel>
+                    <TextareaAutosize 
+                        name="bio"
+						style={{ width: '95%'}}
+						maxLength={500}
+						minRows={5}
+						placeholder='Short description of you here...'
+						required
+                    />
+                    <Box>
+                        <Button>
+                            <label> Set profile picture</label>
+                            {/* <input type="file" name="file" id="image-upload" accept="image/jpeg, image/png, image/jpg" onChange={setProfilePicture}> </input> */}
+                        </Button>
+                    </Box>
+                    <br />
+                    {/* <Tags to be added after profilesettings page*/}
                     <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Submit </Button>
                 </form>
                 <Notification />
