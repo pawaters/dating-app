@@ -1,4 +1,4 @@
-import { Button, FormControl, FormControlLabel, FormLabel, InputLabel, Menu, MenuItem, Paper, Radio, RadioGroup, Select, TextField, Typography } from "@mui/material"
+import { Box, Button, FormControl, FormControlLabel, FormLabel, InputLabel, Menu, MenuItem, Paper, Radio, RadioGroup, Select, TextField, Typography } from "@mui/material"
 import { Container } from "@mui/system"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -158,9 +158,15 @@ const Onboarding = () => {
                             ))}
                         </Select>
                     </FormControl>
-                    <TextField fullWidth margin="normal" name="location" label="location" >
-
-                    </TextField>
+                    <TextField fullWidth margin="normal" name="location" label="location" value={GPSlocation.location} 
+                    onChange={handleLocation} required />
+                    <Box>
+                        <TextField fullWidth margin="normal" name="gps_lat" label="GPS latitude" value={GPSlocation.latitude}
+                        onChange={handleGPSLat} required />
+                        <TextField fullWidth margin="normal" name="gps_lon" label="GPS longitude" value={GPSlocation.longitude}
+                        onChange={handleGPSLon} required />
+                        
+                    </Box>
                    
                     <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Submit </Button>
                 </form>
