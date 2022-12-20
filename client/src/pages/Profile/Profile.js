@@ -1,17 +1,10 @@
 import { Grid, Paper } from "@mui/material"
 import { Box, Container } from "@mui/system"
+import AspectRatio from '@mui/joy/AspectRatio';
 
 const Profile = () => {
     return (
-        <Container>
-            <Paper>
-                <Grid>
-                    <Box>
-                        {/* <AspectRatio></AspectRatio> */}
-                    </Box>
-                </Grid>
-            </Paper>
-        </Container>
+        <AspectRatio></AspectRatio>
     )
 }
 
