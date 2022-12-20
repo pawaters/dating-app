@@ -22,7 +22,7 @@ const Onboarding = () => {
 	const [sexual_pref, setSexpref] = useState('bisexual')
     const [GPSlocation, setGPSLocation] = useState()
     const [isLoading, setLoading] = useState(true)
-    const [tags, setTagstate] = useState([])
+    // const [tags, setTagstate] = useState([])
 
     const getLocationData = async() => {
         var locationData = await axios.get('https://ipapi.co/json')
@@ -81,8 +81,8 @@ const Onboarding = () => {
             biography: event.target.biography.value,
             // tags: tags -> to do after profile settings page
         }
-        // console.log('user:', user,'empty space right before that?')
-        // console.log(ProfileSettings)
+        console.log('Profile:', ProfileSettings)
+        console.log('FormData:', FormData)
 
         profileService.setUpProfile(ProfileSettings)
             .then(result => {
@@ -127,47 +127,48 @@ const Onboarding = () => {
 		getLocationData()
 	}
 
-    // const uploadImage = async (event) => {
-    //     const image = event.target.files[0]
-    //     if (image.size > 5242880) {
-    //         dispatch(changeSeverity('error'))
-	// 		dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
-    //     } else {
-    //         let formData = new FormData()
-    //         formData.append('file', image)
-    //         const result = await profileService.uploadPicture(formData)
-    //         if (result === true) {
-    //             dispatch(getProfileData())
-	// 			dispatch(changeSeverity('success'))
-	// 			dispatch(changeNotification("Image uploaded successfully!"))
-	// 		} else {
-	// 			dispatch(changeSeverity('error'))
-	// 			dispatch(changeNotification(result))
-	// 		}
-    //     }
-    //     event.target.value = ''
-    // }
+    const uploadImage = async (event) => {
+        const image = event.target.files[0]
+        if (image.size > 5242880) {
+            dispatch(changeSeverity('error'))
+			dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
+        } else {
+            let formData = new FormData()
+            formData.append('file', image)
+            const result = await profileService.uploadPicture(formData)
+            if (result === true) {
+                dispatch(getProfileData())
+				dispatch(changeSeverity('success'))
+				dispatch(changeNotification("Image uploaded successfully!"))
+			} else {
+				dispatch(changeSeverity('error'))
+				dispatch(changeNotification(result))
+			}
+        }
+        event.target.value = ''
+    }
 
-    // const setProfilePicture = async (event) => {
-    //     const image = event.target.files[0]
-    //     if (image.size > 5242880) {
-    //         dispatch(changeSeverity('error'))
-	// 		dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
-    //     } else {
-    //         let formData = new FormData()
-    //         formData.append('file', image)
-    //         const result = await profileService.setProfilePic(formData)
-    //         if (result === true) {
-    //             dispatch(getProfileData())
-	// 			dispatch(changeSeverity('success'))
-	// 			dispatch(changeNotification("Profile picture set!"))
-	// 		} else {
-	// 			dispatch(changeSeverity('error'))
-	// 			dispatch(changeNotification(result))
-    //         }
-    //     }
-    //     event.target.value = ''
-    // }
+    const setProfilePicture = async (event) => {
+        const image = event.target.files[0]
+        console.log('image', image)
+        if (image.size > 5242880) {
+            dispatch(changeSeverity('error'))
+			dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
+        } else {
+            let formData = new FormData()
+            formData.append('file', image)
+            const result = await profileService.setProfilePic(formData)
+            if (result === true) {
+                dispatch(getProfileData())
+				dispatch(changeSeverity('success'))
+				dispatch(changeNotification("Profile picture set!"))
+			} else {
+				dispatch(changeSeverity('error'))
+				dispatch(changeNotification(result))
+            }
+        }
+        event.target.value = ''
+    }
 
     return (
         <Container 
@@ -185,7 +186,7 @@ const Onboarding = () => {
                 <Typography variant="h2"> Complete your profile </Typography>
                 <form onSubmit={submitUserInfo}>
                     <FormControl margin="dense"> 
-                        <FormLabel id="gender" labelPlacement="start">Gender:</FormLabel>
+                        <FormLabel id="gender">Gender:</FormLabel>
                         <RadioGroup row aria-labelledby='gender' name="gender" value={gender} onChange={handleGender}>
                             <FormControlLabel value='female' control={<Radio />} label='Female' />
                             <FormControlLabel value='male' control={<Radio />} label='Male' />
@@ -214,7 +215,7 @@ const Onboarding = () => {
                         </Tooltip>
                     </Box>
                     <FormControl margin="dense"> 
-                        <FormLabel id="sexual_pref" labelPlacement="start">Sexual Preference:</FormLabel>
+                        <FormLabel id="sexual_pref">Sexual Preference:</FormLabel>
                         <RadioGroup row aria-labelledby='sexual_pref' name="sexual_pref" value={sexual_pref} onChange={handleSexpref}>
                             <FormControlLabel value='bisexual' control={<Radio />} label='Bisexual' />
                             <FormControlLabel value='male' control={<Radio />} label='Male' />
@@ -222,9 +223,9 @@ const Onboarding = () => {
                         </RadioGroup>
                     </FormControl>
                     <br />
-                    <FormLabel id='bio' required margin="dense">Biography:</FormLabel>
+                    <FormLabel id='biography' required margin="dense">Biography:</FormLabel>
                     <TextareaAutosize 
-                        name="bio"
+                        name="biography"
 						style={{ width: '95%'}}
 						maxLength={500}
 						minRows={5}
@@ -234,12 +235,16 @@ const Onboarding = () => {
                     <Box>
                         <Button>
                             <label> Set profile picture</label>
-                            {/* <input type="file" name="file" id="image-upload" accept="image/jpeg, image/png, image/jpg" onChange={setProfilePicture}> </input> */}
+                            <input type="file" name="file" id="set_profilepic" accept="image/jpeg, image/png, image/jpg" onChange={setProfilePicture} />
+                        </Button>
+                        <Button>
+                            <label> Add other picture</label>
+                            <input type="file" name="file" id="image_upload" accept="image/jpeg, image/png, image/jpg" onChange={uploadImage} />
                         </Button>
                     </Box>
                     <br />
                     {/* <Tags to be added after profilesettings page*/}
-                    <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Submit </Button>
+                    <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Save Profile </Button>
                 </form>
                 <Notification />
             </Paper>
