@@ -1,4 +1,4 @@
-import { Avatar, Grid, Paper } from "@mui/material"
+import { Avatar, Grid, Paper, Typography } from "@mui/material"
 import { Box, Container } from "@mui/system"
 import { useEffect, useState } from "react"
 import { AspectRatio } from 'react-aspect-ratio'
@@ -35,6 +35,7 @@ const Profile = () => {
                 </Grid>
             </Paper>
         </Container>
+        
     )
 
 }
