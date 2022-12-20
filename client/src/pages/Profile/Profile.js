@@ -1,11 +1,12 @@
-import { Grid, Paper } from "@mui/material"
-import { Box, Container } from "@mui/system"
-import AspectRatio from '@mui/joy/AspectRatio';
+import * as React from 'react';
+import { AspectRatio } from 'react-aspect-ratio'
 
 const Profile = () => {
     return (
-        <AspectRatio></AspectRatio>
-    )
+        <div>
+            <AspectRatio></AspectRatio>
+        </div>
+    );
 }
 
 export default Profile
