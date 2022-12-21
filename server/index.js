@@ -10,7 +10,11 @@ const { pgUser, pgPassword, pgDatabase, pgHost } = require('./src/utils/config')
 // middleware
 app.use(cors())
 app.use(express.json())
-app.use(session({ secret: 'secret', saveUninitialized: true, resave: true }));
+app.use(session({
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: true
+}));
 
 // POSTGRES SETUP
 const Pool = require('pg').Pool
@@ -34,23 +38,23 @@ pool.on('connect', client => {
 
 
 //GET ALL USERS
-app.get('/users', async (req, res) => {
+app.get('/users', async (request, response) => {
   try {
     // const allUsers = await pool.query('SELECT * FROM test_users')
     const allUsers = await pool.query('SELECT * FROM test_users')
-    res.json(allUsers.rows)
+    response.json(allUsers.rows)
   } catch (err) {
     console.error(err.message)
   }
 })
 
 //GET A SPECIFIC USER
-app.get('/users/:id', async (req, res) => {
+app.get('/users/:id', async (request, response) => {
   try {
-    const { id } = req.params
+    const { id } = request.params
     const user = await pool.query('SELECT * FROM test_users WHERE users_id = $1', [id])
 
-    res.json(user.rows[0])
+    response.json(user.rows[0])
   } catch (err) {
     console.error(err.message)
   }
@@ -58,30 +62,30 @@ app.get('/users/:id', async (req, res) => {
 
 
 //CREATE A USER
-app.post('/users', async (req, res) => {
+app.post('/users', async (request, response) => {
 
   try {
-    const firstName = req.body.first_name
+    const firstName = request.body.first_name
 
     const newUser = await pool.query(
       'INSERT INTO test_users (first_name) VALUES($1) RETURNING *',
       [firstName]
     )
 
-    res.json(newUser.rows[0])
+    response.json(newUser.rows[0])
   } catch (err) {
     console.error(err.message)
   }
 })
 
 //CREATE A USER IN SIGNUP
-app.post('/api/signup', async (req, res) => {
+app.post('/api/signup', async (request, response) => {
 
-  const userName = req.body.username
-  const firstName = req.body.firstname
-  const lastName = req.body.lastname
-  const email = req.body.email
-  const password = req.body.password
+  const userName = request.body.username
+  const firstName = request.body.firstname
+  const lastName = request.body.lastname
+  const email = request.body.email
+  const password = request.body.password
 
   const hashPasswordAndSave = async () => {
     const hash = await bcrypt.hash(password, 10);
@@ -90,7 +94,7 @@ app.post('/api/signup', async (req, res) => {
         'INSERT INTO users (username, firstname, lastname, email, password) VALUES($1, $2, $3, $4, $5) RETURNING *',
         [userName, firstName, lastName, email, hash]
       )
-      res.json(newUser.rows[0])
+      response.json(newUser.rows[0])
     } catch (err) {
       console.error(err.message)
     }
@@ -100,58 +104,91 @@ app.post('/api/signup', async (req, res) => {
 })
 
 // VIEW USERS CREATED IN SIGNUP
-app.get('/signup/users', async (req, res) => {
+app.get('/signup/users', async (request, response) => {
 
   try {
     const allUsers = await pool.query('SELECT * FROM users')
-    res.json(allUsers.rows)
+    response.json(allUsers.rows)
   } catch (err) {
     console.error(err.message)
   }
 })
 
 // GET A SPECIFIC SIGNED UP USER
-app.get('/signup/users/:id', async (req, res) => {
+app.get('/signup/users/:id', async (request, response) => {
   try {
-    const { id } = req.params
+    const { id } = request.params
     const user = await pool.query('SELECT * FROM users WHERE id = $1', [id])
 
-    res.json(user.rows[0])
+    response.json(user.rows[0])
   } catch (err) {
     console.error(err.message)
   }
 })
 
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', async (request, response) => {
 
-  try {
-    const userName = req.body.username
-    const password = req.body.password
+  const userName = request.body.username
+  const password = request.body.password
 
-    const verifyLoginAttempt = async () => {
-      const newUser = await pool.query(
-        'SELECT FROM users WHERE username = $1',
-        [userName]
-      )
-    }
+  console.log('userName', userName)
 
-    const newUser = await pool.query(
-      'INSERT INTO users (username, firstname, lastname, email, password) VALUES($1, $2, $3, $4, $5) RETURNING *',
-      [userName, firstName, lastName, email, password]
+  const verifyLoginAttempt = async () => {
+    const user = await pool.query(
+      'SELECT * FROM users WHERE username = $1',
+      [userName]
     )
-    res.json(newUser.rows[0])
-  } catch (err) {
-    console.error(err.message)
+    console.log('User data here to the right: ', user)
+    console.log('User.rows[0] data here to the right: ', user.rows[0])
+    if (user.rows.length === 0) {
+      console.log('User not found')
+    } else {
+      const comparePasswords = await bcrypt.compare(password, user.rows[0]['password'])
+      if (comparePasswords) {
+        console.log('Auth success!')
+        var session = request.session
+        console.log('session here: ', session)
+        session.userid = user.rows[0]['id']
+        session.username = user.rows[0]['username']
+        return session
+      } else {
+        console.log('Auth fail!')
+      }
+    }
   }
+
+  verifyLoginAttempt()
+    .then(session => {
+      response.send(session)
+    }).catch(error => {
+      response.send(error)
+    })
 })
+
+app.get('/api/login', (request, response) => {
+  var session = request.session
+  if (session.username && session.userid)
+    response.send({ name: session.username, id: session.userid })
+  else
+    response.send('')
+})
+
+app.get('/api/logout', (request, response) => {
+  request.session.destroy(error => {
+    if (error) {
+      return console.log(error)
+    }
+    response.end()
+  });
+});
 
 //UPDATE A USER - THERE FOR TESTING
-app.put('/users/:id', async (req, res) => {
+app.put('/users/:id', async (request, response) => {
 
   try {
     // define const we use
     // const firstName = req.body.first_name
-    const { id } = req.params
+    const { id } = request.params
 
     // const with query result
     // const updatedUser = await pool.query(
@@ -159,7 +196,7 @@ app.put('/users/:id', async (req, res) => {
     //   [firstName, id]
     // )
 
-    res.json(id)
+    response.json(id)
 
   } catch (err) {
     console.error(err.message)
@@ -168,12 +205,12 @@ app.put('/users/:id', async (req, res) => {
 
 //DELETE A USER - THERE FOR TESTING
 
-app.delete('/users/:id', async (req, res) => {
+app.delete('/users/:id', async (request, response) => {
   try {
-    const { id } = req.params
+    const { id } = request.params
     const deleteUser = await pool.query('DELETE FROM users WHERE users_id = $1',
       [id])
-    res.json('user deleted')
+    response.json('user deleted')
   } catch (err) {
     console.error(err.message)
   }
