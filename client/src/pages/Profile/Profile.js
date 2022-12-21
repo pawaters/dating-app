@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Avatar, Grid, Paper, Typography } from "@mui/material"
+import { Avatar, Button, Grid, Paper, Typography } from "@mui/material"
 import { Box, Container } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
@@ -26,8 +26,8 @@ const ProfileInput = ({ text, input }) => {
 
 const Profile = () => {
     // const [isLoading, setLoading] = useState(true)
-    // const dispatch = useDispatch()
-    // const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     // const profileData = useSelector(state => state.profile)
 
     // useEffect(() => {
@@ -65,6 +65,7 @@ const Profile = () => {
     profileData.sexual_pref = 'Hetero'
     profileData.user_location = 'Helsinki'
     profileData.Username = 'pwaters'
+    profileData.biography = 'super interesting bio'
 
     const ProfileData = {
 		'First name:': profileData.firstname,
@@ -90,56 +91,56 @@ const Profile = () => {
 
     // //replace with a hook as this code is repeated from other parts?
 
-    // const uploadImage = async (event) => {
-	// 	const image = event.target.files[0]
-	// 	if (image.size > 5242880) {
-	// 		dispatch(changeSeverity('error'))
-	// 		dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
-	// 	} else {
-	// 		let formData = new FormData()
-	// 		formData.append('file', image)
-	// 		const result = await profileService.uploadPicture(formData)
-	// 		if (result === true) {
-	// 			dispatch(getProfileData())
-	// 			dispatch(changeSeverity('success'))
-	// 			dispatch(changeNotification("Image uploaded successfully!"))
-	// 		} else {
-	// 			dispatch(changeSeverity('error'))
-	// 			dispatch(changeNotification(result))
-	// 		}
-	// 	}
-	// 	event.target.value = ''
-	// }
+    const uploadImage = async (event) => {
+		const image = event.target.files[0]
+		if (image.size > 5242880) {
+			dispatch(changeSeverity('error'))
+			dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
+		} else {
+			let formData = new FormData()
+			formData.append('file', image)
+			const result = await profileService.uploadPicture(formData)
+			if (result === true) {
+				dispatch(getProfileData())
+				dispatch(changeSeverity('success'))
+				dispatch(changeNotification("Image uploaded successfully!"))
+			} else {
+				dispatch(changeSeverity('error'))
+				dispatch(changeNotification(result))
+			}
+		}
+		event.target.value = ''
+	}
 
-    // const setProfilePicture = async (event) => {
-	// 	const image = event.target.files[0]
-	// 	if (image.size > 5242880) {
-	// 		dispatch(changeSeverity('error'))
-	// 		dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
+    const setProfilePicture = async (event) => {
+		const image = event.target.files[0]
+		if (image.size > 5242880) {
+			dispatch(changeSeverity('error'))
+			dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
 
-	// 	} else {
-	// 		let formData = new FormData()
-	// 		formData.append('file', image)
-	// 		const result = await profileService.setProfilePic(formData)
-	// 		if (result === true) {
-	// 			dispatch(getProfileData())
-	// 			dispatch(changeSeverity('success'))
-	// 			dispatch(changeNotification("Profile picture set!"))
-	// 		} else {
-	// 			dispatch(changeSeverity('error'))
-	// 			dispatch(changeNotification(result))
-	// 		}
-	// 	}
-	// 	event.target.value = ''
-	// }
+		} else {
+			let formData = new FormData()
+			formData.append('file', image)
+			const result = await profileService.setProfilePic(formData)
+			if (result === true) {
+				dispatch(getProfileData())
+				dispatch(changeSeverity('success'))
+				dispatch(changeNotification("Profile picture set!"))
+			} else {
+				dispatch(changeSeverity('error'))
+				dispatch(changeNotification(result))
+			}
+		}
+		event.target.value = ''
+	}
 
-    // const deleteUser = () => {
-	// 	if (window.confirm("Are you sure you want to completely delete your account?")) {
-	// 		if (window.confirm("Are you really really sure?")) {
-	// 			navigate('/deleteuser')
-	// 		}
-	// 	}
-	// }
+    const deleteUser = () => {
+		if (window.confirm("Are you sure you want to completely delete your account?")) {
+			if (window.confirm("Are you really really sure?")) {
+				navigate('/deleteuser')
+			}
+		}
+	}
 
     return (
         <Container maxWidth='md' sx={{ pt: 5, pb: 5 }} >
@@ -170,6 +171,29 @@ const Profile = () => {
                     {Object.keys(ProfileData).map((key, index) => {
                             return <ProfileInput key={index} text={key} input={ProfileData[key]} />
                         })}
+                </Grid>
+                <Grid>
+                    <Typography>
+                        {"Biography: "}
+                    </Typography>
+                    <Grid>
+                        <Typography>
+                            {profileData.biography}
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid >
+                    <Button variant='outlined' onClick={() => navigate('/settings')}> Edit profile</Button>
+                    <Button variant='outlined' onClick={() => navigate('/changepassword')}> Change password</Button>
+                    <Button>
+                        <label>Change profile picture</label>
+                        <input type="file" name="file" id="set_profilepic" accept="image/jpeg, image/png, image/jpg" onChange={setProfilePicture}></input>
+                    </Button>
+                    <Button>
+                        <label>Add new picture</label>
+                        <input type="file" name="file" id="image_upload" accept="image/jpeg, image/png, image/jpg" onChange={uploadImage}></input>
+                    </Button>
+                    <Button variant='contained' onClick={() => deleteUser}> Delete user </Button>
                 </Grid>
             </Paper>
         </Container>
