@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Avatar, Grid, Paper, Typography } from "@mui/material"
 import { Box, Container } from "@mui/system"
 import { useEffect, useState } from "react"
-import { AspectRatio } from 'react-aspect-ratio'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate} from 'react-router-dom'
 import { getProfileData } from '../../reducers/profileReducer'
@@ -11,6 +10,19 @@ import Onboarding from '../../pages/Profile/Onboarding'
 import profileService from "../../services/profileService"
 import { changeSeverity } from "../../reducers/severityReducer"
 import { changeNotification } from "../../reducers/notificationReducer"
+
+const ProfileInput = ({ text, input }) => {
+    return (
+        <Grid item xs={12} sm={6} sx={{ display: 'inline'}}>
+            <Typography sx={{ width: 170, display: 'inline-block', textAlign: 'left'}}>
+                {text}
+            </Typography>
+            <Typography sx={{ width: 'fit-content', display: 'inline', textAlign: 'left'}}>
+                {input}
+            </Typography>
+        </Grid>
+    )
+}
 
 const Profile = () => {
     // const [isLoading, setLoading] = useState(true)
@@ -37,24 +49,38 @@ const Profile = () => {
     // const profile_pic = profileData.profile_pic['picture_data']
     // const other_pictures = profileData.other_pictures
 
+
     // _______________________
     // DATA REQUESTED FROM BACKEND _______________________
     // _______________________
 
-    // const ProfileData = {
-	// 	'First name:': profileData.firstname,
-	// 	'Last name:': profileData.lastname,
-	// 	'Email address:': profileData.email,
-	// 	'Gender:': profileData.gender,
-	// 	'Age:': profileData.age,
-	// 	'Sexual preference:': profileData.sexual_pref,
-	// 	'Location:': profileData.user_location,
-		// 'GPS:': Object.values(profileData.ip_location).map((value, i) => ((i ? ', ' : '') + value)),
-		// 'Tags:': profileData.tags.map((tag, i) => ((i ? ', ' : '') + tag)),
-    // }
-    // _______________________
+    //Fake data to start building
+    const profileData = {}
     
+    profileData.firstname = 'Pierre'
+    profileData.lastname = 'Waters'
+    profileData.email = 'email'
+    profileData.gender = 'Male'
+    profileData.age = '37'
+    profileData.sexual_pref = 'Hetero'
+    profileData.user_location = 'Helsinki'
+    profileData.Username = 'pwaters'
+
+    const ProfileData = {
+		'First name:': profileData.firstname,
+		'Last name:': profileData.lastname,
+		'Email address:': profileData.email,
+		'Gender:': profileData.gender,
+		'Age:': profileData.age,
+		'Sexual preference:': profileData.sexual_pref,
+		'Location:': profileData.user_location,
+	// 	'GPS:': Object.values(profileData.ip_location).map((value, i) => ((i ? ', ' : '') + value)),
+	// 	'Tags:': profileData.tags.map((tag, i) => ((i ? ', ' : '') + tag)),
+    }
+    // _______________________
+
     // //replace with a hook as this code might be repeated in other parts?
+
     // const deleteImage = async (id) => {
 	// 	if (window.confirm("Are you sure you want to delete this picture?")) {
 	// 		await profileService.deletePicture(id)
@@ -63,6 +89,7 @@ const Profile = () => {
 	// }
 
     // //replace with a hook as this code is repeated from other parts?
+
     // const uploadImage = async (event) => {
 	// 	const image = event.target.files[0]
 	// 	if (image.size > 5242880) {
@@ -115,22 +142,34 @@ const Profile = () => {
 	// }
 
     return (
-        <Container>
-            <Paper>
-                <Grid>
+        <Container maxWidth='md' sx={{ pt: 5, pb: 5 }} >
+            <Paper elevation={10} sx={{ padding: 3 }}>
+                <Grid 
+                    sx={{
+                        display: 'flex',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        mb: 2,
+                    }}
+                >
+                    <Box sx={{ width: '200px', display: 'inline-block' }}>
+                        <Avatar 
+                            src='https://v3.mui.com/static/images/avatar/1.jpg' 
+                            sx={{ width: 156, height: 156 }}
+                        />
+                    </Box> 
                     <Box>
-                        <AspectRatio>
-                            <Avatar 
-                                src="/src/images/profilepic.jpeg"
-                                alt="profile"
-                            />
-                        </AspectRatio>
-                    </Box>
-                    <Box>
-                        <Typography>
-                            Username
+                        <Typography variant='h2'>
+                            {profileData.Username}
                         </Typography>
+                        <Typography variant='h5'>Fame rating - pending</Typography>
                     </Box>
+                </Grid>
+                <Grid container spacing={1} direction="row" sx={{mb:2}}>
+                    {Object.keys(ProfileData).map((key, index) => {
+                            return <ProfileInput key={index} text={key} input={ProfileData[key]} />
+                        })}
                 </Grid>
             </Paper>
         </Container>
