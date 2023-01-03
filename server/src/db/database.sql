@@ -15,4 +15,16 @@ CREATE TABLE IF NOT EXISTS users (
 	last_connection TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS user_settings (
+  running_id SERIAL NOT NULL PRIMARY KEY,
+  user_id INT NOT NULL,
+  gender VARCHAR(255) NOT NULL,
+  age INT NOT NULL,
+  sexual_pref VARCHAR(255) NOT NULL,
+  biography VARCHAR(65535) NOT NULL,
+  fame_rating INT NOT NULL DEFAULT 0,
+  user_location VARCHAR(255) NOT NULL,
+  IP_location POINT NOT NULL
+)
+
 -- (pending make columns not null )

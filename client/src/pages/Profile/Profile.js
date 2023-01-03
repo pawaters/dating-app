@@ -4,7 +4,7 @@ import { Box, Container } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate} from 'react-router-dom'
-import { getProfileData } from '../../reducers/profileReducer'
+import { getProfileData, setProfileData } from '../../reducers/profileReducer'
 import Loader from '../../components/Loader'
 import Onboarding from '../../pages/Profile/Onboarding'
 import profileService from "../../services/profileService"
@@ -25,26 +25,31 @@ const ProfileInput = ({ text, input }) => {
 }
 
 const Profile = () => {
-    // const [isLoading, setLoading] = useState(true)
+    const [isLoading, setLoading] = useState(true)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    // const profileData = useSelector(state => state.profile)
+    const profileData = useSelector(state => state.profile)
 
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         await dispatch(getProfileData())
-    //         setLoading(false)
-    //     }
-    //     getData()
-    // }, [dispatch])
+    useEffect(() => {
+        const getData = async () => {
+            dispatch(getProfileData())
+            setLoading(false)
+        }
+        getData()
+    }, [dispatch])
 
-    // // if (isLoading) {
-    // //     return <Loader  text= "Getting profile data ..."/>
-    // // }
+    console.log('profileData: ', profileData)
+    console.log('isLoading: ', isLoading)
 
-    // // if (!profileData.id) {
-    // //     return <Onboarding />
-    // // }
+    if (isLoading || profileData?.id === undefined) {
+        return <Loader  text= "Getting profile data ..."/>
+    }
+
+    // profileData is still undefined at this point!
+
+    if (!profileData.id) {
+        return <Onboarding />
+    }
 
     // const profile_pic = profileData.profile_pic['picture_data']
     // const other_pictures = profileData.other_pictures
@@ -55,17 +60,17 @@ const Profile = () => {
     // _______________________
 
     //Fake data to start building
-    const profileData = {}
+    // const profileData = {}
     
-    profileData.firstname = 'Pierre'
-    profileData.lastname = 'Waters'
-    profileData.email = 'email'
-    profileData.gender = 'Male'
-    profileData.age = '37'
-    profileData.sexual_pref = 'Hetero'
-    profileData.user_location = 'Helsinki'
-    profileData.Username = 'pwaters'
-    profileData.biography = 'super interesting bio'
+    // profileData.firstname = 'Pierre'
+    // profileData.lastname = 'Waters'
+    // profileData.email = 'email'
+    // profileData.gender = 'Male'
+    // profileData.age = '37'
+    // profileData.sexual_pref = 'Hetero'
+    // profileData.user_location = 'Helsinki'
+    // profileData.Username = 'pwaters'
+    // profileData.biography = 'super interesting bio'
 
     const ProfileData = {
 		'First name:': profileData.firstname,
@@ -75,7 +80,7 @@ const Profile = () => {
 		'Age:': profileData.age,
 		'Sexual preference:': profileData.sexual_pref,
 		'Location:': profileData.user_location,
-	// 	'GPS:': Object.values(profileData.ip_location).map((value, i) => ((i ? ', ' : '') + value)),
+		'GPS:': Object.values(profileData.ip_location).map((value, i) => ((i ? ', ' : '') + value)),
 	// 	'Tags:': profileData.tags.map((tag, i) => ((i ? ', ' : '') + tag)),
     }
     // _______________________

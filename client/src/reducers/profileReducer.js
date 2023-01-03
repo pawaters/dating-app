@@ -20,9 +20,12 @@ export const { setProfileData, resetProfileData} = profileSlice.actions
 export const getProfileData = () => {
     return async dispatch => {
         const profile = await profileService.getProfileData()
+        console.log('In profileReducer, profile is: ', profile)
         if (profile) {
             dispatch(setProfileData(profile))
+            console.log('Performed dispatch(setProfileData(profile)), I think and I hope.')
         } else {
+            console.log('Couldn\'t get profileData. Went to else.')
             dispatch(setProfileData({}))
         }
     }
