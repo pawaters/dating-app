@@ -35,7 +35,7 @@ module.exports = (app, pool) => {
             console.log('This one shows if (session.userid) is true in profile.js')
             try {
                 var sql = `SELECT * FROM users
-						LEFT JOIN user_settings
+						INNER JOIN user_settings
                         ON users.id = user_settings.user_id
 						WHERE users.id = $1`
                 var { rows } = await pool.query(sql, [session.userid])

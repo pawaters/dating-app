@@ -41,7 +41,7 @@ const Profile = () => {
     console.log('profileData: ', profileData)
     console.log('isLoading: ', isLoading)
 
-    if (isLoading || profileData?.id === undefined) {
+    if (isLoading) {
         return <Loader  text= "Getting profile data ..."/>
     }
 
@@ -61,7 +61,7 @@ const Profile = () => {
 
     //Fake data to start building
     // const profileData = {}
-    
+
     // profileData.firstname = 'Pierre'
     // profileData.lastname = 'Waters'
     // profileData.email = 'email'
