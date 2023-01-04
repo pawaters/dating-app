@@ -3,14 +3,14 @@
 
 const Logout = () => {
 
-    return (
-        <div>
-            <h1>
-            Logout
-                
-            </h1>
-        </div>
-    )
+    //frontend: 
+    // use reducer to empty user state, 
+    // navigate to home/login
+
+    // backend:
+    // express session
+    
+
 }
 
 export default Logout

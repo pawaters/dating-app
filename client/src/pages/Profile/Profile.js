@@ -38,13 +38,13 @@ const Profile = () => {
     //     getData()
     // }, [dispatch])
 
-    // // if (isLoading) {
-    // //     return <Loader  text= "Getting profile data ..."/>
-    // // }
+    // if (isLoading) {
+    //     return <Loader  text= "Getting profile data ..."/>
+    // }
 
-    // // if (!profileData.id) {
-    // //     return <Onboarding />
-    // // }
+    // if (!profileData.id) {
+    //     return <Onboarding />
+    // }
 
     // const profile_pic = profileData.profile_pic['picture_data']
     // const other_pictures = profileData.other_pictures
@@ -199,7 +199,6 @@ const Profile = () => {
         </Container>
         
     )
-
 }
 
 export default Profile
