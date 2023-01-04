@@ -160,6 +160,7 @@ const Profile = () => {
                     }}
                 >
                     <Box sx={{ width: '200px', display: 'inline-block' }}>
+                        {/* TODO: replace source with backend */}
                         <Avatar 
                             src='https://v3.mui.com/static/images/avatar/1.jpg' 
                             sx={{ width: 156, height: 156 }}
@@ -169,6 +170,7 @@ const Profile = () => {
                         <Typography variant='h2'>
                             {profileData.Username}
                         </Typography>
+                        {/* TODO: define process for fame rating calculation and storage */}
                         <Typography variant='h5'>Fame rating - pending</Typography>
                     </Box>
                 </Grid>
