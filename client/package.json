@@ -1,5 +1,6 @@
 {
   "name": "client",
+  "proxy": "http://host.docker.internal:3001",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -34,7 +35,6 @@
       "react-app/jest"
     ]
   },
-  "proxy": "http://host.docker.internal:3001",
   "browserslist": {
     "production": [
       ">0.2%",

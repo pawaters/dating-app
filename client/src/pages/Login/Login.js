@@ -8,8 +8,9 @@ import { changeNotification } from "../../reducers/notificationReducer"
 import { changeSeverity } from "../../reducers/severityReducer"
 import signUpService from "../../services/signUpService"
 import { setUser } from "../../reducers/userReducer"
-import { getUserLists } from "../../reducers/userListsReducer"
+import { getProfileData } from '../../reducers/profileReducer'
 
+import { getUserLists } from "../../reducers/userListsReducer"
 
 
 const Login = () => {
@@ -19,7 +20,7 @@ const Login = () => {
 
     const user = useSelector(state => state.user)
 
-    useEffect( () => {
+    useEffect(() => {
         if (user !== undefined && user !== '') {
             navigate('/profile')
         }
@@ -27,29 +28,30 @@ const Login = () => {
 
     const submitUser = async (event) => {
         event.preventDefault()
-    
+
         const signedUpUser = {
             username: event.target.username.value,
             password: event.target.password.value,
         }
-        console.log('user:', user,'empty space right before that?')
+        console.log('user:', user, 'empty space right before that?')
         console.log(signedUpUser)
 
         signUpService.logInUser(signedUpUser)
             .then(result => {
-                
+
                 if (result.userid) {
-                    const sessionUser = { name: result.username, id: result.userid}
+                    const sessionUser = { name: result.username, id: result.userid }
+                    dispatch(getProfileData())
                     dispatch(setUser(sessionUser))
-                    dispatch(getUserLists())
-                    //pending: getting notifications of user, 
+                    // dispatch(getUserLists())
+                    //pending: getting notifications of user,
                     // profile data
                     // being live for chat
 
                 } else {
                     dispatch(changeSeverity('error'))
                     dispatch(changeNotification(result))
-                    
+
                 }
             })
     }
@@ -59,25 +61,25 @@ const Login = () => {
     }
 
     return (
-        <Container 
-        sx={{ 
-            pt:5, 
-            pb: 5,
-            backgroundImage: `url("https://assets.materialup.com/uploads/cd7deaa7-e263-4c1b-98c9-132d248fc0d4/preview.png")`,
-            backgroundSize: 'cover',
-            width: 'auto',
-            height: 'auto',
-            minHeight: '80vh',
-        }}
+        <Container
+            sx={{
+                pt: 5,
+                pb: 5,
+                backgroundImage: `url("https://assets.materialup.com/uploads/cd7deaa7-e263-4c1b-98c9-132d248fc0d4/preview.png")`,
+                backgroundSize: 'cover',
+                width: 'auto',
+                height: 'auto',
+                minHeight: '80vh',
+            }}
         >
-            <Paper elevation={10} sx={{ padding: 3, width:'50%', margin: 'auto'}} >
+            <Paper elevation={10} sx={{ padding: 3, width: '50%', margin: 'auto' }} >
                 <Typography variant="h2"> Login </Typography>
                 <form onSubmit={submitUser}>
                     <TextField fullWidth margin='normal' name='username' label='Username' placeholder="Username" autoComplete="nickname" required> </TextField>
                     <TextField fullWidth margin='normal' type="password" name='password' label='Password' placeholder="Password" autoComplete="new-password" required> </TextField>
                     <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Submit </Button>
                 </form>
-                <Button onClick={navigateToReset} sx={{mt: 1}}> Forgot Password?</Button>
+                <Button onClick={navigateToReset} sx={{ mt: 1 }}> Forgot Password?</Button>
                 <Notification />
             </Paper>
         </Container>
