@@ -6,6 +6,8 @@ const setUpProfile = ProfileSettings => {
 	return request.then(response => response.data)
 }
 
+// ProfileSettings.
+
 const editUserSettings = ProfileSettings => {
 	const request = axios.post(`${baseUrl}/editsettings`, ProfileSettings)
 	return request.then(response => response.data)
