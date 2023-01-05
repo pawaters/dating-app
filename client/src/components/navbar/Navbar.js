@@ -12,8 +12,8 @@ import { useSelector } from 'react-redux'
 const NavBar = ({ socket }) => {
 	const [anchorElNav, setAnchorElNav] = useState(null)
 
-	// const user = useSelector(state => state.user)
-	const user = "user" 
+	const user = useSelector(state => state.user)
+	// const user = "user" 
 
 
 	let pages = {}

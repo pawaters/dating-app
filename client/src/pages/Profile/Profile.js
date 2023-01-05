@@ -30,9 +30,10 @@ const Profile = () => {
     const navigate = useNavigate()
     const profileData = useSelector(state => state.profile)
 
+    // The await is necessary af despite the three dots warning.
     useEffect(() => {
         const getData = async () => {
-            dispatch(getProfileData())
+            await dispatch(getProfileData())
             setLoading(false)
         }
         getData()
@@ -42,8 +43,10 @@ const Profile = () => {
     console.log('isLoading: ', isLoading)
 
     if (isLoading) {
-        return <Loader  text= "Getting profile data ..."/>
+        return <Loader text= "Getting profile data ..."/>
     }
+
+    console.log('profileData.id in Profile.js: ', profileData.id)
 
     // profileData is still undefined at this point!
 

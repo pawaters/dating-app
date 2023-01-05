@@ -23,9 +23,9 @@ export const getProfileData = () => {
         console.log('In profileReducer, profile is: ', profile)
         if (profile) {
             dispatch(setProfileData(profile))
-            console.log('Performed dispatch(setProfileData(profile)), I think and I hope.')
+            console.log('Performed dispatch(setProfileData(profile)) in profileReducer, I think and I hope.')
         } else {
-            console.log('Couldn\'t get profileData. Went to else.')
+            console.log('Couldn\'t get profileData. Went to else in profileReducer.')
             dispatch(setProfileData({}))
         }
     }

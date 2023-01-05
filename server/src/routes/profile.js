@@ -43,7 +43,7 @@ module.exports = (app, pool) => {
                 console.log('rows[0] after sql: ', rows[0])
                 // const { password: censored, ...profileData } = rows[0]
                 const profileData = rows[0]
-                console.log('profileData: ', profileData)
+                console.log('profileData in profile.js: ', profileData)
                 response.send(profileData)
             } catch (error) {
                 console.log('catching error from profile.js')

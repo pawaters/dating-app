@@ -29,7 +29,7 @@ const pool = new Pool({
 // TO DO: BETTER DEFINE BEHAVIOR IF NOT EXIST
 pool.on('connect', client => {
   client
-    .query('CREATE TABLE IF NOT EXISTS test2 (users_id2 SERIAL PRIMARY KEY, first_name VARCHAR(255) NOT NULL);') // This is created under certain conditions.
+    .query('CREATE TABLE IF NOT EXISTS test3 (users_id3 SERIAL PRIMARY KEY, first_name3 VARCHAR(255) NOT NULL);') // This is created under certain conditions.
     .catch(err => console.log(err))
 })
 
