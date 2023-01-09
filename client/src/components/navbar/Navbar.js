@@ -17,6 +17,7 @@ const NavBar = ({ socket }) => {
 
 
 	let pages = {}
+	console.log("user is: ", user)
 
 	if (user === '') {
 		pages = {
