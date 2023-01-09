@@ -1,9 +1,13 @@
 import React from "react"
 import "./style/App.css"
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import { ThemeProvider, createTheme, Container, responsiveFontSizes  } from "@mui/material"
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ThemeProvider, createTheme, Container, responsiveFontSizes } from "@mui/material"
 import { Provider } from "react-redux"
 import store from "./store/store"
+
+// Joonas's meddling
+import { useEffect } from 'react'
+import signUpService from './services/signUpService'
 
 //pages & components
 import Home from "./pages/Home.js"
@@ -27,7 +31,7 @@ import Chat from "./pages/Chat/Chat"
 import Logout from "./pages/Logout"
 import DeleteUser from "./pages/Profile/DeleteUser"
 import Footer from "./components/Footer"
-import { grey, pink} from "@mui/material/colors"
+import { grey, pink } from "@mui/material/colors"
 import { borderRadius } from "@mui/system"
 
 const font = "'Readex Pro', sans-serif";
@@ -35,7 +39,7 @@ const font = "'Readex Pro', sans-serif";
 const theme = createTheme({
     palette: {
         primary: {
-            main: pink[500], 
+            main: pink[500],
             // TO DO: GRADIENT TO IMPLEMENT
             // mainGradient: "linear-gradient(to right, tomato, cyan)"
         },
@@ -59,42 +63,47 @@ const theme = createTheme({
     }
 })
 
-
 function App() {
-   return (
-    <Provider store={store}>
-        <ThemeProvider theme={theme}>
-            <Container sx={{height: 'auto', width: 'auto' }}>
-                <BrowserRouter>
-                    {/* <RedirectPage /> */}
-                    <Navbar />
-                    <Routes>
-                        <Route path={"/"} element={<Home/>}/>
-                        <Route path={"/login"} element={<Login/>}/>
-                        <Route path={"/login/resetpassword"} element={<ResetPassword/>}/>
-                        <Route path={"/resetpassword/:user/:code"} element={<SetNewPassword/>}/>
-                        <Route path={"/signup"} element={<Signup/>}/>
-                        <Route path={"/settings"} element={<ProfileSettings/>}/>
-                        <Route path={"/changepassword"} element={<ChangePassword/>}/>
-                        <Route path={"/confirm/:user/:code"} element={<ConfirmMail/>}/>
-                        <Route path={"/browsing"} element={<Browsing/>}/>
-                        <Route path={"/onboarding"} element={<Onboarding/>}/>
-                        <Route path={"/profile"} element={<Profile/>}/>
-                        <Route path={"/profile/:id"} element={<UserProfile/>}/>
-                        <Route path={"/chat"} element={<Chat/>}/>
-                        <Route path={"/chat/:id"} element={<Chat/>}/>
-                        <Route path={"/swipe"} element={<Swipe/>}/>
-                        <Route path={"/logout"} element={<Logout/>}/>
-                        <Route path={"/deleteuser"} element={<DeleteUser/>}/>
-                        <Route path={"/initialtest"} element={<InitialTest/>}/>
-                        <Route path={"*"} element={<NoPage/>}/>
-                    </Routes>
-                </BrowserRouter>
-                <Footer />
-            </Container>
-        </ThemeProvider>
-    </Provider>
-   )
+
+    useEffect(() => {
+        signUpService.setupTables()
+        console.log('Tables created')
+    }, [])
+
+    return (
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+                <Container sx={{ height: 'auto', width: 'auto' }}>
+                    <BrowserRouter>
+                        {/* <RedirectPage /> */}
+                        <Navbar />
+                        <Routes>
+                            <Route path={"/"} element={<Home />} />
+                            <Route path={"/login"} element={<Login />} />
+                            <Route path={"/login/resetpassword"} element={<ResetPassword />} />
+                            <Route path={"/resetpassword/:user/:code"} element={<SetNewPassword />} />
+                            <Route path={"/signup"} element={<Signup />} />
+                            <Route path={"/settings"} element={<ProfileSettings />} />
+                            <Route path={"/changepassword"} element={<ChangePassword />} />
+                            <Route path={"/confirm/:user/:code"} element={<ConfirmMail />} />
+                            <Route path={"/browsing"} element={<Browsing />} />
+                            <Route path={"/onboarding"} element={<Onboarding />} />
+                            <Route path={"/profile"} element={<Profile />} />
+                            <Route path={"/profile/:id"} element={<UserProfile />} />
+                            <Route path={"/chat"} element={<Chat />} />
+                            <Route path={"/chat/:id"} element={<Chat />} />
+                            <Route path={"/swipe"} element={<Swipe />} />
+                            <Route path={"/logout"} element={<Logout />} />
+                            <Route path={"/deleteuser"} element={<DeleteUser />} />
+                            <Route path={"/initialtest"} element={<InitialTest />} />
+                            <Route path={"*"} element={<NoPage />} />
+                        </Routes>
+                    </BrowserRouter>
+                    <Footer />
+                </Container>
+            </ThemeProvider>
+        </Provider>
+    )
 }
 
 export default App 

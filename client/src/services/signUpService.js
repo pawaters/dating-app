@@ -8,6 +8,11 @@
 import axios from 'axios'
 const baseUrl = '/api'
 
+const setupTables = () => {
+	const request = axios.post(`${baseUrl}/tableSetup`)
+	return request.then(response => response.data)
+}
+
 const createUser = signedUpUser => {
 	const request = axios.post(`${baseUrl}/signup`, signedUpUser)
 	return request.then(response => response.data)
@@ -25,12 +30,12 @@ const logInUser = signedUpUser => {
 
 const getSessionUser = () => {
 	const request = axios.get(`${baseUrl}/login`)
-	return request.then(response => response.data) 
+	return request.then(response => response.data)
 }
 
 const logOutUser = () => {
 	const request = axios.get(`${baseUrl}/logout`)
-	return request.then(response => response.data) 
+	return request.then(response => response.data)
 }
 
 const resetPassword = resetInfo => {
@@ -43,6 +48,6 @@ const setNewPassword = passwords => {
 	return request.then(response => response.data)
 }
 
-const signUpService = { createUser, verifyUser, logInUser, logOutUser, getSessionUser, resetPassword, setNewPassword}
+const signUpService = { setupTables, createUser, verifyUser, logInUser, logOutUser, getSessionUser, resetPassword, setNewPassword }
 
 export default signUpService

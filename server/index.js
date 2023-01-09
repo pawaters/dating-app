@@ -26,16 +26,14 @@ const pool = new Pool({
   database: pgDatabase
 })
 
-// TO DO: BETTER DEFINE BEHAVIOR IF NOT EXIST
-pool.on('connect', client => {
-  client
-    .query('CREATE TABLE IF NOT EXISTS test5 (users_id3 SERIAL PRIMARY KEY, first_name3 VARCHAR(255) NOT NULL);') // This is created under certain conditions.
-    .catch(err => console.log(err))
-})
-
+// Tables are created upon opening the home page of the app now.
+// pool.on('connect', client => {
+  // client
+    // .query('CREATE TABLE IF NOT EXISTS test5 (users_id3 SERIAL PRIMARY KEY, first_name3 VARCHAR(255) NOT NULL);') // This is created under certain conditions.
+    // .catch(err => console.log(err))
+// })
 
 //ROUTES CRUD
-
 
 //GET ALL USERS
 app.get('/users', async (request, response) => {
@@ -115,6 +113,7 @@ app.delete('/users/:id', async (request, response) => {
 require('./src/routes/login.js')(app, pool, bcrypt);
 require('./src/routes/profile.js')(app, pool, bcrypt);
 require('./src/routes/signup.js')(app, pool, bcrypt);
+require('./src/routes/tableSetup.js')(app, pool);
 
 app.listen(config.PORT, () => {
   logger.info(` Server running on port ${config.PORT}`)
