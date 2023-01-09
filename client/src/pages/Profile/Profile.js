@@ -185,15 +185,13 @@ const Profile = () => {
                             return <ProfileInput key={index} text={key} input={ProfileData[key]} />
                         })}
                 </Grid>
-                <Grid sx={{mb:2}}>
+                <Grid sx={{mb:2}} wrap="wrap" >
                     <Typography>
                         {"Biography: "}
                     </Typography>
-                    <Grid>
-                        <Typography>
-                            {profileData.biography}
-                        </Typography>
-                    </Grid>
+                    <Typography style={{ wordWrap: "break-word" }}>
+                        {profileData.biography}
+                    </Typography>
                 </Grid>
                 <Stack direction="row" alignItems="flex-start"  divider={<Divider orientation="vertical" flexItem />} spacing={2} mb={2}>
                     <Button variant='outlined' onClick={() => navigate('/settings')}>Edit profile</Button>
