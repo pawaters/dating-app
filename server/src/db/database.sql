@@ -27,4 +27,10 @@ CREATE TABLE IF NOT EXISTS user_settings (
   IP_location POINT NOT NULL
 )
 
+CREATE TABLE IF NOT EXISTS tags (
+	tag_id SERIAL NOT NULL PRIMARY KEY,
+	tag_content VARCHAR(255) NOT NULL,
+	tagged_users INT[] DEFAULT array[]::INT[]
+);
+
 -- (pending make columns not null )
