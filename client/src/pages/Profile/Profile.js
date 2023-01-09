@@ -10,6 +10,8 @@ import Onboarding from '../../pages/Profile/Onboarding'
 import profileService from "../../services/profileService"
 import { changeSeverity } from "../../reducers/severityReducer"
 import { changeNotification } from "../../reducers/notificationReducer"
+import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
 
 const ProfileInput = ({ text, input }) => {
     return (
@@ -160,6 +162,7 @@ const Profile = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                         mb: 2,
+                        
                     }}
                 >
                     <Box sx={{ width: '200px', display: 'inline-block' }}>
@@ -182,7 +185,7 @@ const Profile = () => {
                             return <ProfileInput key={index} text={key} input={ProfileData[key]} />
                         })}
                 </Grid>
-                <Grid>
+                <Grid sx={{mb:2}}>
                     <Typography>
                         {"Biography: "}
                     </Typography>
@@ -192,19 +195,21 @@ const Profile = () => {
                         </Typography>
                     </Grid>
                 </Grid>
-                <Grid >
-                    <Button variant='outlined' onClick={() => navigate('/settings')}> Edit profile</Button>
-                    <Button variant='outlined' onClick={() => navigate('/changepassword')}> Change password</Button>
+                <Stack direction="row" alignItems="flex-start"  divider={<Divider orientation="vertical" flexItem />} spacing={2} mb={2}>
+                    <Button variant='outlined' onClick={() => navigate('/settings')}>Edit profile</Button>
+                    <Button variant='outlined' onClick={() => navigate('/changepassword')}>Change password</Button>
+                </Stack>
+                <Stack justifyContent="center" alignItems="flex-start" mb={2} spacing={2}>
                     <Button>
-                        <label>Change profile picture</label>
+                        <label>Change profile picture : </label>
                         <input type="file" name="file" id="set_profilepic" accept="image/jpeg, image/png, image/jpg" onChange={setProfilePicture}></input>
                     </Button>
                     <Button>
-                        <label>Add new picture</label>
+                        <label>Add new picture : </label>
                         <input type="file" name="file" id="image_upload" accept="image/jpeg, image/png, image/jpg" onChange={uploadImage}></input>
                     </Button>
                     <Button variant='contained' onClick={() => deleteUser}> Delete user </Button>
-                </Grid>
+                </Stack>
             </Paper>
         </Container>
         
