@@ -1,4 +1,4 @@
-CREATE DATABASE matcha;
+-- CREATE DATABASE matcha;
 
 CREATE TABLE test_users (
     users_id SERIAL PRIMARY KEY,

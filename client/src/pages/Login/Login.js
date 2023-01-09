@@ -72,12 +72,12 @@ const Login = () => {
                 minHeight: '80vh',
             }}
         >
-            <Paper elevation={10} sx={{ padding: 3, width: '50%', margin: 'auto' }} >
-                <Typography variant="h2"> Login </Typography>
-                <form onSubmit={submitUser}>
+            <Paper elevation={10} align='center' sx={{ padding: 3, width: '50%', margin: 'auto' }} >
+                <Typography variant="h2" align='center'> Login </Typography>
+                <form onSubmit={submitUser} align='center'>
                     <TextField fullWidth margin='normal' name='username' label='Username' placeholder="Username" autoComplete="nickname" required> </TextField>
                     <TextField fullWidth margin='normal' type="password" name='password' label='Password' placeholder="Password" autoComplete="new-password" required> </TextField>
-                    <Button type='submit' variant="contained" size="large" sx={{ mt: 2 }}> Submit </Button>
+                    <Button type='submit' variant="contained" size="large" sx={{ mt: 2}}> Submit </Button>
                 </form>
                 <Button onClick={navigateToReset} sx={{ mt: 1 }}> Forgot Password?</Button>
                 <Notification />

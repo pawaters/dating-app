@@ -15,15 +15,11 @@ html {
 }
 
 body {
-	text-align: center;
+	/* text-align: center; */
 }
 
 .content-wrap {
 	/* Height of the footer */
-}
-
-.App {
-	text-align: center;
 }
 
 /* ELEMENTS */

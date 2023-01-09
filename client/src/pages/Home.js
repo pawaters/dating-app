@@ -28,16 +28,17 @@ const Home = () => {
                 }}
             >
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight="70vh">
-                    <Box>
+                    <Box textAlign='center'>
                         <Typography 
                             variant='h1' 
                             color={'black'} 
                             fontWeight={'bold'} 
+                            aligh="center"
                             sx={{ pt:5, pb:5 }}
                         >
                             Swipe Right®
                         </Typography>
-                        <Button variant="contained" size="large" onClick={handleClick}>
+                        <Button variant="contained" size="large" onClick={handleClick} >
                             {authToken ? 'Signout' : 'Create Account'}
                         </Button>
                     </Box>
