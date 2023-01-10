@@ -59,24 +59,6 @@ const Profile = () => {
     // const profile_pic = profileData.profile_pic['picture_data']
     // const other_pictures = profileData.other_pictures
 
-
-    // _______________________
-    // DATA REQUESTED FROM BACKEND _______________________
-    // _______________________
-
-    //Fake data to start building
-    // const profileData = {}
-
-    // profileData.firstname = 'Pierre'
-    // profileData.lastname = 'Waters'
-    // profileData.email = 'email'
-    // profileData.gender = 'Male'
-    // profileData.age = '37'
-    // profileData.sexual_pref = 'Hetero'
-    // profileData.user_location = 'Helsinki'
-    // profileData.Username = 'pwaters'
-    // profileData.biography = 'super interesting bio'
-
     const ProfileData = {
 		'First name:': profileData.firstname,
 		'Last name:': profileData.lastname,
@@ -86,7 +68,7 @@ const Profile = () => {
 		'Sexual preference:': profileData.sexual_pref,
 		'Location:': profileData.user_location,
 		'GPS:': Object.values(profileData.ip_location).map((value, i) => ((i ? ', ' : '') + value)),
-	// 	'Tags:': profileData.tags.map((tag, i) => ((i ? ', ' : '') + tag)),
+		// 'Tags:': profileData.tags.map((tag, i) => ((i ? ', ' : '') + tag)),
     }
     // _______________________
 

@@ -11,6 +11,7 @@ import { getProfileData } from "../../reducers/profileReducer"
 import { changeSeverity } from "../../reducers/severityReducer"
 import profileService from "../../services/profileService"
 import LocationSearchIcon from "@mui/icons-material/LocationSearching"
+import { TagsInput } from "./TagsInput"
 
 
 const Onboarding = () => {
@@ -65,7 +66,7 @@ const Onboarding = () => {
     }, [])
 
     if (isLoading) {
-        return <Loader text="Finding your location..."/>
+        return <Loader text="Finding your location..." />
     }
 
 
@@ -129,6 +130,7 @@ const Onboarding = () => {
 
     const uploadImage = async (event) => {
         const image = event.target.files[0]
+        console.log('image sent from uploadImage', image)
         if (image.size > 5242880) {
             dispatch(changeSeverity('error'))
 			dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
@@ -150,7 +152,7 @@ const Onboarding = () => {
 
     const setProfilePicture = async (event) => {
         const image = event.target.files[0]
-        console.log('image', image)
+        console.log('image sent from setProfilePicture:', image)
         if (image.size > 5242880) {
             dispatch(changeSeverity('error'))
 			dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
@@ -232,6 +234,7 @@ const Onboarding = () => {
 						placeholder='Short description of you here...'
 						required
                     />
+                    <TagsInput />
                     <Box>
                         <Button>
                             <label> Set profile picture</label>
