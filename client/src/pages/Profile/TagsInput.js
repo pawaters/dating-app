@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import {
 	TextField, Autocomplete, Chip,
 } from '@mui/material'
-import Loader from '../Loader'
 import browsingService from '../../services/browsingService'
+import Loader from '../../components/Loader'
 
 export const TagsInput = ({ tags, setTags, formerTags }) => {
 	const [menuTags, setMenuTags] = useState([])
@@ -20,9 +20,9 @@ export const TagsInput = ({ tags, setTags, formerTags }) => {
 		getTags()
 	}, [])
 
-	if (isLoading) {
-		return <Loader text="Getting user tags..." />
-	}
+	// if (isLoading) {
+	// 	return <Loader  text="Getting user tags..." />
+	// }
 
 	const handleTagFilter = (value) => {
 		setTags(value)
