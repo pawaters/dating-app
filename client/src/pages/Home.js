@@ -11,8 +11,13 @@ const Home = () => {
     const navigate = useNavigate()
 
     const handleClick = () => {
-        navigate('/signup')
-    } 
+        if (authToken) {
+            navigate('/logout')
+        } else
+        {
+            navigate('/signup')
+        }
+    }       
 
     // after return, no logic, just the minimum, components
     return (
