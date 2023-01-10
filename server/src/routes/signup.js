@@ -1,6 +1,78 @@
-module.exports = function (app, pool, bcrypt) {
+module.exports = function (app, pool, bcrypt, transporter, crypto) {
     //CREATE A USER IN SIGNUP
     app.post('/api/signup', async (request, response) => {
+
+        // const validateSignupData = (body) => {
+
+        // }
+
+        const generateVerificationCode = async () => {
+            const retrieveUserId = async () => {
+                var sql = `SELECT id FROM users WHERE username = $1;`
+                const result = await pool.query(sql, [userName])
+                console.log('retrieved id is: ', result.rows[0]['id'])
+                return result.rows[0]['id']
+            }
+
+            // Generating a code and checking that there's no row with the same code in the table.
+            while (true) {
+                var code = crypto.randomBytes(20).toString('hex');
+                console.log('crypto result: ', code)
+                var sql = `SELECT * FROM verification_codes WHERE code = $1;`
+                const result = await pool.query(sql, [code])
+                console.log(result)
+                console.log(result.rows.length)
+                if (result < 1) {
+                    console.log('Result is smaller than 1')
+                } else {
+                    console.log('Result is big')
+                }
+                if (result.rows.length < 1) {
+                    console.log('No results found')
+                    break
+                } else {
+                    console.log('Found a result')
+                    continue
+                }
+            }
+
+            retrieveUserId()
+                .then((user_id) => {
+                    var sql = `INSERT INTO verification_codes (user_id, email, code) VALUES ($1, $2, $3);`
+                    pool.query(sql, [user_id, email, code])
+                }).catch(error => {
+                    console.log(error)
+                })
+
+            // const code = 'thisiscode1234'
+            return code
+        }
+
+        const sendVerificationCodeByEmail = (email, username, code) => {
+            // For testing
+            email = 'jamsa.joonas@gmail.com'
+
+            var mailOptions = {
+                // from: process.env.EMAIL_ADDRESS,
+                from: email,
+                to: email,
+                subject: 'Verify your email address for Matcha',
+                html: `<p>Click the link below to verify your account for Matcha</p>
+                    <a href="http://localhost:3000/confirm/${username}/${code}">Link</a>
+                    <p>Kind regards, Matcha team</p>`
+            };
+
+            console.log('Got this far')
+
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log('Hit a snag!! ',error);
+                } else {
+                    console.log('Email sent successfully: ' + info.response);
+                }
+            });
+            return true
+        }
 
         const userName = request.body.username
         const firstName = request.body.firstname
@@ -22,7 +94,18 @@ module.exports = function (app, pool, bcrypt) {
             }
         }
 
+        // if (validateSignupData(request.body) == -1) {
+        // response.json('error')
+        // }
+
         hashPasswordAndSave()
+            .then(() => generateVerificationCode())
+            .then((code) => sendVerificationCodeByEmail(email, userName, code))
+        // .then(() => {
+        // response.send(true)
+        // }).catch((error) => {
+        // response.send('Hitting error in the end: ', error)
+        // })
     })
 
     // VIEW USERS CREATED IN SIGNUP
