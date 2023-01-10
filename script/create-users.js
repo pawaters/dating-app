@@ -7,15 +7,15 @@ const tag_names = ["work", "dog", "music", "travel", "outdoors", "books",
 	"health", "science", "history", "politics", "religion", "philosophy",
 	"psychology", "education", "family", "friends", "cats"]
 
-//const Pool
-const Pool = require('pg').Pool
+// //const Pool
+// const Pool = require('pg').Pool
 
-const pool = new Pool({
-  user: pgUser,
-  password: pgPassword,
-  host: pgHost,
-  database: pgDatabase
-})
+// const pool = new Pool({
+//   user: pgUser,
+//   password: pgPassword,
+//   host: pgHost,
+//   database: pgDatabase
+// })
 
 const initTags = async () => {
 	for (let i = 0; i < tag_names.length; i++) {
