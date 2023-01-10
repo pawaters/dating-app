@@ -39,12 +39,13 @@ export const TagsInput = ({ tags, setTags, formerTags }) => {
 				defaultValue={formerTags}
 				inputValue={inputValue}
 				freeSolo
-                //mandatory prop 2/2
+
 				renderTags={(tags, getTagProps) =>
 					tags.map((tag, index) => (
 					  <Chip variant="outlined" label={tag} {...getTagProps({ index })} />
 					))
 				} 
+                //mandatory prop 2/2
 				renderInput={(params) => (
 					<TextField
 						{...params}
