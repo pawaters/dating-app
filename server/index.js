@@ -7,7 +7,8 @@ const crypto = require("crypto");
 const bcrypt = require('bcrypt')
 const config = require('./src/utils/config')
 const logger = require('./src/utils/logger')
-const { pgUser, pgPassword, pgDatabase, pgHost } = require('./src/utils/config')
+const { pgUser, pgPassword, pgDatabase, pgHost, EMAIL_ADDRESS, EMAIL_PASSWORD } = require('./src/utils/config')
+const { getMaxListeners } = require('process')
 
 // middleware
 app.use(cors())
@@ -30,18 +31,34 @@ const pool = new Pool({
 
 // Tables are created upon opening the home page of the app now. May need tweaking later. -JJ, Jan 9 2023
 // pool.on('connect', client => {
-  // client
-    // .query('CREATE TABLE IF NOT EXISTS test5 (users_id3 SERIAL PRIMARY KEY, first_name3 VARCHAR(255) NOT NULL);') // This is created under certain conditions.
-    // .catch(err => console.log(err))
+// client
+// .query('CREATE TABLE IF NOT EXISTS test5 (users_id3 SERIAL PRIMARY KEY, first_name3 VARCHAR(255) NOT NULL);') // This is created under certain conditions.
+// .catch(err => console.log(err))
 // })
 
 var transporter = nodemailer.createTransport({
-	service: 'gmail',
-	auth: {
-		user: process.env.EMAIL_ADDRESS,
-		pass: process.env.EMAIL_PASSWORD
-	}
-});
+  service: 'gmail',
+  auth: {
+    user: EMAIL_ADDRESS,
+    pass: EMAIL_PASSWORD
+  }
+})
+
+// // For testing
+// let mailDetails = {
+  // from: 'jamsa.joonas@gmail.com',
+  // to: 'jamsa.joonas@gmail.com',
+  // subject: 'Test mail',
+  // text: 'Node.js testing mail.'
+// }
+
+// transporter.sendMail(mailDetails, function(err, data) {
+  // if(err) {
+      // console.log('Error Occurs')
+  // } else {
+      // console.log('Email sent successfully')
+  // }
+// })
 
 //ROUTES CRUD
 

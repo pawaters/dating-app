@@ -1,4 +1,5 @@
 node_modules
 .DS_Store
 pgdata
+.env
 # .env - to be ignored when delivering final version 

@@ -14,19 +14,13 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
                 return result.rows[0]['id']
             }
 
-            // Generating a code and checking that there's no row with the same code in the table.
+            // Generating a code and checking for the very unlikely case that a similar code already exists in the table. 
             while (true) {
                 var code = crypto.randomBytes(20).toString('hex');
                 console.log('crypto result: ', code)
                 var sql = `SELECT * FROM verification_codes WHERE code = $1;`
                 const result = await pool.query(sql, [code])
-                console.log(result)
-                console.log(result.rows.length)
-                if (result < 1) {
-                    console.log('Result is smaller than 1')
-                } else {
-                    console.log('Result is big')
-                }
+                console.log('result.rows.length: ', result.rows.length)
                 if (result.rows.length < 1) {
                     console.log('No results found')
                     break
@@ -44,29 +38,23 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
                     console.log(error)
                 })
 
-            // const code = 'thisiscode1234'
             return code
         }
 
         const sendVerificationCodeByEmail = (email, username, code) => {
-            // For testing
-            email = 'jamsa.joonas@gmail.com'
 
             var mailOptions = {
-                // from: process.env.EMAIL_ADDRESS,
                 from: email,
-                to: email,
+                to: 'your email address here inside the apostrophes',
                 subject: 'Verify your email address for Matcha',
                 html: `<p>Click the link below to verify your account for Matcha</p>
                     <a href="http://localhost:3000/confirm/${username}/${code}">Link</a>
-                    <p>Kind regards, Matcha team</p>`
+                    <p>- Matcha team</p>`
             };
-
-            console.log('Got this far')
 
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
-                    console.log('Hit a snag!! ',error);
+                    console.log('Hit a snag!! ', error);
                 } else {
                     console.log('Email sent successfully: ' + info.response);
                 }
@@ -80,7 +68,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
         const email = request.body.email
         const password = request.body.password
 
-        const hashPasswordAndSave = async () => {
+        const hashPasswordAndSaveUser = async () => {
             const hash = await bcrypt.hash(password, 10);
             try {
                 const newUser = await pool.query(
@@ -98,7 +86,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
         // response.json('error')
         // }
 
-        hashPasswordAndSave()
+        hashPasswordAndSaveUser()
             .then(() => generateVerificationCode())
             .then((code) => sendVerificationCodeByEmail(email, userName, code))
         // .then(() => {

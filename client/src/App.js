@@ -66,6 +66,7 @@ const theme = createTheme({
 function App() {
 
     useEffect(() => {
+        // Will have to see if this works in hard reset conditions too.
         signUpService.setupTables()
         console.log('Tables created')
     }, [])
