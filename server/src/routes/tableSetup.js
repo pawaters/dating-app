@@ -8,7 +8,7 @@ module.exports = function (app, pool, bcrypt) {
                 try {
                     const res = await pool.query(query)
                     if (res) {
-                        console.log(`Table creation query for the table ${tableName} has run without errors!`)
+                        console.log(`Table creation query for the table ${tableName} has run without errors.`)
                         // console.log('res here: ', res)
                         // console.log('query here: ', query)
                     }
@@ -58,6 +58,15 @@ module.exports = function (app, pool, bcrypt) {
                     tagged_users INT[] DEFAULT array[]::INT[]
                 );
                 `, 'tags'),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS verification_codes (
+                    running_id SERIAL NOT NULL PRIMARY KEY,
+                    user_id INT NOT NULL,
+                    email VARCHAR(255) NOT NULL,
+                    code VARCHAR(255) NOT NULL
+                );
+                `, 'verification_codes'),
             ])
         }
 

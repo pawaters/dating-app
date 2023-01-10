@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const session = require('express-session')
+const nodemailer = require('nodemailer')
+const crypto = require("crypto");
 const bcrypt = require('bcrypt')
 const config = require('./src/utils/config')
 const logger = require('./src/utils/logger')
@@ -26,12 +28,20 @@ const pool = new Pool({
   database: pgDatabase
 })
 
-// Tables are created upon opening the home page of the app now.
+// Tables are created upon opening the home page of the app now. May need tweaking later. -JJ, Jan 9 2023
 // pool.on('connect', client => {
   // client
     // .query('CREATE TABLE IF NOT EXISTS test5 (users_id3 SERIAL PRIMARY KEY, first_name3 VARCHAR(255) NOT NULL);') // This is created under certain conditions.
     // .catch(err => console.log(err))
 // })
+
+var transporter = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+		user: process.env.EMAIL_ADDRESS,
+		pass: process.env.EMAIL_PASSWORD
+	}
+});
 
 //ROUTES CRUD
 
@@ -112,7 +122,7 @@ app.delete('/users/:id', async (request, response) => {
 
 require('./src/routes/login.js')(app, pool, bcrypt);
 require('./src/routes/profile.js')(app, pool, bcrypt);
-require('./src/routes/signup.js')(app, pool, bcrypt);
+require('./src/routes/signup.js')(app, pool, bcrypt, transporter, crypto);
 require('./src/routes/tableSetup.js')(app, pool);
 
 app.listen(config.PORT, () => {
