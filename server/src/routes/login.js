@@ -21,6 +21,9 @@ module.exports = function (app, pool, bcrypt) {
             if (user.rows.length === 0) {
                 console.log('User not found')
                 throw ('Wrong username/password combination.')
+            } else if (user.rows[0]['verified'] === false) {
+                console.log('Account not yet verified')
+                throw ('Please check your email and verify your account before trying to log in!')
             } else {
                 const comparePasswords = await bcrypt.compare(password, user.rows[0]['password'])
                 if (comparePasswords) {
