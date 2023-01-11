@@ -128,6 +128,7 @@ const Profile = () => {
 		console.log("USER ID:", id)
         if (window.confirm("Are you sure you want to completely delete your account?")) {
 			if (window.confirm("Are you sure? There is no way to retrieve your data afterwards.")) {
+                //add some check of state.
                 profileService.deleteUser(id).then(result => {
                     if (result === true) {
                         dispatch(changeSeverity('success'))
