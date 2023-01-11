@@ -16,7 +16,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
 
             // Generating a code and checking for the very unlikely case that a similar code already exists in the table. 
             while (true) {
-                var code = crypto.randomBytes(20).toString('hex');
+                var code = crypto.randomBytes(20).toString('hex')
                 console.log('crypto result: ', code)
                 var sql = `SELECT * FROM verification_codes WHERE code = $1;`
                 const result = await pool.query(sql, [code])
@@ -54,9 +54,9 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
 
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
-                    console.log('Hit a snag!! ', error);
+                    console.log('Hit a snag!! ', error)
                 } else {
-                    console.log('Email sent successfully: ' + info.response);
+                    console.log('Email sent successfully: ' + info.response)
                 }
             });
             return true
@@ -69,7 +69,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
         const password = request.body.password
 
         const hashPasswordAndSaveUser = async () => {
-            const hash = await bcrypt.hash(password, 10);
+            const hash = await bcrypt.hash(password, 10)
             try {
                 const newUser = await pool.query(
                     'INSERT INTO users (username, firstname, lastname, email, password) VALUES($1, $2, $3, $4, $5) RETURNING *',
@@ -108,7 +108,6 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
                 WHERE verification_codes.code = $1;`
             const result = await pool.query(sql, [code])
             if (result.rows.length < 1) {
-                console.log('Failed in checkCodeValidity')
                 throw ('Invalid code!')
             } else {
                 return (true)
@@ -127,7 +126,6 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
                 setAccountVerified()
                 response.send(true)
             }).catch((error) => {
-                console.log('Sent error!')
                 response.send(error)
             })
     })

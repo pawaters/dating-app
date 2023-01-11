@@ -5,7 +5,7 @@ const getUsers = searchCriteria => {
     const request = axios.post(`${baseUrl}/sorted`, searchCriteria)
     return request.then(response => response.data)
 }
-
+    
 const likeUser = user_id => {
     const request = axios.post(`${baseUrl}/likeuser/${user_id}`)
     return request.then(response => response.data)
