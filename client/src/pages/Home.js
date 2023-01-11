@@ -1,15 +1,16 @@
 import { Box, Paper, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
+import { useSelector } from 'react-redux'
 import { useNavigate} from 'react-router-dom'
 
 const Home = () => {
 
     // all the variables needed before the return
-    const authToken = false
+    const user = useSelector(state => state.user)
     const navigate = useNavigate()
 
     const handleClick = () => {
-        if (authToken) {
+        if (user !== undefined && user !== '') {
             navigate('/logout')
         } else
         {
@@ -44,7 +45,7 @@ const Home = () => {
                             Swipe Right®
                         </Typography>
                         <Button variant="contained" size="large" onClick={handleClick} >
-                            {authToken ? 'Signout' : 'Create Account'}
+                            {(user !== undefined && user !== '') ? 'Signout' : 'Create Account'}
                         </Button>
                     </Box>
                 </Box>
