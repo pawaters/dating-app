@@ -58,7 +58,7 @@ const Profile = () => {
 
     // const profile_pic = profileData.profile_pic['picture_data']
     // const other_pictures = profileData.other_pictures
-
+    const userid = profileData.id;
     const ProfileData = {
 		'First name:': profileData.firstname,
 		'Last name:': profileData.lastname,
@@ -127,10 +127,20 @@ const Profile = () => {
 		event.target.value = ''
 	}
 
-    const deleteUser = () => {
-		if (window.confirm("Are you sure you want to completely delete your account?")) {
+    const deleteUser = (id) => {
+		console.log("USER ID:", id)
+        if (window.confirm("Are you sure you want to completely delete your account?")) {
 			if (window.confirm("Are you sure? There is no way to retrieve your data afterwards.")) {
-				navigate('/deleteuser')
+                profileService.deleteUser(id).then(result => {
+                    if (result === true) {
+                        dispatch(changeSeverity('success'))
+                        dispatch(changeNotification("User has been successfully deleted. Next!"))
+                        navigate('/logout')
+                    } else {
+                        dispatch(changeSeverity('error'))
+                        dispatch(changeNotification(result))
+                    }
+                })
 			}
 		}
 	}
@@ -189,7 +199,7 @@ const Profile = () => {
                         <label>Add new picture : </label>
                         <input type="file" name="file" id="image_upload" accept="image/jpeg, image/png, image/jpg" onChange={uploadImage}></input>
                     </Button>
-                    <Button variant='contained' onClick={() => deleteUser(profileData.id)}> Delete user </Button>
+                    <Button variant='contained' onClick={() => deleteUser(userid)}> Delete user </Button>
                 </Stack>
             </Paper>
         </Container>

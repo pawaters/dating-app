@@ -29,7 +29,6 @@ import ConfirmMail from "./pages/Login/ConfirmMail"
 import UserProfile from "./pages/Profile/UserProfile"
 import Chat from "./pages/Chat/Chat"
 import Logout from "./pages/Logout"
-import DeleteUser from "./pages/Profile/DeleteUser"
 import Footer from "./components/Footer"
 import { grey, pink } from "@mui/material/colors"
 import { borderRadius } from "@mui/system"
@@ -95,7 +94,6 @@ function App() {
                             <Route path={"/chat/:id"} element={<Chat />} />
                             <Route path={"/swipe"} element={<Swipe />} />
                             <Route path={"/logout"} element={<Logout />} />
-                            <Route path={"/deleteuser"} element={<DeleteUser />} />
                             <Route path={"/initialtest"} element={<InitialTest />} />
                             <Route path={"*"} element={<NoPage />} />
                         </Routes>
