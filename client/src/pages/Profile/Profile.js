@@ -189,7 +189,7 @@ const Profile = () => {
                         <label>Add new picture : </label>
                         <input type="file" name="file" id="image_upload" accept="image/jpeg, image/png, image/jpg" onChange={uploadImage}></input>
                     </Button>
-                    <Button variant='contained' onClick={() => deleteUser}> Delete user </Button>
+                    <Button variant='contained' onClick={() => deleteUser(profileData.id)}> Delete user </Button>
                 </Stack>
             </Paper>
         </Container>
