@@ -22,7 +22,7 @@ const ConfirmMail = () => {
 			dispatch(changeNotification("User verified successfully! Please log in."))
 		} else {
 			dispatch(changeSeverity('error'))
-			dispatch(changeNotification("User verifying failed."))
+			dispatch(changeNotification("User verification failed."))
 		}
 		navigate('/login')
 	})

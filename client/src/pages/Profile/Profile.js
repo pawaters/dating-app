@@ -68,6 +68,7 @@ const Profile = () => {
 		'Sexual preference:': profileData.sexual_pref,
 		'Location:': profileData.user_location,
 		'GPS:': Object.values(profileData.ip_location).map((value, i) => ((i ? ', ' : '') + value)),
+        'Tags:': 'Tags pending connecting to backend'
 		// 'Tags:': profileData.tags.map((tag, i) => ((i ? ', ' : '') + tag)),
     }
     // _______________________
@@ -128,7 +129,7 @@ const Profile = () => {
 
     const deleteUser = () => {
 		if (window.confirm("Are you sure you want to completely delete your account?")) {
-			if (window.confirm("Are you really really sure?")) {
+			if (window.confirm("Are you sure? There is no way to retrieve your data afterwards.")) {
 				navigate('/deleteuser')
 			}
 		}

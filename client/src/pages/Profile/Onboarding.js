@@ -23,7 +23,7 @@ const Onboarding = () => {
 	const [sexual_pref, setSexpref] = useState('bisexual')
     const [GPSlocation, setGPSLocation] = useState()
     const [isLoading, setLoading] = useState(true)
-    // const [tags, setTagstate] = useState([])
+    const [tags, setTagState] = useState([])
 
     const getLocationData = async() => {
         var locationData = await axios.get('https://ipapi.co/json')
@@ -80,10 +80,11 @@ const Onboarding = () => {
             gps: [event.target.gps_lat.value, event.target.gps_lon.value],
             sexual_pref: event.target.sexual_pref.value,
             biography: event.target.biography.value,
-            // tags: tags -> to do after profile settings page
+            tags: tags
         }
         console.log('Profile:', ProfileSettings)
         console.log('FormData:', FormData)
+        console.log('TAAAAGS:', tags,"<- is this empty before?")
 
         profileService.setUpProfile(ProfileSettings)
             .then(result => {
@@ -234,7 +235,7 @@ const Onboarding = () => {
 						placeholder='Short description of you here...'
 						required
                     />
-                    <TagsInput />
+                    <TagsInput tags={tags} setTags={setTagState} formerTags={[]} />
                     <Box>
                         <Button>
                             <label> Set profile picture</label>

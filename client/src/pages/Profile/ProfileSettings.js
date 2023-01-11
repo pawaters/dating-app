@@ -15,6 +15,7 @@ import { Tooltip, IconButton } from '@mui/material'
 import LocationSearchingIcon from '@mui/icons-material/LocationSearching'
 import { Container } from '@mui/system'
 import Notification from "../../components/notification/Notification";
+import { TagsInput } from "./TagsInput";
 
 const ProfileSettings = () => {
     const [isLoading, setLoading] = useState(true)
@@ -22,7 +23,7 @@ const ProfileSettings = () => {
     const navigate = useNavigate()
     const profileData = useSelector(state => state.profile)
     const [settings, changeSettings] = useState({})
-    // const [tags, setTagState] = useState([])
+    const [tags, setTagState] = useState([])
 
     useEffect(() => {
         dispatch(resetNotification())
@@ -39,9 +40,9 @@ const ProfileSettings = () => {
 				gps_lon: Number(profileData.ip_location.y),
 				sexual_pref: profileData.sexual_pref,
 				biography: profileData.biography,
-				// tags: profileData.tags
+				tags: profileData.tags
             })
-            // setTagState
+            setTagState(profileData.tags)
         }
         setLoading(false)
     }, [dispatch, profileData])
@@ -147,10 +148,10 @@ const ProfileSettings = () => {
 		changeSettings({ ...settings, biography: event.target.value })
 	}
 
-	// const setTags = (tagData) => {
-	// 	setTagState(tagData)
-	// 	changeSettings({ ...settings, tags: tagData })
-	// }
+	const setTags = (tagData) => {
+		setTagState(tagData)
+		changeSettings({ ...settings, tags: tagData })
+	}
 
 
     return (
@@ -218,8 +219,8 @@ const ProfileSettings = () => {
 						onChange={handleBiography}
 						placeholder='Short description of you here...'
 					/>
-					{/* <FormLabel id='tags' >Tags</FormLabel>
-					<TagsInput tags={tags} setTags={setTags} formerTags={profileData.tags}/> */}
+					<FormLabel id='tags' >Tags</FormLabel>
+					<TagsInput tags={tags} setTags={setTags} formerTags={profileData.tags}/>
 					<Button type="submit" variant='contained'
 						size='large' sx={{ mt: 1 }}>
 						Save settings
