@@ -22,10 +22,10 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
                 const result = await pool.query(sql, [code])
                 console.log('result.rows.length: ', result.rows.length)
                 if (result.rows.length < 1) {
-                    console.log('No results found')
+                    console.log('No duplicates found. Good!')
                     break
                 } else {
-                    console.log('Found a result')
+                    console.log('Found a duplicate. Bad, or you have these log messages the wrong way round by accident!')
                     continue
                 }
             }
@@ -96,6 +96,43 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
         // })
     })
 
+    app.post('/api/signup/verifyuser', async (request, response) => {
+        const username = request.body.username
+        const code = request.body.code
+
+        const checkCodeValidity = async () => {
+            var sql =
+                `SELECT * FROM verification_codes
+                INNER JOIN users
+                ON verification_codes.user_id = users.id
+                WHERE verification_codes.code = $1;`
+            const result = await pool.query(sql, [code])
+            if (result.rows.length < 1) {
+                console.log('Failed in checkCodeValidity')
+                throw ('Invalid code!')
+            } else {
+                return (true)
+            }
+        }
+
+        const setAccountVerified = () => {
+            var sql = `UPDATE users SET verified = 'true' WHERE username = $1`
+            pool.query(sql, [username])
+            var sql = `DELETE FROM verification_codes WHERE code = $1`
+            pool.query(sql, [code])
+        }
+
+        checkCodeValidity()
+            .then(() => {
+                setAccountVerified()
+                response.send(true)
+            }).catch((error) => {
+                console.log('Sent error!')
+                response.send(error)
+            })
+    })
+
+    // These ones below are for testing.
     // VIEW USERS CREATED IN SIGNUP
     app.get('/signup/users', async (request, response) => {
 

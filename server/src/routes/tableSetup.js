@@ -33,7 +33,8 @@ module.exports = function (app, pool, bcrypt) {
                 lastname VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
-                last_connection TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                last_connection TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                verified BOOLEAN NOT NULL DEFAULT false
                 );
                 `, 'users'),
 
