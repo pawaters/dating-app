@@ -45,7 +45,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
 
             var mailOptions = {
                 from: process.env.EMAIL_ADDRESS,
-                to: 'your email address here inside the apostrophes',
+                to: email,
                 subject: 'Verify your email address for Matcha',
                 html: `<p>Click the link below to verify your account for Matcha</p>
                     <a href="http://localhost:3000/confirm/${username}/${code}">Link</a>
