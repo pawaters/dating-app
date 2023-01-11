@@ -67,7 +67,7 @@ function App() {
     useEffect(() => {
         // Will have to see if this works in hard reset conditions too.
         signUpService.setupTables()
-        console.log('Tables created')
+        console.log('Ran through the table creation process.')
     }, [])
 
     return (
