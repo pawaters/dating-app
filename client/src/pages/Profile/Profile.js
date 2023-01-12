@@ -46,6 +46,7 @@ const Profile = () => {
     }
 
     console.log('profileData.id in Profile.js: ', profileData.id)
+    console.log('profileData.total_pts: ', profileData.total_pts)
 
     // profileData is still undefined at this point!
 
@@ -167,8 +168,7 @@ const Profile = () => {
                         <Typography variant='h2'>
                             {profileData.Username}
                         </Typography>
-                        {/* TODO: define process for fame rating calculation and storage */}
-                        <Typography variant='h5'>Fame rating - pending</Typography>
+                        <Typography variant='h5'>Fame rating: {profileData.fame_rating} </Typography>
                     </Box>
                 </Grid>
                 <Grid container spacing={1} direction="row" sx={{mb:2}}>
