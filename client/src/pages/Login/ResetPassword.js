@@ -1,10 +1,11 @@
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+// import { useParams } from 'react-router-dom'
 import signUpService from '../../services/signUpService'
 import { Container, Paper, TextField, Typography, Button } from '@mui/material'
-import { changeNotification } from '../../reducers/notificationReducer'
-import { changeSeverity } from '../../reducers/severityReducer'
+// import { changeNotification } from '../../reducers/notificationReducer'
+// import { changeSeverity } from '../../reducers/severityReducer'
 import Notification from '../../components/notification/Notification'
 import { MailForward } from 'tabler-icons-react';
 
