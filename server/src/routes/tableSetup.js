@@ -2,6 +2,26 @@ module.exports = function (app, pool, bcrypt) {
 
     app.post('/api/tableSetup', async (request, response) => {
 
+        const populateTags = async () => {
+
+            var sql = `SELECT * FROM tags;`
+            const result = await pool.query(sql)
+            if (result.rows.length < 1) {
+                sql = `
+                INSERT INTO tags (tag_content) VALUES ('Dogs');
+                INSERT INTO tags (tag_content) VALUES ('Cinema');
+                INSERT INTO tags (tag_content) VALUES ('Sports');
+                INSERT INTO tags (tag_content) VALUES ('Video games');
+                INSERT INTO tags (tag_content) VALUES ('Baking');
+                `
+                await pool.query(sql)
+            } else {
+                console.log('\'tags\' is already populated. Proceeding without adding rows.')
+                return
+            }
+
+        }
+
         const createTables = async () => {
             // With params: const execute = async (query, params = []) => {
             const execute = async (query, tableName) => {
@@ -72,5 +92,11 @@ module.exports = function (app, pool, bcrypt) {
         }
 
         createTables()
+        .then(() => {
+            populateTags()
+        }).catch ((error) => {
+            console.log('Something went wrong in tableSetup.js: ', error)
+        })
+        
     })
 }

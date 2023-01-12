@@ -41,9 +41,6 @@ const Profile = () => {
         getData()
     }, [dispatch])
 
-    console.log('profileData: ', profileData)
-    console.log('isLoading: ', isLoading)
-
     if (isLoading) {
         return <Loader text= "Getting profile data ..."/>
     }
