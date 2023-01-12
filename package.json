@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "dotenv": "^16.0.3",
-    "psql": "^0.0.1"
+    "psql": "^0.0.1",
+    "tabler-icons-react": "^1.56.0"
   },
   "devDependencies": {
     "eslint": "^8.29.0",
