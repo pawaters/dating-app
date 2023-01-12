@@ -63,8 +63,8 @@ const deletePicture = PictureId => {
 	return request.then(response => response.data)
 }
 
-const deleteUser = id => {
-	const request = axios.delete(`${baseUrl}/deleteuser/${id}`)
+const deleteUser = () => {
+	const request = axios.delete(`${baseUrl}/deleteuser`)
 	return request.then(response => response.data)
 }
 
