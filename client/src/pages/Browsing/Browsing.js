@@ -11,6 +11,51 @@ import { resetNotification } from '../../reducers/notificationReducer'
 import { changeNotification } from '../../reducers/notificationReducer'
 import { changeSeverity } from '../../reducers/severityReducer'
 
+const filterUsers = (users, filters, profileData) => {
+	var filteredUsers = users
+
+	if (filters.nameFilter)
+		filteredUsers = users.filter(user => user.username.toLowerCase().includes(filters.nameFilter.toLowerCase()))
+
+	if (filters.locationFilter) {
+		filteredUsers = filteredUsers.filter(user =>
+			user.user_location.toLowerCase().includes(filters.locationFilter.toLowerCase()))
+	}
+
+	if (filters.tagFilter) {
+		filteredUsers = filteredUsers.filter(user => {
+			return filters.tagFilter.every(tag => {
+				return tag.tagged_users.includes(user.id)
+			})
+		})
+	}
+
+	const filterSex = () => {
+		switch (true) {
+			case (profileData.gender === 'male' && profileData.sexual_pref === 'male'):
+				return filteredUsers.filter(user => user.gender === 'male' && (user.sexual_pref === 'male' || user.sexual_pref === 'bisexual'))
+			case (profileData.gender === 'male' && profileData.sexual_pref === 'female'):
+				return filteredUsers.filter(user => user.gender === 'female' && (user.sexual_pref === 'male' || user.sexual_pref === 'bisexual'))
+			case (profileData.gender === 'male' && profileData.sexual_pref === 'bisexual'):
+				return filteredUsers.filter(user => user.sexual_pref === 'male' || user.sexual_pref === 'bisexual')
+			case (profileData.gender === 'female' && profileData.sexual_pref === 'male'):
+				return filteredUsers.filter(user => user.gender === 'male' && (user.sexual_pref === 'female' || user.sexual_pref === 'bisexual'))
+			case (profileData.gender === 'female' && profileData.sexual_pref === 'female'):
+				return filteredUsers.filter(user => user.gender === 'female' && (user.sexual_pref === 'female' || user.sexual_pref === 'bisexual'))
+			case (profileData.gender === 'female' && profileData.sexual_pref === 'bisexual'):
+				return filteredUsers.filter(user => user.sexual_pref === 'female' || user.sexual_pref === 'bisexual')
+			case (profileData.gender === 'other' && profileData.sexual_pref === 'male'):
+				return filteredUsers.filter(user => user.gender === 'male' && user.sexual_pref === 'bisexual')
+			case (profileData.gender === 'other' && profileData.sexual_pref === 'female'):
+				return filteredUsers.filter(user => user.gender === 'female' && user.sexual_pref === 'bisexual')
+			case (profileData.gender === 'other' && profileData.sexual_pref === 'bisexual'):
+				return filteredUsers.filter(user => user.sexual_pref === 'bisexual')
+			default:
+				return filteredUsers
+		}
+	}
+	return filterSex()
+}
 
 const Browsing = () => {
     return (
