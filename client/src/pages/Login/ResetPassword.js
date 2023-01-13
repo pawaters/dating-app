@@ -92,7 +92,7 @@ const ResetPasswordForm = () => {
 					Reset Password
 				</Typography>
 				<Typography align='center'>
-					Please enter either your username or e-mail address to reset your password.
+					Please enter your e-mail address to reset your password.
 				</Typography>
 				<form onSubmit={sendPasswordMail}>
 					<TextField fullWidth margin='normal' name='reset' size="30"
