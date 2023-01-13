@@ -10,6 +10,7 @@ import { getUserLists } from '../../reducers/userListsReducer'
 import { resetNotification } from '../../reducers/notificationReducer'
 import { changeNotification } from '../../reducers/notificationReducer'
 import { changeSeverity } from '../../reducers/severityReducer'
+import Loader from '../../components/Loader'
 
 const filterUsers = (users, filters, profileData) => {
 	var filteredUsers = users
@@ -57,7 +58,75 @@ const filterUsers = (users, filters, profileData) => {
 	return filterSex()
 }
 
+const sortUsers = (filteredUsers, displaySettings) => {
+	const sorting = displaySettings.sorting
+	const sort_order = displaySettings.sort_order
+
+	switch (true) {
+		case (sorting === 'age' && sort_order === 'asc'):
+			return filteredUsers.sort((a, b) => (a.age > b.age ? 1 : -1))
+		case (sorting === 'age' && sort_order === 'desc'):
+			return filteredUsers.sort((a, b) => (a.age > b.age ? -1 : 1))
+		case (sorting === 'distance' && sort_order === 'asc'):
+			return filteredUsers.sort((a, b) => (a.distance > b.distance ? 1 : -1))
+		case (sorting === 'distance' && sort_order === 'desc'):
+			return filteredUsers.sort((a, b) => (a.distance > b.distance ? -1 : 1))
+		case (sorting === 'fame_rating' && sort_order === 'asc'):
+			return filteredUsers.sort((a, b) => (a.fame_rating > b.fame_rating ? 1 : -1))
+		case (sorting === 'fame_rating' && sort_order === 'desc'):
+			return filteredUsers.sort((a, b) => (a.fame_rating > b.fame_rating ? -1 : 1))
+		case (sorting === 'common_tags' && sort_order === 'asc'):
+			return filteredUsers.sort((a, b) => (a.common_tags > b.common_tags ? 1 : -1))
+		case (sorting === 'common_tags' && sort_order === 'desc'):
+			return filteredUsers.sort((a, b) => (a.common_tags > b.common_tags ? -1 : 1))
+		default:
+			return filteredUsers
+	}
+}
+
 const Browsing = () => {
+
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+
+	const matches = useMediaQuery("(max-width:1000px)") //depending on true / false, we will display in diff direction
+	const [isLoading, setLoading] = useState(true)
+	const [users, setUsers] = useState([])
+	const [nameFilter, setNameFilter] = useState()
+	const [locationFilter, setLocationFilter] = useState()
+	const [tagFilter, setTagFilter] = useState([])
+
+	const profileData = useSelector(state => state.profile)
+	const browsingCriteria = useSelector(state => state.browsingCriteria)
+	const displaySettings = useSelector(state => state.displaySettings)
+
+	useEffect(() => {
+		dispatch(resetNotification())
+		const getUsers = async () => {
+			const allUsers = await browsingService.getUsers(browsingCriteria)
+			if (allUsers && allUsers !== "Fetching users failed") {
+				setUsers(allUsers)
+				setLoading(false);
+			} else {
+				dispatch(changeSeverity('error'))
+				dispatch(changeNotification('Fetching users failed'))
+				navigate('/profile')
+			}
+			await dispatch(getUserLists())
+		}
+		getUsers()
+	}, [dispatch, navigate, browsingCriteria])
+
+	if (isLoading || !profileData) {
+		return <Loader text="Getting users data.."/>
+	}
+
+	let filters = { nameFilter: nameFilter, locationFilter: locationFilter, tagFilter: tagFilter }
+	let filteredUsers = filterUsers(users, filters, profileData)
+	let sortedUsers = sortUsers(filteredUsers, displaySettings)
+	let pageUsers = sortedUsers.slice(displaySettings.offset, displaySettings.offset + displaySettings.amount)
+
+
     return (
 		<Container maxWidth='xl' sx={{ pt: 5, pb: 5 }}>
 			{/* <RecommendedUsers users={filteredUsers} browsingCriteria={browsingCriteria} /> */}
