@@ -13,10 +13,12 @@ module.exports = function (app, pool, bcrypt) {
                 INSERT INTO tags (tag_content) VALUES ('Sports');
                 INSERT INTO tags (tag_content) VALUES ('Video games');
                 INSERT INTO tags (tag_content) VALUES ('Baking');
+                INSERT INTO tags (tag_content) VALUES ('Long walks on the beach');
                 `
                 await pool.query(sql)
+                console.log('Table \'tags\' was empty. The table was now populated.')
             } else {
-                console.log('\'tags\' is already populated. Proceeding without adding rows.')
+                console.log('Table \'tags\' is already populated. Proceeding without adding rows.')
                 return
             }
 

@@ -48,11 +48,12 @@ const Profile = () => {
     console.log('profileData.id in Profile.js: ', profileData.id)
     console.log('profileData.total_pts: ', profileData.total_pts)
 
-    // profileData is still undefined at this point!
-
     if (!profileData.id) {
+        console.log('Tried to go to Onboarding')
         return <Onboarding />
     }
+
+    console.log('Got here!')
 
     // const profile_pic = profileData.profile_pic['picture_data']
     // const other_pictures = profileData.other_pictures
@@ -66,8 +67,8 @@ const Profile = () => {
 		'Sexual preference:': profileData.sexual_pref,
 		'Location:': profileData.user_location,
 		'GPS:': Object.values(profileData.ip_location).map((value, i) => ((i ? ', ' : '') + value)),
-        'Tags:': 'Tags pending connecting to backend'
-		// 'Tags:': profileData.tags.map((tag, i) => ((i ? ', ' : '') + tag)),
+        // 'Tags:': 'Tags pending connecting to backend'
+		'Tags:': profileData.tags.map((tag, i) => ((i ? ', ' : '') + tag)),
     }
     // _______________________
 
