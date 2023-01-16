@@ -5,13 +5,17 @@ import {
 	FormControlLabel, Radio
 } from '@mui/material'
 import browsingService from '../../services/browsingService'
+import Loader from '../../components/Loader' 
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserLists } from '../../reducers/userListsReducer'
 import { resetNotification } from '../../reducers/notificationReducer'
+import NotificationSnackbar from '../../components/NotificationSnackbar'
+import PaginationRow from './Pagination'
+import SortAndFilterOptions from './SortAndFilterOptions'
+import UserPreviews from './UserPreviews'
+import RecommendedPreviews from './RecommendedPreviews'
 import { changeNotification } from '../../reducers/notificationReducer'
 import { changeSeverity } from '../../reducers/severityReducer'
-import Loader from '../../components/Loader'
-import RecommendedPreviews from './RecommendedPreviews'
 
 const filterUsers = (users, filters, profileData) => {
 	var filteredUsers = users
@@ -152,11 +156,10 @@ export const RecommendedUsers = ({ users, browsingCriteria }) => {
 }
 
 const Browsing = () => {
-
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 
-	const matches = useMediaQuery("(max-width:1000px)") //depending on true / false, we will display in diff direction
+	const matches = useMediaQuery("(max-width:1000px)")
 	const [isLoading, setLoading] = useState(true)
 	const [users, setUsers] = useState([])
 	const [nameFilter, setNameFilter] = useState()
@@ -185,7 +188,7 @@ const Browsing = () => {
 	}, [dispatch, navigate, browsingCriteria])
 
 	if (isLoading || !profileData) {
-		return <Loader text="Getting users data.."/>
+		return <Loader text="Getting users data.." />
 	}
 
 	let filters = { nameFilter: nameFilter, locationFilter: locationFilter, tagFilter: tagFilter }
@@ -193,32 +196,35 @@ const Browsing = () => {
 	let sortedUsers = sortUsers(filteredUsers, displaySettings)
 	let pageUsers = sortedUsers.slice(displaySettings.offset, displaySettings.offset + displaySettings.amount)
 
+	const paperStyles = {
+		padding: '15px',
+		marginBottom: '10px',
+	}
 
-    return (
+	return (
 		<Container maxWidth='xl' sx={{ pt: 5, pb: 5 }}>
-			{/* <RecommendedUsers users={filteredUsers} browsingCriteria={browsingCriteria} /> */}
-			{/* <NotificationSnackbar /> */}
-			<Grid container columnSpacing={2} >
-            {/* direction={matches ? 'column' : 'row'} */}
+			<RecommendedUsers users={filteredUsers} browsingCriteria={browsingCriteria} />
+			<NotificationSnackbar />
+			<Grid container columnSpacing={2} direction={matches ? 'column' : 'row'}>
 				<Grid item xs={4}>
-					<Paper>
+					<Paper style={paperStyles}>
 						<Typography variant='h5' component='h1' sx={{ mb: 2 }}>
 							Advanced Search
 						</Typography>
-						{/* <PaginationRow filteredUsers={filteredUsers} /> */}
-						{/* <SortAndFilterOptions
+						<PaginationRow filteredUsers={filteredUsers} />
+						<SortAndFilterOptions
 							setLocationFilter={setLocationFilter}
 							setNameFilter={setNameFilter}
 							setTagFilter={setTagFilter}
 							browsingCriteria={browsingCriteria}
-							setUsers={setUsers} /> */}
+							setUsers={setUsers} />
 					</Paper>
 				</Grid>
 				<Grid item xs={8}>
-					{/* <UserPreviews
+					<UserPreviews
 						pageUsers={pageUsers}
 						browsingCriteria={browsingCriteria}
-					/> */}
+					/>
 				</Grid>
 			</Grid>
 		</Container>
