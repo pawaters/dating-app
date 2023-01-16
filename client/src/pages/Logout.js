@@ -19,7 +19,8 @@ const Logout = () => {
     useEffect(() => {
         signUpService.logOutUser()
         dispatch(setUser(''))
-        console.log()
+        dispatch(changeSeverity('success'))
+        dispatch(changeNotification('Logged out successfully!'))
         navigate('/login')
     }, [navigate])
 }

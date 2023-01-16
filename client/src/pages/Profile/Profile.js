@@ -53,8 +53,6 @@ const Profile = () => {
         return <Onboarding />
     }
 
-    console.log('Got here!')
-
     // const profile_pic = profileData.profile_pic['picture_data']
     // const other_pictures = profileData.other_pictures
     const userid = profileData.id;
