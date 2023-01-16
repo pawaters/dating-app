@@ -19,8 +19,6 @@ import FemaleIcon from '@mui/icons-material/Female'
 import WcIcon from '@mui/icons-material/Wc'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import TodayIcon from '@mui/icons-material/Today';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faGenderless } from '@fortawesome/free-solid-svg-icons'
 
 const NoResults = () => {
 	return (
