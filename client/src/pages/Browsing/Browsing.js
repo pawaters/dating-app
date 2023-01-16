@@ -84,6 +84,72 @@ const sortUsers = (filteredUsers, displaySettings) => {
 	}
 }
 
+export const RecommendedUsers = ({ users, browsingCriteria }) => {
+	const [sorting, setSorting] = useState('recommended')
+	const [sortOrder, setSortOrder] = useState('asc')
+	const profileData = useSelector(state => state.profile)
+
+	let filters = { nameFilter: null, locationFilter: null, tagFilter: null }
+	const filteredUsers = filterUsers(users, filters, profileData)
+	const nearUsers = filteredUsers.filter(user => user.distance < 1000)
+	const commonTagUsers = nearUsers.filter(user => user.common_tags > 0)
+
+	let sortedUsers
+	if (sorting === 'recommended') {
+		sortedUsers = commonTagUsers.sort((a, b) => {
+			let aValue = a.distance / Math.pow(a.common_tags, 2)
+			let bValue = b.distance / Math.pow(b.common_tags, 2)
+			return (aValue > bValue ? 1 : -1)
+		})
+	} else {
+		let recommendedDisplay = {sorting: sorting, sort_order: sortOrder}
+		sortedUsers = sortUsers(commonTagUsers, recommendedDisplay)
+	}
+
+	const handleSorting = (event) => {
+		setSorting(event.target.value)
+	}
+
+	const handleSortOrder = async (event) => {
+		setSortOrder(event.target.value)
+	}
+
+	return (
+		<>
+			<Paper sx={{ mb: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+				<Typography align='center' sx={{ m: 1, fontWeight: 700, fontSize: 20 }}>Recommended Users for You</Typography>
+				<Paper sx={{ mb: 2, display: 'flex', justifyContent: 'center', elevation: 0 }}>
+				<FormControl>
+					<FormLabel id='sorted_by'>Sorted by:</FormLabel>
+					<RadioGroup row aria-labelledby='sorted_by' name='sorted_by' value={sorting} onChange={handleSorting}>
+						<FormControlLabel value='recommended' control={<Radio />} label='Recommended' />
+						<FormControlLabel value='distance' control={<Radio />} label='Distance' />
+						<FormControlLabel value='age' control={<Radio />} label='Age' />
+						<FormControlLabel value='fame_rating' control={<Radio />} label='Fame Rating' />
+						<FormControlLabel value='common_tags' control={<Radio />} label='Common tags' />
+					</RadioGroup>
+				</FormControl>
+				<Box>
+					<FormControl>
+						<FormLabel id='asc_desc'>Sort order:</FormLabel>
+						<RadioGroup row aria-labelledby='asc_desc' name='asc_desc' value={sortOrder} onChange={handleSortOrder}>
+							<FormControlLabel value='asc' control={<Radio />} label='Ascending' />
+							<FormControlLabel value='desc' control={<Radio />} label='Descending' />
+						</RadioGroup>
+					</FormControl>
+				</Box>
+			</Paper>
+				<Container sx={{ display: 'flex', justifyContent: 'left', overflowX: 'auto' }}>
+					{/* <RecommendedPreviews
+						users={sortedUsers}
+						browsingCriteria={browsingCriteria}
+					/> */}
+				</Container>
+			</Paper>
+		</>
+	)
+}
+
 const Browsing = () => {
 
 	const dispatch = useDispatch()
