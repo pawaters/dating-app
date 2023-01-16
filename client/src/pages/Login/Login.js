@@ -11,6 +11,7 @@ import { setUser } from "../../reducers/userReducer"
 import { getProfileData } from '../../reducers/profileReducer'
 
 import { getUserLists } from "../../reducers/userListsReducer"
+import { getUserNotifications } from "../../reducers/userNotificationsReducer"
 
 
 const Login = () => {
@@ -41,9 +42,11 @@ const Login = () => {
 
                 if (result.userid) {
                     const sessionUser = { name: result.username, id: result.userid }
-                    dispatch(getProfileData())
                     dispatch(setUser(sessionUser))
-                    // dispatch(getUserLists())
+                    dispatch(getUserLists())
+                    dispatch(getUserNotifications())
+                    dispatch(getProfileData())
+                    dispatch(changeNotification(""))
                     //pending: getting notifications of user,
                     // profile data
                     // being live for chat
