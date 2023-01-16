@@ -19,8 +19,6 @@ import FemaleIcon from '@mui/icons-material/Female'
 import WcIcon from '@mui/icons-material/Wc'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import TodayIcon from '@mui/icons-material/Today';
-import { FontAwesomeIcon } from '@fortawesome/fontawesome-free'
-import { faGenderless } from '@fortawesome/fontawesome-free'
 
 const NoResults = () => {
 	return (
@@ -84,21 +82,15 @@ const RecommendedPreviews = ({ users, browsingCriteria }) => {
 					color: '#89CFF0',
 					filter: 'drop-shadow(0 2px 1px rgb(31, 73, 102))'
 				}} />
-			} else if (user.gender === 'female') {
+			} else {
 				gender = <FemaleIcon sx={{
 					ml: 1,
 					fontSize: '200%',
 					color: '#FF7779',
 					filter: 'drop-shadow(0 2px 1px rgb(184, 84, 86))'
 				}} />
-			} else {
-				gender = <FontAwesomeIcon icon={faGenderless} style={{
-					fontSize: '200%',
-					marginLeft: '15px',
-					color: '#d859ff',
-					filter: 'drop-shadow(0 2px 1px rgb(125, 52, 148))'
-				}} />
 			}
+			
 			if (!user.id) {
 				return (<div key="emptyusers"></div>)
 			} else

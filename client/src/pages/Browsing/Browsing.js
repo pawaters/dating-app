@@ -11,6 +11,7 @@ import { resetNotification } from '../../reducers/notificationReducer'
 import { changeNotification } from '../../reducers/notificationReducer'
 import { changeSeverity } from '../../reducers/severityReducer'
 import Loader from '../../components/Loader'
+import RecommendedPreviews from './RecommendedPreviews'
 
 const filterUsers = (users, filters, profileData) => {
 	var filteredUsers = users
@@ -140,10 +141,10 @@ export const RecommendedUsers = ({ users, browsingCriteria }) => {
 				</Box>
 			</Paper>
 				<Container sx={{ display: 'flex', justifyContent: 'left', overflowX: 'auto' }}>
-					{/* <RecommendedPreviews
+					<RecommendedPreviews
 						users={sortedUsers}
 						browsingCriteria={browsingCriteria}
-					/> */}
+					/>
 				</Container>
 			</Paper>
 		</>
