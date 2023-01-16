@@ -13,36 +13,43 @@ module.exports = (app, pool) => {
         // Validation for above values needs to be implemented here.
 
         try {
-            await pool.query(
-                `INSERT INTO user_settings (user_id, gender, age, user_location, sexual_pref, biography, ip_location)
-                VALUES ($1, $2, $3, $4, $5, $6, point($7,$8))`,
-                [session.userid, gender, age, location, sexual_pref, biography, gps[0], gps[1]])
-
             // We are removing the user from all the tags they didn't pick as their tags. This is useful in profile settings, but is this necessary in Onboarding?
             var sql = `UPDATE tags SET tagged_users = array_remove(tagged_users, $1)
                     WHERE (array[LOWER($2)] @> array[LOWER(tag_content)]::TEXT[]) IS NOT TRUE
                     RETURNING *;`
-            await pool.query(sql, [session.userid, users_chosen_tags])
+            const removed = await pool.query(sql, [session.userid, users_chosen_tags])
+            console.log('removed.rows: ', removed.rows)
+            console.log('users_chosen_tags: ', users_chosen_tags)
 
             // We will go through all of the tags that the user chose and see if they already exist in the table 'tags.'
-            users_chosen_tags.map(async (tag_name) => {
-                sql = `SELECT * FROM tags WHERE
-                    LOWER(tag_content) = LOWER($1)`
+            await users_chosen_tags.forEach(async (tag_name) => {
+                sql = `SELECT * FROM tags
+                WHERE LOWER(tag_content) = LOWER($1)`
                 const tagAlreadyExistsCheck = await pool.query(sql, [tag_name])
 
                 // If the tag doesn't exist i.e. it's a completely new tag, we insert it as a new row into the 'tags' table.
                 if (tagAlreadyExistsCheck.rows.length < 1) {
                     sql = `INSERT INTO tags (tag_content, tagged_users)
-                        VALUES ($1, $2);`
-                    await pool.query(tag_name, session.userid)
+                        VALUES (LOWER($1), array[$2]::INT[]);`
+                    await pool.query(sql, [tag_name, session.userid])
+                    console.log('User created a new tag!: ', tag_name)
                 } else {
                     // If the tag is an existing tag, we insert the user_id into the tagged_users for the tag.
+                    // We check again that the tag exists and that the user is not already in that tag.
                     sql = `UPDATE tags SET tagged_users = array_append(tagged_users, $1)
                         WHERE LOWER(tag_content) = LOWER($2)
                         AND (tagged_users @> array[$1]::INT[]) IS NOT TRUE;`
                     await pool.query(sql, [session.userid, tag_name])
+                    console.log('User chose an existing tag: ', tag_name)
                 }
             })
+
+            // We do the below last, because we want profileData.id to be false/undefined
+            // until all the SQL above has run.
+            await pool.query(
+                `INSERT INTO user_settings (user_id, gender, age, user_location, sexual_pref, biography, ip_location)
+                VALUES ($1, $2, $3, $4, $5, $6, point($7,$8))`,
+                [session.userid, gender, age, location, sexual_pref, biography, gps[0], gps[1]])
             response.send(true)
         } catch (error) {
             response.send('An error has occurred in Onboarding: ', error)
@@ -59,21 +66,24 @@ module.exports = (app, pool) => {
         if (session.userid) {
             console.log('This one shows if (session.userid) is true in profile.js')
             try {
-                var sql = `SELECT * FROM users
+                var sql = `SELECT id, username, firstname, lastname, email,
+                        last_connection, verified, running_id, user_id,
+                        gender, age, sexual_pref, biography, fame_rating, user_location, ip_location
+                        FROM users
 						INNER JOIN user_settings
                         ON users.id = user_settings.user_id
 						WHERE users.id = $1`
                 var result = await pool.query(sql, [session.userid])
                 console.log('rows: ', result.rows)
                 // Or SELECT [all but password] from users...
-                console.log('rows[0] after sql: ', result.rows[0])
-                const { password: censored, ...profileData } = result.rows[0]
+                // console.log('rows[0] after sql: ', result.rows[0])
+                const profileData = result.rows[0]
                 // const profileData = rows[0]
                 sql = `SELECT * FROM tags
                         WHERE tagged_users @> array[$1]::INT[]
 						ORDER BY tag_id`
-				var tags_of_user = await pool.query(sql, [session.userid])
-				profileData.tags = tags_of_user.rows.map(tag => tag.tag_content)
+                var tags_of_user = await pool.query(sql, [session.userid])
+                profileData.tags = tags_of_user.rows.map(tag => tag.tag_content)
 
                 console.log('profileData in profile.js: ', profileData)
                 response.send(profileData)

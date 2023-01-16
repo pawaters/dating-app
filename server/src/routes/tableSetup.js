@@ -16,7 +16,7 @@ module.exports = function (app, pool, bcrypt) {
                 INSERT INTO tags (tag_content) VALUES ('Long walks on the beach');
                 `
                 await pool.query(sql)
-                console.log('Table \'tags\' was empty. The table was now populated.')
+                console.log('Table \'tags\' was empty. The table is now populated.')
             } else {
                 console.log('Table \'tags\' is already populated. Proceeding without adding rows.')
                 return

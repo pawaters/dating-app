@@ -9,29 +9,26 @@ module.exports = function (app, pool, bcrypt) {
 
         const verifyLoginAttempt = async () => {
             // To ponder: do we actually need to join users with user_settings because at this point we just need created accounts?
-            const user = await pool.query(
+            const userInfo = await pool.query(
                 `SELECT * FROM users
                 LEFT JOIN user_settings
                 ON users.id = user_settings.user_id
                 WHERE username = $1`,
                 [userName]
             )
-            console.log('User data here to the right: ', user)
-            console.log('User.rows[0] data here to the right: ', user.rows[0])
-            if (user.rows.length === 0) {
+            if (userInfo.rows.length === 0) {
                 console.log('User not found')
                 throw ('Wrong username/password combination.')
-            } else if (user.rows[0]['verified'] === false) {
+            } else if (userInfo.rows[0]['verified'] === false) {
                 console.log('Account not yet verified')
                 throw ('Please check your email and verify your account before trying to log in!')
             } else {
-                const comparePasswords = await bcrypt.compare(password, user.rows[0]['password'])
+                const comparePasswords = await bcrypt.compare(password, userInfo.rows[0]['password'])
                 if (comparePasswords) {
                     console.log('Auth success!')
                     var session = request.session
-                    session.userid = user.rows[0]['id']
-                    session.username = user.rows[0]['username']
-                    console.log('session after defining userid and username: ', session)
+                    session.userid = userInfo.rows[0]['id']
+                    session.username = userInfo.rows[0]['username']
                     return session
                 } else {
                     console.log('Auth fail!')
