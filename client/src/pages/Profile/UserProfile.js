@@ -11,10 +11,10 @@ import browsingService from '../../services/browsingService'
 import { getUserLists } from '../../reducers/userListsReducer'
 import Notification from "../../components/notification/Notification"
 import Loader from "../../components/Loader"
-// import PathNotExists from './PathNotExists'
 import { changeSeverity } from "../../reducers/severityReducer"
 import { changeNotification } from "../../reducers/notificationReducer"
 import UserAvatar from './UserAvatar'
+import PathNotExists from '../PathNotExists'
 
 const themelike = createTheme({
 	palette: {
