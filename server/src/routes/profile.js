@@ -1,4 +1,4 @@
-module.exports = (app, pool) => {
+module.exports = (app, pool, upload, fs, path) => {
     app.post('/api/profile/setup', async (request, response) => {
         var session = request.session
 
@@ -78,7 +78,6 @@ module.exports = (app, pool) => {
                         ON users.id = user_settings.user_id
 						WHERE users.id = $1`
             var result = await pool.query(sql, [session.userid])
-            console.log('rows: ', result.rows)
             // Or SELECT [all but password] from users...
             // console.log('rows[0] after sql: ', result.rows[0])
             const profileData = result.rows[0]
@@ -165,6 +164,85 @@ module.exports = (app, pool) => {
         } catch (error) {
             console.error(error)
             response.send('Something went wrong when trying to update user\'s settings.')
+        }
+    })
+
+    app.post('/api/profile/setprofilepic', upload.single('file'), async (request, response) => {
+        const session = request.session
+        const picture = 'http://localhost:3000/images/' + request.file.filename
+        if (!session.userid) {
+            response.send('Error in app.post(\'/api/profile/setprofilepic\'. User was not signed in.')
+        }
+        if (request.file.size > 5242880) {
+            response.send("The maximum size for uploaded images is 5 megabytes.")
+        }
+        try {
+            var sql = `SELECT * FROM user_images
+                    WHERE user_id = $1
+                    AND profile_pic = $2;`
+            const profilePic = await pool.query(sql, [session.userid, true])
+            // We check for an existing profile picture.
+            if (profilePic.rows.length === 0) {
+                sql = `INSERT INTO user_images (user_id, image_data, profile_pic)
+                        VALUES ($1, $2, $3);`
+                await pool.query(sql, [session.userid, picture, true])
+                console.log('session.userid: ', session.userid)
+                // fame rate update goes here.
+            } else {
+                let oldImageData = profilePic.rows[0]['image_data']
+                // path.resolve gets the absolute path of '../images'
+                const oldImage = path.resolve(__dirname, '../images') + oldImageData.replace('http://localhost:3000/images', '');
+                // fs.existsSync checks if the image already exists, so if there is already an image with same name
+                // in the /images folder
+                console.log('Did the first part of else.')
+                if (fs.existsSync(oldImage)) {
+                    console.log('Went to fs.existSync')
+                    // If it is, we remove it with fs.unlink
+                    fs.unlink(oldImage, (error) => {
+                        console.log('called fs.unlink on: ', oldImage)
+                        if (error) {
+                            console.error('fs.unlink failed: ', error);
+                            return;
+                        }
+                    })
+                }
+                // We set the profile picture
+                sql = `UPDATE user_images SET image_data = $1
+                        WHERE user_id = $2
+                        AND profile_pic = $3`
+                await pool.query(sql, [picture, session.userid, true])
+            }
+            response.send(true)
+        } catch (error) {
+            console.error(error)
+            response.send("Something went wrong when trying to upload the image.")
+        }
+    })
+
+    app.post('/api/profile/imageupload', upload.single('file'), async (request, response) => {
+        const session = request.session
+        const picture = 'http://localhost:3000/images/' + request.file.filename
+        if (!session.userid) {
+            response.send('Error in app.post(\'/api/profile/imageupload\'. User was not signed in.')
+        }
+        if (request.file.size > 5242880) {
+            response.send("The maximum size for uploaded images is 5 megabytes.")
+        }
+        try {
+            var sql = `SELECT * FROM user_images
+                    WHERE user_id = $1;`
+            const number_of_images = await pool.query(sql, [session.userid])
+            if (number_of_images.rows.length < 5) {
+                sql = `INSERT INTO user_images (user_id, image_data, profile_pic)
+                        VALUES ($1, $2, $3);`
+                await pool.query(sql, [session.userid, picture, false])
+                response.send(true)
+            } else {
+                response.send('Your profile can have a maximum of five (5) pictures. Delete a picture to make room for more.')
+            }
+        } catch (error) {
+            console.error(error)
+            response.send("Something went wrong when trying to upload the image.")
         }
     })
 }

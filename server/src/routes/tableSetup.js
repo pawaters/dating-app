@@ -90,6 +90,15 @@ module.exports = function (app, pool, bcrypt) {
                     code VARCHAR(255) NOT NULL
                 );
                 `, 'verification_codes'),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS user_images (
+                    image_id SERIAL NOT NULL PRIMARY KEY,
+                    user_id INT NOT NULL,
+                    image_data TEXT NOT NULL,
+                    profile_pic BOOLEAN NOT NULL DEFAULT false
+                );
+                `, 'user_images'),
             ])
         }
 

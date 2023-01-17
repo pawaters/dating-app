@@ -7,6 +7,9 @@ const crypto = require("crypto");
 const bcrypt = require('bcrypt')
 const config = require('./src/utils/config')
 const logger = require('./src/utils/logger')
+const multer = require('multer')
+const path = require('path')
+const fs = require('fs')
 const { pgUser, pgPassword, pgDatabase, pgHost, EMAIL_ADDRESS, EMAIL_PASSWORD } = require('./src/utils/config')
 const { getMaxListeners } = require('process')
 
@@ -43,6 +46,19 @@ var transporter = nodemailer.createTransport({
     pass: EMAIL_PASSWORD
   }
 })
+
+// Think about adding fieldname to naming if necessary.
+const storage = multer.diskStorage({
+  destination: (request, file, callbackFunction) => {
+    callbackFunction(null, './images')
+  },
+  filename: (request, file, callbackFunction) => {
+    console.log('file: ', file)
+    callbackFunction(null, Date.now() + path.extname(file.originalname))
+  } 
+})
+
+const upload = multer({ storage: storage })
 
 // // For testing
 // let mailDetails = {
@@ -138,7 +154,7 @@ app.delete('/users/:id', async (request, response) => {
 })
 
 require('./src/routes/login.js')(app, pool, bcrypt);
-require('./src/routes/profile.js')(app, pool, bcrypt);
+require('./src/routes/profile.js')(app, pool, upload, fs, path);
 require('./src/routes/signup.js')(app, pool, bcrypt, transporter, crypto);
 require('./src/routes/tableSetup.js')(app, pool);
 require('./src/routes/browsing.js')(app, pool);
