@@ -21,8 +21,7 @@ import Swipe from "./pages/Swipe"
 import InitialTest from "./components/InitialTest"
 import Navbar from "./components/navbar/Navbar"
 import Login from "./pages/Login/Login"
-import ResetPassword from "./pages/Login/ResetPassword"
-import SetNewPassword from "./pages/Login/SetNewPassword"
+import ResetPassword, { SetNewPassword } from "./pages/Login/ResetPassword"
 import ProfileSettings from "./pages/Profile/ProfileSettings"
 import ChangePassword from "./pages/Profile/ChangePassword"
 import ConfirmMail from "./pages/Login/ConfirmMail"
@@ -94,7 +93,6 @@ function App() {
                             <Route path={"/chat/:id"} element={<Chat />} />
                             <Route path={"/swipe"} element={<Swipe />} />
                             <Route path={"/logout"} element={<Logout />} />
-                            <Route path={"/initialtest"} element={<InitialTest />} />
                             <Route path={"*"} element={<NoPage />} />
                         </Routes>
                     </BrowserRouter>
