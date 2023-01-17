@@ -62,6 +62,7 @@ const UserPreviews = ({ pageUsers, browsingCriteria }) => {
 	return (
 		pageUsers.map(user => {
 			var button, gender
+			//return connected used
 			if (userLists.connected.includes(user.id)) {
 				button = <>
 					<Button onClick={() => { unlikeUser(user.id) }}>Unlike user</Button>
