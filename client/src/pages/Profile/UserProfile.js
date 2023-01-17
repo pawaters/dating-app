@@ -67,8 +67,8 @@ const UserProfile = () => {
 	const userLists = useSelector(state => state.userLists)
 	const [userData, setUserData] = useState([])
 	const params = useParams()
-	const onlineUsers = useSelector(state => state.onlineUsers)
-	const usernames = onlineUsers.map(user => user.name)
+	// const onlineUsers = useSelector(state => state.onlineUsers)
+	// const usernames = onlineUsers.map(user => user.name)
 
 	useEffect(() => {
 		const getData = async () => {
@@ -80,9 +80,9 @@ const UserProfile = () => {
 		getData()
 	}, [params, dispatch])
 
-	if (isLoading) {
-		return <Loader text="Getting user profile..." />
-	}
+	// if (isLoading) {
+	// 	return <Loader text="Getting user profile..." />
+	// }
 
 	// if (userData === false) {
 	// 	return <PathNotExists />
@@ -97,7 +97,7 @@ const UserProfile = () => {
 		'Age:': userData.age,
 		'Sexual preference:': userData.sexual_pref,
 		'Location:': userData.user_location,
-		'Tags:': userData.tags.map((tag, i) => ((i ? ', ' : '') + tag))
+		// 'Tags:': userData.tags.map((tag, i) => ((i ? ', ' : '') + tag))
 	}
 
 	const likeUser = async (user_id) => {
@@ -169,7 +169,7 @@ const UserProfile = () => {
 							<Typography variant='h2' sx={{ fontSize: '250%' }}>
 								{userData.username}
 							</Typography>
-							{usernames.includes(userData.username) ?
+							{/* {usernames.includes(userData.username) ?
 								<Box
 									sx={{
 										ml: 2,
@@ -182,7 +182,7 @@ const UserProfile = () => {
 										color: 'white',
 										filter: 'drop-shadow(0px 0px 2px rgb(40, 163, 0))',
 									}}>online</Box>
-								: null}
+								: null} */}
 						</Grid>
 						<Typography variant='h5'>Fame Rating: {userData.total_pts}</Typography>
 						<StyledRating
@@ -204,7 +204,7 @@ const UserProfile = () => {
 					{Object.keys(ProfileData).map((key, index) => {
 						return <ProfileInput key={index} text={key} input={ProfileData[key]} />
 					})}
-					{!usernames.includes(userData.username) ?
+					{/* {!usernames.includes(userData.username) ?
 						<Grid item xs={12} sm={6} sx={{ display: 'inline' }}>
 							<Typography sx={{ width: 170, display: 'inline-block', fontWeight: '700' }}>
 								Last connected:
@@ -213,7 +213,7 @@ const UserProfile = () => {
 								{userData.connection_time}
 							</Typography>
 						</Grid>
-						: null}
+						: null} */}
 				</Grid>
 				<Grid container sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
 					<Typography sx={{ width: 'fit-content', fontWeight: '700' }}>
@@ -226,9 +226,9 @@ const UserProfile = () => {
 					</Grid>
 				</Grid>
 				<Box>
-					{other_pictures.map((picture, i) =>
+					{/* {other_pictures.map((picture, i) =>
 						<img key={picture.picture_id} alt="random_picture" height="200px" src={picture.picture_data}></img>
-					)}
+					)} */}
 				</Box>
 			</Paper>
 			<Notification />
