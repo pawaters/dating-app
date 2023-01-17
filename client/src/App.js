@@ -13,7 +13,6 @@ import signUpService from './services/signUpService'
 import Home from "./pages/Home.js"
 import Signup from "./pages/Signup"
 import Browsing from "./pages/Browsing/Browsing"
-import NoPage from "./pages/NoPage"
 import Onboarding from "./pages/Profile/Onboarding"
 import Profile from "./pages/Profile/Profile"
 import Swipe from "./pages/Swipe"
@@ -30,6 +29,7 @@ import Logout from "./pages/Logout"
 import Footer from "./components/Footer"
 import { grey, pink } from "@mui/material/colors"
 import { borderRadius } from "@mui/system"
+import PathNotExists from "./pages/PathNotExists"
 
 const font = "'Readex Pro', sans-serif";
 
@@ -92,7 +92,7 @@ function App() {
                             <Route path={"/chat/:id"} element={<Chat />} />
                             <Route path={"/swipe"} element={<Swipe />} />
                             <Route path={"/logout"} element={<Logout />} />
-                            <Route path={"*"} element={<NoPage />} />
+                            <Route path='*' element={<PathNotExists />} />
                         </Routes>
                     </BrowserRouter>
                     <Footer />
