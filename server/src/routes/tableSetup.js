@@ -99,8 +99,33 @@ module.exports = function (app, pool, bcrypt) {
                     profile_pic BOOLEAN NOT NULL DEFAULT false
                 );
                 `, 'user_images'),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS fame_rates (
+                    famerate_id SERIAL NOT NULL PRIMARY KEY,
+                    user_id INT NOT NULL,
+                    setup_pts INT NOT NULL DEFAULT 0,
+                    picture_pts INT NOT NULL DEFAULT 0,
+                    tag_pts INT NOT NULL DEFAULT 0,
+                    like_pts INT NOT NULL DEFAULT 0,
+                    connection_pts INT NOT NULL DEFAULT 0,
+                    total_pts INT NOT NULL DEFAULT 0
+                );
+                `, 'user_images'),
             ])
         }
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         createTables()
         .then(() => {

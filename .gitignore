@@ -3,4 +3,4 @@ node_modules
 pgdata
 .env
 /server/images
-# .env - to be ignored when delivering final version 
+# .env - to be ignored when delivering final version
