@@ -6,7 +6,7 @@ import { AspectRatio } from 'tabler-icons-react'
 const UserAvatar = ({ userData }) => {
 	const onlineUsers = useSelector(state => state.onlineUsers)
 	// const usernames = onlineUsers.map(user => user.name)
-	const profile_pic = userData.profile_pic['picture_data']
+	// const profile_pic = userData.profile_pic['picture_data']
 
 	// if (usernames.includes(userData.username)) {
 	// 	return (
@@ -29,7 +29,7 @@ const UserAvatar = ({ userData }) => {
 			<Box sx={{ width: '200px', display: 'inline-block' }}>
 				<AspectRatio>
 					<Avatar
-						src={profile_pic}
+						// src={profile_pic}
 						alt='profile'
 					/>
 				</AspectRatio>
