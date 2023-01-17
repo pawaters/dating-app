@@ -7,14 +7,12 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 import { ReactComponent as Logo } from '../../images/white-tinder-logo.svg'
 import { useSelector } from 'react-redux'
-// import UserMenu from './UserMenu'
+import UserMenu from './UserMenu'
 
 const NavBar = ({ socket }) => {
 	const [anchorElNav, setAnchorElNav] = useState(null)
 
 	const user = useSelector(state => state.user)
-	// const user = "user" 
-
 
 	let pages = {}
 	console.log("user is: ", user)

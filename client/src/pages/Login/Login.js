@@ -47,9 +47,8 @@ const Login = () => {
                     dispatch(getUserNotifications())
                     dispatch(getProfileData())
                     dispatch(changeNotification(""))
-                    //pending: getting notifications of user,
-                    // profile data
-                    // being live for chat
+                    // socket.emit("newUser", { name: result.username, id: result.userid, socketID: socket.id })
+                    // socket.emit("join_notification", { id: result.userid })
 
                 } else {
                     dispatch(changeSeverity('error'))
