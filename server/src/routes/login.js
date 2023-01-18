@@ -2,10 +2,8 @@ module.exports = function (app, pool, bcrypt) {
 
     app.post('/api/login', async (request, response) => {
 
-        const userName = request.body.username
+        const username = request.body.username
         const password = request.body.password
-
-        console.log('userName', userName)
 
         const verifyLoginAttempt = async () => {
             // To ponder: do we actually need to join users with user_settings because at this point we just need created accounts?
@@ -14,7 +12,7 @@ module.exports = function (app, pool, bcrypt) {
                 LEFT JOIN user_settings
                 ON users.id = user_settings.user_id
                 WHERE username = $1`,
-                [userName]
+                [username]
             )
             if (userInfo.rows.length === 0) {
                 console.log('User not found')
@@ -29,6 +27,7 @@ module.exports = function (app, pool, bcrypt) {
                     var session = request.session
                     session.userid = userInfo.rows[0]['id']
                     session.username = userInfo.rows[0]['username']
+                    session.location = userInfo.rows[0]['ip_location']
                     return session
                 } else {
                     console.log('Auth fail!')
@@ -54,12 +53,10 @@ module.exports = function (app, pool, bcrypt) {
     })
 
     app.get('/api/logout', (request, response) => {
-        console.log('session right before logout: ', request.session)
         request.session.destroy(error => {
             if (error) {
                 return console.log(error)
             }
-            console.log('session after logout: ', request.session)
             // The End method causes the Web server to stop processing the script and return the current result.
             response.end()
         });
