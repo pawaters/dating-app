@@ -93,9 +93,9 @@ module.exports = function (app, pool, bcrypt) {
 
                 execute(`
                 CREATE TABLE IF NOT EXISTS user_images (
-                    image_id SERIAL NOT NULL PRIMARY KEY,
+                    picture_id SERIAL NOT NULL PRIMARY KEY,
                     user_id INT NOT NULL,
-                    image_data TEXT NOT NULL,
+                    picture_data TEXT NOT NULL,
                     profile_pic BOOLEAN NOT NULL DEFAULT false
                 );
                 `, 'user_images'),

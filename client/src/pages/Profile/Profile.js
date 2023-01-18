@@ -53,8 +53,12 @@ const Profile = () => {
         return <Onboarding />
     }
 
-    // const profile_pic = profileData.profile_pic['picture_data']
-    // const other_pictures = profileData.other_pictures
+    const profile_pic = profileData.profile_pic['picture_data']
+    const other_pictures = profileData.other_pictures
+
+    console.log('profile_pic: ', profile_pic)
+    console.log('other_pictures: ', other_pictures)
+
     const userid = profileData.id;
     const ProfileData = {
 		'First name:': profileData.firstname,
