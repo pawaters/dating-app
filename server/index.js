@@ -3,7 +3,7 @@ const app = express()
 const cors = require('cors')
 const session = require('express-session')
 const nodemailer = require('nodemailer')
-const crypto = require("crypto");
+const crypto = require('crypto')
 const bcrypt = require('bcrypt')
 const config = require('./src/utils/config')
 const logger = require('./src/utils/logger')
@@ -20,7 +20,7 @@ app.use(session({
   secret: 'secret',
   saveUninitialized: true,
   resave: true
-}));
+}))
 
 // POSTGRES SETUP
 const Pool = require('pg').Pool
@@ -55,25 +55,25 @@ const storage = multer.diskStorage({
   filename: (request, file, callbackFunction) => {
     console.log('file: ', file)
     callbackFunction(null, Date.now() + path.extname(file.originalname))
-  } 
+  }
 })
 
 const upload = multer({ storage: storage })
 
 // // For testing
 // let mailDetails = {
-  // from: 'jamsa.joonas@gmail.com',
-  // to: 'jamsa.joonas@gmail.com',
-  // subject: 'Test mail',
-  // text: 'Node.js testing mail.'
+// from: 'jamsa.joonas@gmail.com',
+// to: 'jamsa.joonas@gmail.com',
+// subject: 'Test mail',
+// text: 'Node.js testing mail.'
 // }
 
 // transporter.sendMail(mailDetails, function(err, data) {
-  // if(err) {
-      // console.log('Error Occurs')
-  // } else {
-      // console.log('Email sent successfully')
-  // }
+// if(err) {
+// console.log('Error Occurs')
+// } else {
+// console.log('Email sent successfully')
+// }
 // })
 
 //ROUTES CRUD
@@ -153,11 +153,11 @@ app.delete('/users/:id', async (request, response) => {
   }
 })
 
-require('./src/routes/login.js')(app, pool, bcrypt);
-require('./src/routes/profile.js')(app, pool, upload, fs, path);
-require('./src/routes/signup.js')(app, pool, bcrypt, transporter, crypto);
-require('./src/routes/tableSetup.js')(app, pool);
-require('./src/routes/browsing.js')(app, pool);
+require('./src/routes/login.js')(app, pool, bcrypt)
+require('./src/routes/profile.js')(app, pool, upload, fs, path)
+require('./src/routes/signup.js')(app, pool, bcrypt, transporter, crypto)
+require('./src/routes/tableSetup.js')(app, pool)
+require('./src/routes/browsing.js')(app, pool)
 
 app.listen(config.PORT, () => {
   logger.info(` Server running on port ${config.PORT}`)
