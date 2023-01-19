@@ -19,13 +19,13 @@ const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const user = useSelector(state => state.user)
+    // const user = useSelector(state => state.user)
 
-    useEffect(() => {
-        if (user !== undefined && user !== '') {
-            navigate('/profile')
-        }
-    }, [user, navigate])
+    // useEffect(() => {
+    //     if (user !== undefined && user !== '') {
+    //         navigate('/profile')
+    //     }
+    // }, [user, navigate])
 
     const submitUser = async (event) => {
         event.preventDefault()
@@ -34,7 +34,7 @@ const Login = () => {
             username: event.target.username.value,
             password: event.target.password.value,
         }
-        console.log('user:', user, 'empty space right before that?')
+        // console.log('user:', user, 'empty space right before that?')
         console.log(signedUpUser)
 
         signUpService.logInUser(signedUpUser)
@@ -43,8 +43,8 @@ const Login = () => {
                 if (result.userid) {
                     const sessionUser = { name: result.username, id: result.userid }
                     dispatch(setUser(sessionUser))
-                    dispatch(getUserLists())
-                    dispatch(getUserNotifications())
+                    // dispatch(getUserLists())
+                    // dispatch(getUserNotifications())
                     dispatch(getProfileData())
                     dispatch(changeNotification(""))
                     // socket.emit("newUser", { name: result.username, id: result.userid, socketID: socket.id })

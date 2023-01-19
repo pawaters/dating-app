@@ -69,7 +69,6 @@ const Profile = () => {
 		'Sexual preference:': profileData.sexual_pref,
 		'Location:': profileData.user_location,
 		'GPS:': Object.values(profileData.ip_location).map((value, i) => ((i ? ', ' : '') + value)),
-        // 'Tags:': 'Tags pending connecting to backend'
 		'Tags:': profileData.tags.map((tag, i) => ((i ? ', ' : '') + tag)),
     }
     // _______________________
