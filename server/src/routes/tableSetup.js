@@ -30,12 +30,12 @@ module.exports = function (app, pool, bcrypt) {
                 try {
                     const res = await pool.query(query)
                     if (res) {
-                        console.log(`Table creation query for the table ${tableName} has run without errors.`)
+                        console.log(`Query '${tableName}' has run without errors.`)
                         // console.log('res here: ', res)
                         // console.log('query here: ', query)
                     }
                 } catch (error) {
-                    console.error(`An error occurred when creating table ${tableName}: `, error, 'END OF ERROR MESSAGE')
+                    console.error(`An error occurred when running the query ${tableName}: `, error, 'END OF ERROR MESSAGE')
                 }
             }
 
@@ -45,7 +45,7 @@ module.exports = function (app, pool, bcrypt) {
                 users_id SERIAL PRIMARY KEY,
                 first_name VARCHAR(255) NOT NULL
                 );
-                `, 'test_users'),
+                `, "Creation of the table 'test_users'"),
 
                 execute(`
                 CREATE TABLE IF NOT EXISTS users (
@@ -58,7 +58,7 @@ module.exports = function (app, pool, bcrypt) {
                 last_connection TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 verified BOOLEAN NOT NULL DEFAULT false
                 );
-                `, 'users'),
+                `, "Creation of the table 'users'"),
 
                 execute(`
                 CREATE TABLE IF NOT EXISTS user_settings (
@@ -70,9 +70,9 @@ module.exports = function (app, pool, bcrypt) {
                 biography VARCHAR(65535) NOT NULL,
                 fame_rating INT NOT NULL DEFAULT 0,
                 user_location VARCHAR(255) NOT NULL,
-                IP_location POINT NOT NULL
+                ip_location POINT NOT NULL
                 );
-                `, 'user_settings'),
+                `, "Creation of the table 'user_settings'"),
 
                 execute(`
                 CREATE TABLE IF NOT EXISTS tags (
@@ -80,7 +80,7 @@ module.exports = function (app, pool, bcrypt) {
                     tag_content VARCHAR(255) NOT NULL,
                     tagged_users INT[] DEFAULT array[]::INT[]
                 );
-                `, 'tags'),
+                `, "Creation of the table 'tags'"),
 
                 execute(`
                 CREATE TABLE IF NOT EXISTS verification_codes (
@@ -89,7 +89,7 @@ module.exports = function (app, pool, bcrypt) {
                     email VARCHAR(255) NOT NULL,
                     code VARCHAR(255) NOT NULL
                 );
-                `, 'verification_codes'),
+                `, "Creation of the table 'verification_codes'"),
 
                 execute(`
                 CREATE TABLE IF NOT EXISTS user_images (
@@ -98,7 +98,7 @@ module.exports = function (app, pool, bcrypt) {
                     picture_data TEXT NOT NULL,
                     profile_pic BOOLEAN NOT NULL DEFAULT false
                 );
-                `, 'user_images'),
+                `, "Creation of the table 'user_images'"),
 
                 execute(`
                 CREATE TABLE IF NOT EXISTS fame_rates (
@@ -111,28 +111,131 @@ module.exports = function (app, pool, bcrypt) {
                     connection_pts INT NOT NULL DEFAULT 0,
                     total_pts INT NOT NULL DEFAULT 0
                 );
-                `, 'user_images'),
+                `, "Creation of the table 'fame_rates'"),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS notifications (
+                    notification_id SERIAL NOT NULL PRIMARY KEY,
+                    user_id INT NOT NULL,
+                    sender_id INT NOT NULL,
+                    notification_text VARCHAR(255) NOT NULL,
+                    redirect_path VARCHAR(255),
+                    read BOOLEAN NOT NULL DEFAULT false,
+                    time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+                `, "Creation of the table 'notifications'"),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS watches (
+                    watch_id SERIAL NOT NULL PRIMARY KEY,
+                    watcher_id INT NOT NULL,
+                    target_id INT NOT NULL,
+                    time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+                `, "Creation of the table 'watches'"),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS reports (
+                    report_id SERIAL NOT NULL PRIMARY KEY,
+                    sender_id INT NOT NULL,
+                    target_id INT NOT NULL,
+                    time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+                `, "Creation of the table 'reports'"),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS likes (
+                    running_id SERIAL NOT NULL PRIMARY KEY,
+                    liker_id INT NOT NULL,
+                    target_id INT NOT NULL,
+                    liketime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+                `, "Creation of the table 'likes'"),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS connections (
+                    connection_id SERIAL NOT NULL PRIMARY KEY,
+                    user1_id INT NOT NULL,
+                    user2_id INT NOT NULL
+                );
+                `, "Creation of the table 'connections'"),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS blocks (
+                    block_id SERIAL NOT NULL PRIMARY KEY,
+                    blocker_id INT NOT NULL,
+                    target_id INT NOT NULL
+                );
+                `, "Creation of the table 'blocks'"),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS chat (
+                    chat_id SERIAL NOT NULL PRIMARY KEY,
+                    connection_id INT NOT NULL,
+                    sender_id INT NOT NULL,
+                    message TEXT NOT NULL,
+                    read BOOLEAN NOT NULL DEFAULT false,
+                    time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+                `, "Creation of the table 'chat'"),
+
+                execute(`
+                CREATE TABLE IF NOT EXISTS password_resets (
+                    running_id SERIAL NOT NULL PRIMARY KEY,
+                    user_id INT NOT NULL,
+                    reset_code VARCHAR(255) NOT NULL,
+                    expire_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+                `, "Creation of the table 'password_resets'"),
+
+                execute(`
+                SET TIME ZONE 'Europe/Helsinki';
+                `, 'Setting the timezone'),
+
+                execute(`
+                CREATE OR REPLACE FUNCTION calculate_distance(lat1 float, lon1 float, lat2 float, lon2 float, units varchar)
+                RETURNS float AS $dist$
+                	DECLARE
+                		dist float = 0;
+                		radlat1 float;
+                		radlat2 float;
+                		theta float;
+                		radtheta float;
+                	BEGIN
+                		IF lat1 = lat2 OR lon1 = lon2
+                			THEN RETURN dist;
+                		ELSE
+                			radlat1 = pi() * lat1 / 180;
+                			radlat2 = pi() * lat2 / 180;
+                			theta = lon1 - lon2;
+                			radtheta = pi() * theta / 180;
+                			dist = sin(radlat1) * sin(radlat2) + cos(radlat1) * cos(radlat2) * cos(radtheta);
+                                
+                			IF dist > 1 THEN dist = 1; END IF;
+                                
+                			dist = acos(dist);
+                			dist = dist * 180 / pi();
+                			dist = dist * 60 * 1.1515;
+                                
+                			IF units = 'K' THEN dist = dist * 1.609344; END IF;
+                			IF units = 'N' THEN dist = dist * 0.8684; END IF;
+                                
+                			RETURN dist;
+                		END IF;
+                	END;
+                $dist$ LANGUAGE plpgsql;
+                `, "Creation of the GPS distance function"),
             ])
         }
 
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
         createTables()
-        .then(() => {
-            populateTags()
-        }).catch ((error) => {
-            console.log('Something went wrong in tableSetup.js: ', error)
-        })
-        
+            .then(() => {
+                populateTags()
+            }).catch((error) => {
+                console.log('Something went wrong in tableSetup.js: ', error)
+            })
+
     })
 }

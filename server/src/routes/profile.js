@@ -13,12 +13,17 @@ module.exports = (app, pool, upload, fs, path) => {
         // Validation for above values needs to be implemented here.
 
         try {
-            // We do the below last, because we want profileData.id to be false/undefined
-            // until all the SQL above has run.
             await pool.query(
                 `INSERT INTO user_settings (user_id, gender, age, user_location, sexual_pref, biography, ip_location)
                 VALUES ($1, $2, $3, $4, $5, $6, point($7,$8))`,
                 [session.userid, gender, age, location, sexual_pref, biography, gps[0], gps[1]])
+            // Will be needed later in browsing.
+            session.location = { x: Number(gps[0]), y: Number(gps[1]) }
+
+            // Fame rates. Adjust later.
+            sql = `UPDATE fame_rates SET setup_pts = setup_pts + 5, total_pts = total_pts + 5
+				    WHERE user_id = $1 AND setup_pts < 5 AND total_pts <= 95`
+            pool.query(sql, [session.userid])
 
             // We are removing the user from all the tags they didn't pick as their tags. This is useful in profile settings, but is this necessary in Onboarding?
             var sql = `UPDATE tags SET tagged_users = array_remove(tagged_users, $1)
@@ -26,9 +31,9 @@ module.exports = (app, pool, upload, fs, path) => {
                     RETURNING *;`
             const removed = await pool.query(sql, [session.userid, tags_of_user])
             console.log('removed.rows: ', removed.rows)
-            console.log('tags_of_user: ', tags_of_user)
 
             // We go through all of the tags that the user chose and see if they already exist in the table 'tags.'
+            // 'await Promise.all' ensures all of them are mapped before the code speeds on forward.
             await Promise.all(tags_of_user.map(async (tag_name) => {
                 sql = `SELECT * FROM tags
                 WHERE LOWER(tag_content) = LOWER($1)`
@@ -50,6 +55,15 @@ module.exports = (app, pool, upload, fs, path) => {
                     console.log('User chose an existing tag: ', tag_name)
                 }
             }))
+
+            // Fame rates. Adjust later.
+            var tagPoints = tags_of_user.length
+            if (tagPoints > 5)
+                tagPoints = 5
+            var sql = `UPDATE fame_rates SET total_pts = total_pts - tag_pts + $2, tag_pts = $2
+							WHERE user_id = $1`
+            await pool.query(sql, [session.userid, tagPoints])
+
             response.send(true)
         } catch (error) {
             response.send('An error has occurred in Onboarding: ', error)
@@ -57,46 +71,47 @@ module.exports = (app, pool, upload, fs, path) => {
     })
 
     app.get('/api/profile', async (request, response) => {
-        console.log('Got to app.get(/api/profile')
-
         const session = request.session
-
-        console.log('session.userid: ', session.userid)
 
         if (!session.userid) {
             console.log('sending false from app.get(\'/api/profile\'. User was not signed in.')
             response.send(false)
         }
-        console.log('This one shows if (session.userid) is true in profile.js')
         try {
-            var sql = `SELECT id, username, firstname, lastname,
-                        email, last_connection, verified, running_id,
-                        user_id, gender, age, sexual_pref,
-                        biography, fame_rating, user_location, ip_location
-                        FROM users
-						INNER JOIN user_settings
-                        ON users.id = user_settings.user_id
+            // var sql = `SELECT id, username, firstname, lastname,
+            // email, last_connection, verified, running_id,
+            // user_settings.user_id, gender, age, sexual_pref,
+            // biography, user_location, ip_location,
+            // famerate_id, fame_rates.user_id, setup_pts
+            // picture_pts, tag_pts, like_pts, connection_pts
+            // total_pts
+            // FROM users
+            // INNER JOIN user_settings ON users.id = user_settings.user_id
+            // LEFT JOIN fame_rates ON users.id = fame_rates.user_id
+            // WHERE users.id = $1;`
+            var sql = `SELECT * FROM users
+						INNER JOIN user_settings ON users.id = user_settings.user_id
+						LEFT JOIN fame_rates ON users.id = fame_rates.user_id
 						WHERE users.id = $1`
-            var result = await pool.query(sql, [session.userid])
-            // Or SELECT [all but password] from users...
-            // console.log('rows[0] after sql: ', result.rows[0])
-            const profileData = result.rows[0]
-            // const profileData = rows[0]
-            sql = `SELECT * FROM tags
+            // YOU ARE HERE! Rows not working for some reason :/
+            var { rows } = await pool.query(sql, [session.userid])
+            console.log('rows: ', rows)
+            console.log('rows[0]: ', rows[0])
+            const profileData = rows[0]
+            console.log('profileData: ', profileData)
+            sql = `SELECT * FROM tags   
                     WHERE tagged_users @> array[$1]::INT[]
-					ORDER BY tag_id ASC`
+					ORDER BY tag_id ASC;`
             var tags_of_user = await pool.query(sql, [session.userid])
             profileData.tags = tags_of_user.rows.map(tag => tag.tag_content)
 
-            // Profile pic stuff goes here:
+            // Profile pic and other pics' retrieval below:
             sql = `SELECT * FROM user_images
                     WHERE user_id = $1
-                    AND profile_pic = $2`
+                    AND profile_pic = $2;`
             const profile_pic = await pool.query(sql, [session.userid, true])
 
             if (profile_pic.rows[0]) {
-                console.log('profile pic found in backend.')
-                console.log('profile_pic.rows[0]: ', profile_pic.rows[0])
                 profileData.profile_pic = profile_pic.rows[0]
                 console.log('profileData.profile_pic: ', profileData.profile_pic)
             } else {
@@ -107,13 +122,34 @@ module.exports = (app, pool, upload, fs, path) => {
             sql = `SELECT * FROM user_images
                     WHERE user_id = $1
                     AND profile_pic = $2
-                    ORDER BY picture_id ASC`
-            const other_pictures = await pool.query(sql, [session.userid, false])
-            if (other_pictures.rows) {
-                profileData.other_pictures = other_pictures.rows
+                    ORDER BY picture_id ASC;`
+            const other_pics = await pool.query(sql, [session.userid, false])
+            if (other_pics.rows) {
+                profileData.other_pictures = other_pics.rows
             }
 
-            console.log('profileData in profile.js: ', profileData)
+            // Likes and watches
+            sql = `SELECT target_id, username
+					FROM likes INNER JOIN users on likes.target_id = users.id
+					WHERE liker_id = $1
+					GROUP BY target_id, username`
+            const liked = await pool.query(sql, [session.userid])
+            profileData.liked = liked.rows
+
+            sql = `SELECT watcher_id, username
+					FROM watches INNER JOIN users on watches.watcher_id = users.id
+					WHERE target_id = $1
+					GROUP BY watcher_id, username`
+            const watchers = await pool.query(sql, [session.userid])
+            profileData.watchers = watchers.rows
+
+            sql = `SELECT liker_id, username
+					FROM likes INNER JOIN users on likes.liker_id = users.id
+					WHERE target_id = $1
+					GROUP BY liker_id, username`
+            const likers = await pool.query(sql, [session.userid])
+            profileData.likers = likers.rows
+
             response.send(profileData)
         } catch (error) {
             console.error('catching error from profile.js: ', error)
@@ -155,6 +191,8 @@ module.exports = (app, pool, upload, fs, path) => {
                 WHERE id = $5`,
                 [username, firstname, lastname, email, session.userid])
 
+            // Needed for browsing.
+            session.location = { x: Number(gps_lat), y: Number(gps_lon) }
             // Deleting user from tags that they have not chosen when editing their settings.
             var sql = `UPDATE tags SET tagged_users = array_remove(tagged_users, $1)
 				    WHERE (array[LOWER($2)] @> array[LOWER(tag_content)]::TEXT[]) IS NOT TRUE`
@@ -185,6 +223,14 @@ module.exports = (app, pool, upload, fs, path) => {
                     console.log('User chose an existing tag: ', tag_name)
                 }
             }))
+
+            // Fame rates. Adjust later.
+            var tagPoints = tags_of_user.length
+            if (tagPoints > 5)
+                tagPoints = 5
+            sql = `UPDATE fame_rates SET total_pts = total_pts - tag_pts + $2, tag_pts = $2
+							WHERE user_id = $1`
+            await pool.query(sql, [session.userid, tagPoints])
             response.send(true)
         } catch (error) {
             console.error(error)
@@ -212,7 +258,11 @@ module.exports = (app, pool, upload, fs, path) => {
                         VALUES ($1, $2, $3);`
                 await pool.query(sql, [session.userid, picture, true])
                 console.log('session.userid: ', session.userid)
-                // fame rate update goes here.
+
+                // Fame rates. Adjust later.
+                sql = `UPDATE fame_rates SET picture_pts = picture_pts + 2, total_pts = total_pts + 2
+					    WHERE user_id = $1 AND picture_pts < 10 AND total_pts <= 98`
+                await pool.query(sql, [session.userid])
             } else {
                 let oldImageData = profilePic.rows[0]['picture_data']
                 // path.resolve gets the absolute path of '../images'
@@ -261,6 +311,11 @@ module.exports = (app, pool, upload, fs, path) => {
                 sql = `INSERT INTO user_images (user_id, picture_data, profile_pic)
                         VALUES ($1, $2, $3);`
                 await pool.query(sql, [session.userid, picture, false])
+                sql = `UPDATE fame_rates SET picture_pts = picture_pts + 2, total_pts = total_pts + 2
+					    WHERE user_id = $1 AND picture_pts < 10 AND total_pts <= 98`
+
+                //Fame rates. Adjust later.
+                await pool.query(sql, [session.userid])
                 response.send(true)
             } else {
                 response.send('Your profile can have a maximum of five (5) pictures. Delete a picture to make room for more.')

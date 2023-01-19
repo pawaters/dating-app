@@ -6,21 +6,24 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
 
     // }
 
+    const username = request.body.username
+    const firstname = request.body.firstname
+    const lastname = request.body.lastname
+    const email = request.body.email
+    const password = request.body.password
+
     const generateVerificationCode = async () => {
       const retrieveUserId = async () => {
         var sql = 'SELECT id FROM users WHERE username = $1;'
-        const result = await pool.query(sql, [userName])
-        console.log('retrieved id is: ', result.rows[0]['id'])
+        const result = await pool.query(sql, [username])
         return result.rows[0]['id']
       }
 
       // Generating a code and checking for the very unlikely case that a similar code already exists in the table.
       while (true) {
         var code = crypto.randomBytes(20).toString('hex')
-        console.log('crypto result: ', code)
         var sql = 'SELECT * FROM verification_codes WHERE code = $1;'
         const result = await pool.query(sql, [code])
-        console.log('result.rows.length: ', result.rows.length)
         if (result.rows.length < 1) {
           console.log('No duplicates found. Good!')
           break
@@ -38,7 +41,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
           console.log(error)
         })
 
-      return code
+      return (code)
     }
 
     const sendVerificationCodeByEmail = (email, username, code) => {
@@ -54,31 +57,26 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
 
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-          console.log('Hit a snag!! ', error)
+          console.error('Something went wrong when trying to send email: ', error)
         } else {
           console.log('Email sent successfully: ' + info.response)
         }
       })
-      return true
     }
-
-    const userName = request.body.username
-    const firstName = request.body.firstname
-    const lastName = request.body.lastname
-    const email = request.body.email
-    const password = request.body.password
 
     const hashPasswordAndSaveUser = async () => {
       const hash = await bcrypt.hash(password, 10)
       try {
         const newUser = await pool.query(
           'INSERT INTO users (username, firstname, lastname, email, password) VALUES($1, $2, $3, $4, $5) RETURNING *',
-          [userName, firstName, lastName, email, hash]
+          [username, firstname, lastname, email, hash]
         )
-        // Look into replacing with just return
-        response.json(newUser.rows[0])
-      } catch (err) {
-        console.error(err.message)
+        sql = "INSERT INTO fame_rates (user_id) VALUES ($1)";
+        await pool.query(sql, [newUser.rows[0]['id']])
+        return
+      } catch (error) {
+        console.error("Something went wrong when trying to create a new user: ", error)
+        throw ('Something went wrong when trying to create the new user. Please try again!')
       }
     }
 
@@ -88,12 +86,12 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
 
     hashPasswordAndSaveUser()
       .then(() => generateVerificationCode())
-      .then((code) => sendVerificationCodeByEmail(email, userName, code))
-    // .then(() => {
-    // response.send(true)
-    // }).catch((error) => {
-    // response.send('Hitting error in the end: ', error)
-    // })
+      .then((code) => sendVerificationCodeByEmail(email, username, code))
+      .then(() => {
+        response.send(true)
+      }).catch((error) => {
+        response.send(error)
+      })
   })
 
   app.post('/api/signup/verifyuser', async (request, response) => {
@@ -102,7 +100,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
 
     const checkCodeValidity = async () => {
       var sql =
-                `SELECT * FROM verification_codes
+        `SELECT * FROM verification_codes
                 INNER JOIN users
                 ON verification_codes.user_id = users.id
                 WHERE verification_codes.code = $1;`
