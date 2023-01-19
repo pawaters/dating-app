@@ -356,4 +356,114 @@ module.exports = (app, pool, upload, fs, path) => {
             }
         }
     })
+
+    // Check if this needs to return something to the frontend on success.
+    app.delete('/api/profile/deletepicture/:id', async (request, response) => {
+        const session = request.session
+
+        if (!session.userid) {
+            console.error('Error in app.post(\'/api/profile/deletepicture\'. User was not signed in.')
+            return
+        }
+        const picture_id = request.params.id
+
+        var sql = `SELECT * FROM user_images WHERE user_id = $1 AND picture_id = $2`
+        var pictureData = await pool.query(sql, [session.userid, picture_id])
+
+        var oldImageData = pictureData.rows[0]['picture_data']
+        if (oldImageData !== 'http://localhost:3000/images/default_profilepic.jpeg') {
+            const oldImage = path.resolve(__dirname, '../images') + oldImageData.replace('http://localhost:3000/images', '');
+
+            if (fs.existsSync(oldImage)) {
+                fs.unlink(oldImage, (error) => {
+                    if (error) {
+                        console.error(error);
+                        return;
+                    }
+                })
+            }
+        }
+        try {
+            sql = "DELETE FROM user_pictures WHERE user_id = $1 AND picture_id = $2"
+            await pool.query(sql, [session.userid, picture_id])
+            sql = `UPDATE fame_rates SET picture_pts = picture_pts - 2, total_pts = total_pts - 2
+                    WHERE user_id = $1 AND picture_pts > 0`
+            await pool.query(sql, [session.userid])
+            response.status(200).send("Picture deleted")
+        } catch (error) {
+            console.error("Something went wrong when trying to delete the picture: ", error)
+            return
+        }
+    })
+
+    app.get('/api/profile/notifications', async (request, response) => {
+        const session = request.session
+
+        if (session.userid) {
+            try {
+                var sql = `SELECT notification_id AS id, notifications.user_id AS user_id, sender_id,
+							notification_text AS text, redirect_path, read, picture_data AS picture
+							FROM notifications
+							INNER JOIN user_pictures ON notifications.sender_id = user_pictures.user_id AND user_pictures.profile_pic = $1
+							WHERE notifications.user_id = $2
+							ORDER BY notification_id DESC`
+                const notificationsData = await pool.query(sql, [true, session.userid])
+                response.send(notificationsData.rows)
+            } catch (error) {
+                console.log('Something went wrong when trying to retrieve notifications: ', error)
+                response.send(false)
+            }
+        } else {
+            response.send(false)
+        }
+    })
+
+    app.delete('/api/profile/notifications', (request, response) => {
+        const session = request.session
+
+        if (session.userid) {
+            try {
+                var sql = `DELETE FROM notifications WHERE user_id = $1`
+                pool.query(sql, [session.userid])
+                response.send(true)
+            } catch (error) {
+                console.log('Something went wrong when trying to clear notifications: ', error)
+                response.send("Something went wrong when trying to clear notifications.")
+            }
+        }
+    })
+
+    app.patch('/api/profile/readnotification/:id', (request, response) => {
+        const session = request.session
+
+        if (session.userid) {
+            try {
+                const notification_id = request.params.id
+                var sql = `UPDATE notifications SET read = $1
+                            WHERE user_id = $2
+                            AND notification_id = $3`
+                pool.query(sql, [true, session.userid, notification_id])
+                response.send(true)
+            } catch (error) {
+                console.log(error)
+                response.send("Something went wrong when trying mark notification as 'read'")
+            }
+        }
+    })
+
+    app.patch('/api/profile/readnotifications', (request, response) => {
+        const session = request.session
+
+        if (session.userid) {
+            try {
+                var sql = `UPDATE notifications SET read = $1
+                            WHERE user_id = $2`
+                pool.query(sql, [true, session.userid])
+                response.send(true)
+            } catch (error) {
+                console.log(error)
+                response.send("Something went wrong when trying mark all notification as 'read'")
+            }
+        }
+    })
 }
