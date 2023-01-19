@@ -9,13 +9,14 @@ import { ReactComponent as Logo } from '../../images/white-tinder-logo.svg'
 import { useSelector } from 'react-redux'
 import UserMenu from './UserMenu'
 
-const NavBar = ({ socket }) => {
+// Socket to add as prop
+const NavBar = () => {
 	const [anchorElNav, setAnchorElNav] = useState(null)
 
 	const user = useSelector(state => state.user)
 
 	let pages = {}
-	console.log("user is: ", user)
+	console.log("When navbar loads, user = useSelector(state => state.user) is :", user)
 
 	if (user === '') {
 		pages = {

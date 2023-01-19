@@ -35,14 +35,14 @@ const Login = () => {
             password: event.target.password.value,
         }
         // console.log('user:', user, 'empty space right before that?')
-        console.log(signedUpUser)
 
         signUpService.logInUser(signedUpUser)
             .then(result => {
-
                 if (result.userid) {
                     const sessionUser = { name: result.username, id: result.userid }
+                    console.log("sessionUser sent to dispatch", sessionUser)
                     dispatch(setUser(sessionUser))
+
                     // dispatch(getUserLists())
                     // dispatch(getUserNotifications())
                     dispatch(getProfileData())

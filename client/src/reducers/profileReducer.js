@@ -20,12 +20,15 @@ export const { setProfileData, resetProfileData} = profileSlice.actions
 export const getProfileData = () => {
     return async dispatch => {
         const profile = await profileService.getProfileData()
+       
+
         console.log('profile in profileReducer after getProfileData()', profile)
+        console.log('profile[0] in profileReducer after getProfileData()', profile[0])
         if (profile) {
-            console.log('Dispathed setProfileData in profileReducer')
+            console.log('ProfileReducer: Dispatched setProfileData')
             dispatch(setProfileData(profile))
         } else {
-            console.log('Went to else in profileReducer')
+            console.log('ProfileReducer: Profile is empty - setProfileData to empty')
             dispatch(setProfileData({}))
         }
     }
