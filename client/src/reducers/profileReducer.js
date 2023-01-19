@@ -23,7 +23,6 @@ export const getProfileData = () => {
        
 
         console.log('profile in profileReducer after getProfileData()', profile)
-        console.log('profile[0] in profileReducer after getProfileData()', profile[0])
         if (profile) {
             console.log('ProfileReducer: Dispatched setProfileData')
             dispatch(setProfileData(profile))
