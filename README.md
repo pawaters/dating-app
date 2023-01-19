@@ -1,4 +1,4 @@
-# matcha - plan for our project 
+# matcha #
 
 **Installation:**
 Prep: Please make sure you have [Docker](https://www.docker.com/) installed on your machine.
