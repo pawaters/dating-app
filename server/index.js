@@ -11,7 +11,7 @@ const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 const { pgUser, pgPassword, pgDatabase, pgHost, EMAIL_ADDRESS, EMAIL_PASSWORD } = require('./src/utils/config')
-const { getMaxListeners } = require('process')
+// const { getMaxListeners } = require('process')
 
 // middleware
 app.use(cors())

@@ -2,7 +2,7 @@ import React from "react"
 import "./style/App.css"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider, createTheme, Container, responsiveFontSizes } from "@mui/material"
-import { Provider } from "react-redux"
+import { Provider, useDispatch, useSelector } from "react-redux"
 import store from "./store/store"
 
 // Joonas's meddling
@@ -30,6 +30,10 @@ import Footer from "./components/Footer"
 import { grey, pink } from "@mui/material/colors"
 import { borderRadius } from "@mui/system"
 import PathNotExists from "./pages/PathNotExists"
+import { getProfileData } from "./reducers/profileReducer"
+import { getUserLists } from "./reducers/userListsReducer"
+import { getUserNotifications } from "./reducers/userNotificationsReducer"
+import { setUser } from "./reducers/userReducer"
 
 const font = "'Readex Pro', sans-serif";
 
@@ -60,7 +64,16 @@ const theme = createTheme({
     }
 })
 
-function App() {
+const App = () => {
+    // const [socket, setSocket] = useState(null)
+    // const [socketConnected, setSocketConnected] = useState(false)
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.user)
+
+    // SOCKET SETUP TO UPDATE
+    // useEffect(() => {
+    //     setSocket(socketIO('http://localhost:3001'))
+    // }, [])
 
     useEffect(() => {
         // Will have to see if this works in hard reset conditions too.
@@ -68,8 +81,19 @@ function App() {
         console.log('Ran through the table creation and population sequence at tableSetup.js.')
     }, [])
 
+    useEffect(() => {
+        dispatch(getProfileData())
+        dispatch(getUserLists())
+        // dispatch(getUserNotifications())
+        signUpService
+            .getSessionUser()
+            .then(result => {
+                dispatch(setUser(result))
+            })
+
+    }, [dispatch])
+
     return (
-        <Provider store={store}>
             <ThemeProvider theme={theme}>
                 <Container sx={{ height: 'auto', width: 'auto' }}>
                     <BrowserRouter>
@@ -98,7 +122,6 @@ function App() {
                     <Footer />
                 </Container>
             </ThemeProvider>
-        </Provider>
     )
 }
 
