@@ -25,10 +25,10 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
         var sql = 'SELECT * FROM verification_codes WHERE code = $1;'
         const result = await pool.query(sql, [code])
         if (result.rows.length < 1) {
-          console.log('No duplicates found. Good!')
+          console.log('No duplicates found for the newly generated code in signup.')
           break
         } else {
-          console.log('Found a duplicate. Bad, or you have these log messages the wrong way round by accident!')
+          console.log('Found a duplicate for the newly generated code in signup. Proceeding to generate a new code.')
           continue
         }
       }
