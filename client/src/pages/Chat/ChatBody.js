@@ -31,7 +31,7 @@ const ChatBody = ({ connections }) => {
 
 	return (
 		<>
-			<div className='chat_mainHeader'>
+			<div>
 				<Typography variant='h5'>Find your true love</Typography>
 			</div>
 
