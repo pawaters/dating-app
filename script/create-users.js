@@ -1,4 +1,8 @@
-const { pgUser, pgPassword, pgDatabase, pgHost } = require('./src/utils/config')
+const { faker } = require('@faker-js/faker')
+const { Pool } = require('pg').Pool
+const axios = require('axios')
+
+const { pgUser, pgPassword, pgDatabase, pgHost } = require('../server/src/utils/config')
 
 const tags = []
 const tag_names = ["work", "dog", "music", "travel", "outdoors", "books",
@@ -6,9 +10,6 @@ const tag_names = ["work", "dog", "music", "travel", "outdoors", "books",
 	"nature", "animals", "cars", "tech", "fashion", "beauty", "fitness",
 	"health", "science", "history", "politics", "religion", "philosophy",
 	"psychology", "education", "family", "friends", "cats"]
-
-//const Pool
-const Pool = require('pg').Pool
 
 const pool = new Pool({
   user: pgUser,
