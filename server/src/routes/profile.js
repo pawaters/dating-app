@@ -10,63 +10,65 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         const biography = request.body.biography
         const tags_of_user = request.body.tags
 
-        // Validation for above values needs to be implemented here.
+        // Validation for above values needs to be implemented here. Remember to do these with 'return response.send!'
 
-        try {
-            await pool.query(
-                `INSERT INTO user_settings (user_id, gender, age, user_location, sexual_pref, biography, ip_location)
-                VALUES ($1, $2, $3, $4, $5, $6, point($7,$8))`,
-                [session.userid, gender, age, location, sexual_pref, biography, gps[0], gps[1]])
-            // Will be needed later in browsing.
-            session.location = { x: Number(gps[0]), y: Number(gps[1]) }
+        if (session.userid) {
+            try {
+                await pool.query(
+                    `INSERT INTO user_settings (user_id, gender, age, user_location, sexual_pref, biography, ip_location)
+                    VALUES ($1, $2, $3, $4, $5, $6, point($7,$8))`,
+                    [session.userid, gender, age, location, sexual_pref, biography, gps[0], gps[1]])
+                // Will be needed later in browsing.
+                session.location = { x: Number(gps[0]), y: Number(gps[1]) }
 
-            // Fame rates. Adjust later.
-            sql = `UPDATE fame_rates SET setup_pts = setup_pts + 5, total_pts = total_pts + 5
-				    WHERE user_id = $1 AND setup_pts < 5 AND total_pts <= 95`
-            pool.query(sql, [session.userid])
+                // Fame rates. Adjust later.
+                sql = `UPDATE fame_rates SET setup_pts = setup_pts + 5, total_pts = total_pts + 5
+				        WHERE user_id = $1 AND setup_pts < 5 AND total_pts <= 95`
+                pool.query(sql, [session.userid])
 
-            // We are removing the user from all the tags they didn't pick as their tags. This is useful in profile settings, but is this necessary in Onboarding?
-            var sql = `UPDATE tags SET tagged_users = array_remove(tagged_users, $1)
-                    WHERE (array[LOWER($2)] @> array[LOWER(tag_content)]::TEXT[]) IS NOT TRUE
-                    RETURNING *;`
-            const removed = await pool.query(sql, [session.userid, tags_of_user])
-            console.log('removed.rows: ', removed.rows)
+                // We are removing the user from all the tags they didn't pick as their tags. This is useful in profile settings, but is this necessary in Onboarding?
+                var sql = `UPDATE tags SET tagged_users = array_remove(tagged_users, $1)
+                            WHERE (array[LOWER($2)] @> array[LOWER(tag_content)]::TEXT[]) IS NOT TRUE
+                            RETURNING *;`
+                const removed = await pool.query(sql, [session.userid, tags_of_user])
+                console.log('removed.rows: ', removed.rows)
 
-            // We go through all of the tags that the user chose and see if they already exist in the table 'tags.'
-            // 'await Promise.all' ensures all of them are mapped before the code speeds on forward.
-            await Promise.all(tags_of_user.map(async (tag_name) => {
-                sql = `SELECT * FROM tags
-                WHERE LOWER(tag_content) = LOWER($1)`
-                const tagAlreadyExistsCheck = await pool.query(sql, [tag_name])
+                // We go through all of the tags that the user chose and see if they already exist in the table 'tags.'
+                // 'await Promise.all' ensures all of them are mapped before the code speeds on forward.
+                await Promise.all(tags_of_user.map(async (tag_name) => {
+                    sql = `SELECT * FROM tags
+                            WHERE LOWER(tag_content) = LOWER($1)`
+                    const tagAlreadyExistsCheck = await pool.query(sql, [tag_name])
 
-                // If the tag doesn't exist i.e. it's a completely new tag, we insert it as a new row into the 'tags' table.
-                if (tagAlreadyExistsCheck.rows.length < 1) {
-                    sql = `INSERT INTO tags (tag_content, tagged_users)
-                        VALUES (LOWER($1), array[$2]::INT[]);`
-                    await pool.query(sql, [tag_name, session.userid])
-                    console.log('User created a new tag!: ', tag_name)
-                } else {
-                    // If the tag is an existing tag, we insert the user_id into the tagged_users for the tag.
-                    // We check again that the tag exists and that the user is not already in that tag.
-                    sql = `UPDATE tags SET tagged_users = array_append(tagged_users, $1)
-                        WHERE LOWER(tag_content) = LOWER($2)
-                        AND (tagged_users @> array[$1]::INT[]) IS NOT TRUE;`
-                    await pool.query(sql, [session.userid, tag_name])
-                    console.log('User chose an existing tag: ', tag_name)
-                }
-            }))
+                    // If the tag doesn't exist i.e. it's a completely new tag, we insert it as a new row into the 'tags' table.
+                    if (tagAlreadyExistsCheck.rows.length < 1) {
+                        sql = `INSERT INTO tags (tag_content, tagged_users)
+                                VALUES (LOWER($1), array[$2]::INT[]);`
+                        await pool.query(sql, [tag_name, session.userid])
+                        console.log('User created a new tag!: ', tag_name)
+                    } else {
+                        // If the tag is an existing tag, we insert the user_id into the tagged_users for the tag.
+                        // We check again that the tag exists and that the user is not already in that tag.
+                        sql = `UPDATE tags SET tagged_users = array_append(tagged_users, $1)
+                                WHERE LOWER(tag_content) = LOWER($2)
+                                AND (tagged_users @> array[$1]::INT[]) IS NOT TRUE;`
+                        await pool.query(sql, [session.userid, tag_name])
+                        console.log('User chose an existing tag: ', tag_name)
+                    }
+                }))
 
-            // Fame rates. Adjust later.
-            var tagPoints = tags_of_user.length
-            if (tagPoints > 5)
-                tagPoints = 5
-            var sql = `UPDATE fame_rates SET total_pts = total_pts - tag_pts + $2, tag_pts = $2
+                // Fame rates. Adjust later.
+                var tagPoints = tags_of_user.length
+                if (tagPoints > 5)
+                    tagPoints = 5
+                var sql = `UPDATE fame_rates SET total_pts = total_pts - tag_pts + $2, tag_pts = $2
 							WHERE user_id = $1`
-            await pool.query(sql, [session.userid, tagPoints])
+                await pool.query(sql, [session.userid, tagPoints])
 
-            response.send(true)
-        } catch (error) {
-            response.send('An error has occurred in Onboarding: ', error)
+                response.send(true)
+            } catch (error) {
+                response.send('An error has occurred in Onboarding: ', error)
+            }
         }
     })
 
@@ -92,8 +94,8 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
 			                LEFT JOIN fame_rates ON users.id = fame_rates.user_id
 			                WHERE users.id = $1`
                 var { rows } = await pool.query(sql, [session.userid])
-                console.log('rows: ', rows)
-                console.log('rows[0]: ', rows[0])
+                // console.log('rows: ', rows)
+                // console.log('rows[0]: ', rows[0])
                 const profileData = rows[0]
                 console.log('profileData: ', profileData)
                 return (profileData)
@@ -150,7 +152,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
 		                    GROUP BY liker_id, username`
                     const likers = await pool.query(sql, [session.userid])
                     profileData.likers = likers.rows
-                    console.log('profileData JUST BEFORE RESPONSE.SEND : ', profileData)
+                    // console.log('profileData JUST BEFORE RESPONSE.SEND : ', profileData)
                     response.send(profileData)
                 }).catch((error) => {
                     console.error('catching error from profile.js: ', error)
@@ -243,7 +245,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         const picture = 'http://localhost:3000/images/' + request.file.filename
         if (session.userid) {
             if (request.file.size > 5242880) {
-                response.send('The maximum size for uploaded images is 5 megabytes.')
+                return response.send('The maximum size for uploaded images is 5 megabytes.')
             }
             try {
                 var sql = `SELECT * FROM user_images
@@ -267,7 +269,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     const oldImage = path.resolve(__dirname, '../images') + oldImageData.replace('http://localhost:3000/images', '')
                     // fs.existsSync checks if the image already exists, so if there is already an image with same name
                     // in the /images folder
-                    console.log('Did the first part of else.')
+                    console.log('Set a new profile picture to replace the old one.')
                     if (fs.existsSync(oldImage)) {
                         console.log('Went to fs.existSync')
                         // If it is, we remove it with fs.unlink
@@ -298,7 +300,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         const picture = 'http://localhost:3000/images/' + request.file.filename
         if (session.userid) {
             if (request.file.size > 5242880) {
-                response.send('The maximum size for uploaded images is 5 megabytes.')
+                return response.send('The maximum size for uploaded images is 5 megabytes.')
             }
             try {
                 var sql = `SELECT * FROM user_images
@@ -324,31 +326,37 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         }
     })
 
-    app.post('api/profile/changepassword', async (request, response) => {
+    app.post('/api/profile/changepassword', async (request, response) => {
         const session = request.session
         const { oldPassword, newPassword, confirmPassword } = request.body
 
+        console.log(oldPassword)
+        console.log(newPassword)
+        console.log(confirmPassword)
+
+        // We use return response.send because we want the headers to be set max once per scenario,
+        // so if we fail the initial change (because of a lacking password, etc.), we can try again.
         if (newPassword !== confirmPassword) {
-            response.send("The entered new passwords don't match!")
+            return response.send("The entered new passwords don't match!")
         }
         else if (!newPassword.match(/(?=^.{8,30}$)(?=.*\d)(?=.*[!.@#$%^&*]+)(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-            response.send("Please enter a password with a length between 8 and 30 characters, at least one lowercase character (a-z), at least one uppercase character (A-Z), at least one numeric character (0-9), and at least one special character (!.@#$%^&*)")
+            return response.send("Please enter a password with a length between 8 and 30 characters, at least one lowercase character (a-z), at least one uppercase character (A-Z), at least one numeric character (0-9), and at least one special character (!.@#$%^&*)")
         }
 
         var sql = `SELECT * FROM users WHERE id = $1`;
         const retrievedPassword = await pool.query(sql, [session.userid])
 
         if (!(await bcrypt.compare(oldPassword, retrievedPassword.rows[0]['password']))) {
-            response.send("The current password you entered was not correct!")
+            return response.send("The current password you entered was not correct!")
         } else {
             const hash = await bcrypt.hash(newPassword, 10);
             try {
                 sql = "UPDATE users SET password = $1 WHERE id = $2";
                 await pool.query(sql, [hash, session.userid])
-                response.send(true)
+                return response.send(true)
             } catch (error) {
                 console.error("Something went wrong when trying to change the password:", error)
-                response.send("Something went wrong when trying to change your password. Please try again!")
+                return response.send("Something went wrong when trying to change your password. Please try again!")
             }
         }
     })
