@@ -80,29 +80,29 @@ const Chat = ({ socket }) => {
 
     return <NoConnections />
 
-	return (
-		<Container maxWidth='lg' sx={{ pt: 5, pb: 5 }}>
-			<Grid container spacing={2} direction={matches ? 'column' : 'row'}>
-				<Grid item xs={4} md={4}>
-					<ChatBar
-						// connections={connections}
-						// joinRoom={joinRoom}
-					/>
-				</Grid>
-				<Grid item xs={8} md={8}>
-					<Paper>
-						<ChatBody
-							// connections={connections}
-						/>
-						<ChatFooter
-							// socket={socket}
-							// connections={connections}
-						/>
-					</Paper>
-				</Grid>
-			</Grid>
-		</Container>
-	)
+	// return (
+	// 	<Container maxWidth='lg' sx={{ pt: 5, pb: 5 }}>
+	// 		<Grid container spacing={2} direction={matches ? 'column' : 'row'}>
+	// 			<Grid item xs={4} md={4}>
+	// 				<ChatBar
+	// 					// connections={connections}
+	// 					// joinRoom={joinRoom}
+	// 				/>
+	// 			</Grid>
+	// 			<Grid item xs={8} md={8}>
+	// 				<Paper>
+	// 					<ChatBody
+	// 						// connections={connections}
+	// 					/>
+	// 					<ChatFooter
+	// 						// socket={socket}
+	// 						// connections={connections}
+	// 					/>
+	// 				</Paper>
+	// 			</Grid>
+	// 		</Grid>
+	// 	</Container>
+	// )
 }
 
 export default Chat
