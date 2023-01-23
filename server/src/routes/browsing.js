@@ -20,16 +20,9 @@ module.exports = (app, pool) => {
     const min_distance = request.body.min_distance
     const max_distance = request.body.max_distance
 
-    if (!session.userid) {
-      console.error('Error in app.post(\'/api/browsing/sorted\'. User was not signed in.')
-      response.send(false)
-    }
-    if (!session.location) {
-      console.error('Error in app.post(\'/api/browsing/sorted\'. User location was not set.')
-      response.send(false)
-    }
-    try {
-      var sql = `SELECT id, username, firstname, lastname, gender, age,
+    if (session.userid && session.location) {
+      try {
+        var sql = `SELECT id, username, firstname, lastname, gender, age,
                   sexual_pref, biography, total_pts AS fame_rating, user_location,
                   picture_data AS profile_pic, blocker_id, target_id,
 						      calculate_distance($6, $7, ip_location[0], ip_location[1], 'K') AS distance,
@@ -48,24 +41,26 @@ module.exports = (app, pool) => {
 						      AND age BETWEEN $2 and $3 AND total_pts BETWEEN $4 and $5
 						      AND calculate_distance($6, $7, ip_location[0], ip_location[1], 'K') BETWEEN $8 and $9
 						      ORDER BY username ASC;`
-      var sortingFilter =
-        await pool.query(sql, [session.userid, min_age, max_age, min_fame, max_fame,
-        session.location.x, session.location.y, min_distance, max_distance, true])
+        var sortingFilter =
+          await pool.query(sql, [session.userid, min_age, max_age, min_fame, max_fame,
+          session.location.x, session.location.y, min_distance, max_distance, true])
 
-      // Check rows if not working.
-      for (let i = 0; i < sortingFilter.rows.length; i++) {
-        var sql = `SELECT tag_content FROM tags WHERE tagged_users @> array[$1]::INT[]`
-        sortingFilter.tags = await pool.query(sql, [sortingFilter.rows[i].id])
-        for (let j = 0; j < tags.length; j++) {
-          tags[j] = tags[j].tag_content
+        // Check rows if not working.
+        for (let i = 0; i < sortingFilter.rows.length; i++) {
+          var sql = `SELECT tag_content FROM tags WHERE tagged_users @> array[$1]::INT[]`
+          sortingFilter.tags = await pool.query(sql, [sortingFilter.rows[i].id])
+          for (let j = 0; j < tags.length; j++) {
+            tags[j] = tags[j].tag_content
+          }
+          rows[i].tags = tags
         }
-        rows[i].tags = tags
+        response.send(sortingFilter.rows)
+      } catch (error) {
+        response.send("Fetching users failed")
       }
-      response.send(sortingFilter.rows)
-    } catch (error) {
-      response.send("Fetching users failed")
     }
   })
+
 
   app.get('/api/browsing/userlists', async (request, response) => {
     const session = request.session
@@ -100,12 +95,10 @@ module.exports = (app, pool) => {
   app.get('/api/browsing/profile/:id', async (request, response) => {
     const session = request.session
 
-    if (!session.userid) {
-      response.send('Error in app.post(\'/api/browsing/profile/:id\'. User was not signed in.')
-    }
-    try {
-      const profile_id = request.params.id
-      var sql = `SELECT users.id AS id, username, firstname, lastname,
+    if (session.userid) {
+      try {
+        const profile_id = request.params.id
+        var sql = `SELECT users.id AS id, username, firstname, lastname,
                 gender, user_location, age, biography,
                 sexual_pref, fame_rating,
                 TO_CHAR(last_connection AT time zone 'UTC' AT time zone 'Europe/Helsinki', 'dd.mm.yyyy hh24:mi:ss')
@@ -114,50 +107,51 @@ module.exports = (app, pool) => {
                 INNER JOIN user_settings ON users.id = user_settings.user_id
                 INNER JOIN fame_rates ON users.id = fame_rates.user_id
                 WHERE users.id = $1;`
-      const requestedUserData = await pool.query(sql, [profile_id])
-      const { ...profileData } = requestedUserData.rows[0]
+        const requestedUserData = await pool.query(sql, [profile_id])
+        const { ...profileData } = requestedUserData.rows[0]
 
-      sql = `SELECT * FROM tags
+        sql = `SELECT * FROM tags
             WHERE tagged_users @> array[$1]::INT[]
             ORDER BY tag_id ASC`
-      const requestedUserTags = await pool.query(sql, [profile_id])
+        const requestedUserTags = await pool.query(sql, [profile_id])
 
-      // Test if this needs a promise operation.
-      profileData.tags = requestedUserTags.rows.map(tag => tag.tag_content)
+        // Test if this needs a promise operation.
+        profileData.tags = requestedUserTags.rows.map(tag => tag.tag_content)
 
-      sql = `SELECT * FROM user_images WHERE user_id = $1 AND profile_pic = $2`
-      const profile_pic = await pool.query(sql, [profile_id, true])
+        sql = `SELECT * FROM user_images WHERE user_id = $1 AND profile_pic = $2`
+        const profile_pic = await pool.query(sql, [profile_id, true])
 
-      if (profile_pic.rows[0]) {
-        profileData.profile_pic = profile_pic.rows[0]
-      } else {
-        // For cases where the profile doesn't have a picture yet.
-        profileData.profile_pic = { user_id: session.userid, picture_data: null }
-      }
+        if (profile_pic.rows[0]) {
+          profileData.profile_pic = profile_pic.rows[0]
+        } else {
+          // For cases where the profile doesn't have a picture yet.
+          profileData.profile_pic = { user_id: session.userid, picture_data: null }
+        }
 
-      sql = `SELECT * FROM user_images WHERE user_id = $1 AND profile_pic = $2`
-      const other_pics = await pool.query(sql, [profile_id, false])
+        sql = `SELECT * FROM user_images WHERE user_id = $1 AND profile_pic = $2`
+        const other_pics = await pool.query(sql, [profile_id, false])
 
-      // Check with console.log, if you should use other_pics.rows.length instead.
-      if (other_pics.rows) {
-        profileData.other_pictures = other_pics.rows
-      }
+        // Check with console.log, if you should use other_pics.rows.length instead.
+        if (other_pics.rows) {
+          profileData.other_pictures = other_pics.rows
+        }
 
-      sql = `INSERT INTO watches (watcher_id, target_id) VALUES ($1,$2)`
-      pool.query(sql, [session.userid, profile_id])
+        sql = `INSERT INTO watches (watcher_id, target_id) VALUES ($1,$2)`
+        pool.query(sql, [session.userid, profile_id])
 
-      var notification = `The user ${session.username} just checked your profile`
-      sql = `INSERT INTO notifications (user_id, notification_text, redirect_path, sender_id)
+        var notification = `The user ${session.username} just checked your profile`
+        sql = `INSERT INTO notifications (user_id, notification_text, redirect_path, sender_id)
 							VALUES ($1,$2, $3, $4) RETURNING notification_id`
-      const inserted_id = await pool.query(sql, [profile_id, notification, `/profile/${session.userid}`, session.userid])
+        const inserted_id = await pool.query(sql, [profile_id, notification, `/profile/${session.userid}`, session.userid])
 
-      // Wait until Socket.IO implementation.
-      // sendNotification(session.userid, inserted_id.rows[0]['notification_id'], notification,
-      // profile_id, `/profile/${session.userid}`)
+        // Wait until Socket.IO implementation.
+        // sendNotification(session.userid, inserted_id.rows[0]['notification_id'], notification,
+        // profile_id, `/profile/${session.userid}`)
 
-      response.send(profileData)
-    } catch (error) {
-      response.send(false)
+        response.send(profileData)
+      } catch (error) {
+        response.send(false)
+      }
     }
   })
 }
