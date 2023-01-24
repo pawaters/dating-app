@@ -1,4 +1,5 @@
 import React from "react"
+import { useEffect, useState } from 'react'
 import "./style/App.css"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider, createTheme, Container, responsiveFontSizes } from "@mui/material"
@@ -6,7 +7,6 @@ import { Provider, useDispatch, useSelector } from "react-redux"
 import store from "./store/store"
 
 // Joonas's meddling
-import { useEffect } from 'react'
 import signUpService from './services/signUpService'
 
 //pages & components
@@ -34,6 +34,8 @@ import { getProfileData } from "./reducers/profileReducer"
 import { getUserLists } from "./reducers/userListsReducer"
 import { getUserNotifications } from "./reducers/userNotificationsReducer"
 import { setUser } from "./reducers/userReducer"
+import { changeOnlineUsers } from './reducers/onlineUsersReducer'
+import socketIO from 'socket.io-client'; //npm install socket.io-client
 
 const font = "'Readex Pro', sans-serif";
 
@@ -65,15 +67,15 @@ const theme = createTheme({
 })
 
 const App = () => {
-    // const [socket, setSocket] = useState(null)
-    // const [socketConnected, setSocketConnected] = useState(false)
+    const [socket, setSocket] = useState(null)
+    const [socketConnected, setSocketConnected] = useState(false)
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
 
     // SOCKET SETUP TO UPDATE
-    // useEffect(() => {
-    //     setSocket(socketIO('http://localhost:3001'))
-    // }, [])
+    useEffect(() => {
+        setSocket(socketIO('http://localhost:3001'))
+    }, [])
 
     useEffect(() => {
         // Will have to see if this works in hard reset conditions too.
