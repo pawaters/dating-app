@@ -16,6 +16,7 @@ const { pgUser, pgPassword, pgDatabase, pgHost, EMAIL_ADDRESS, EMAIL_PASSWORD } 
 // middleware
 app.use(cors())
 app.use(express.json())
+app.use('/images', express.static('./images')) // to serve static files to path /images, from images folder
 app.use(session({
   secret: 'secret',
   saveUninitialized: true,
@@ -50,7 +51,7 @@ var transporter = nodemailer.createTransport({
 // Think about adding fieldname to naming if necessary.
 const storage = multer.diskStorage({
   destination: (request, file, callbackFunction) => {
-    callbackFunction(null, './images')
+    callbackFunction(null, 'images/')
   },
   filename: (request, file, callbackFunction) => {
     console.log('file: ', file)

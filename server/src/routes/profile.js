@@ -241,6 +241,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
     })
 
     app.post('/api/profile/setprofilepic', upload.single('file'), async (request, response) => {
+        console.log('Made it here!')
         const session = request.session
         const picture = 'http://localhost:3000/images/' + request.file.filename
         if (session.userid) {

@@ -26,16 +26,16 @@ module.exports = function (app, pool, bcrypt) {
 
         const createTables = async () => {
             // With params: const execute = async (query, params = []) => {
-            const execute = async (query, tableName) => {
+            const execute = async (query, queryDescription) => {
                 try {
                     const res = await pool.query(query)
                     if (res) {
-                        console.log(`Query '${tableName}' has run without errors.`)
+                        console.log(`Query '${queryDescription}' has run without errors.`)
                         // console.log('res here: ', res)
                         // console.log('query here: ', query)
                     }
                 } catch (error) {
-                    console.error(`An error occurred when running the query ${tableName}: `, error, 'END OF ERROR MESSAGE')
+                    console.error(`An error occurred when running the query ${queryDescription}: `, error, 'END OF ERROR MESSAGE')
                 }
             }
 
@@ -194,36 +194,36 @@ module.exports = function (app, pool, bcrypt) {
 
                 execute(`
                 CREATE OR REPLACE FUNCTION calculate_distance(lat1 float, lon1 float, lat2 float, lon2 float, units varchar)
-                RETURNS float AS $dist$
+                RETURNS float AS $distance$
                 	DECLARE
-                		dist float = 0;
+                		distance float = 0;
                 		radlat1 float;
                 		radlat2 float;
                 		theta float;
                 		radtheta float;
                 	BEGIN
                 		IF lat1 = lat2 AND lon1 = lon2
-                			THEN RETURN dist    ;
+                			THEN RETURN distance;
                 		ELSE
                 			radlat1 = pi() * lat1 / 180;
                 			radlat2 = pi() * lat2 / 180;
                 			theta = lon1 - lon2;
                 			radtheta = pi() * theta / 180;
-                			dist = (sin(radlat1) * sin(radlat2)) + (cos(radlat1) * cos(radlat2) * cos(radtheta));
+                			distance = (sin(radlat1) * sin(radlat2)) + (cos(radlat1) * cos(radlat2) * cos(radtheta));
                                 
-                			IF dist > 1 THEN dist = 1; END IF;
+                			IF distance > 1 THEN distance = 1; END IF;
                                 
-                			dist = acos(dist);
-                			dist = dist * 180 / pi();
-                			dist = dist * 60 * 1.1515;
+                			distance = acos(distance);
+                			distance = distance * 180 / pi();
+                			distance = distance * 60 * 1.1515;
                                 
-                			IF units = 'K' THEN dist = dist * 1.609344; END IF;
-                			IF units = 'N' THEN dist = dist * 0.8684; END IF;
+                			IF units = 'K' THEN distance = distance * 1.609344; END IF;
+                			IF units = 'N' THEN distance = distance * 0.8684; END IF;
                                 
-                			RETURN dist;
+                			RETURN distance;
                 		END IF;
                 	END;
-                $dist$ LANGUAGE plpgsql;
+                $distance$ LANGUAGE plpgsql;
                 `, "Creation of the GPS distance function"),
             ])
         }
