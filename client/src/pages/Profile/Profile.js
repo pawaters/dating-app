@@ -41,6 +41,13 @@ const Profile = () => {
         getData()
     }, [dispatch])
 
+    const profilePicture = {
+		width: '100%',
+		aspectRatio: '1/1',
+		borderRadius: '50%',
+		objectFit: 'scale-down',
+	}
+
     if (isLoading) {
         return <Loader text= "Getting profile data ..."/>
     }
@@ -160,11 +167,11 @@ const Profile = () => {
                     }}
                 >
                     <Box sx={{ width: '200px', display: 'inline-block' }}>
-                        {/* TODO: replace source with backend */}
-                        <Avatar 
-                            src='https://v3.mui.com/static/images/avatar/1.jpg' 
-                            sx={{ width: 156, height: 156 }}
-                        />
+                            <Avatar 
+                                src={profile_pic}
+                                alt='profile'
+                                style={profilePicture}
+                            />
                     </Box> 
                     <Box>
                         <Typography variant='h2'>
