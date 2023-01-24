@@ -165,7 +165,7 @@ require('./src/routes/login.js')(app, pool, bcrypt)
 require('./src/routes/profile.js')(app, pool, upload, fs, path, bcrypt)
 require('./src/routes/signup.js')(app, pool, bcrypt, transporter, crypto)
 require('./src/routes/tableSetup.js')(app, pool)
-require('./src/routes/browsing.js')(app, pool)
+require('./src/routes/browsing.js')(app, pool, transporter, socketIO)
 // require('./src/routes/resetpassword.js')(app, pool)
 
 app.listen(config.PORT, () => {

@@ -9,9 +9,9 @@ module.exports = function (app, pool, bcrypt) {
       // To ponder: do we actually need to join users with user_settings because at this point we just need created accounts?
       const userInfo = await pool.query(
         `SELECT * FROM users
-                LEFT JOIN user_settings
-                ON users.id = user_settings.user_id
-                WHERE username = $1`,
+        LEFT JOIN user_settings
+        ON users.id = user_settings.user_id
+        WHERE username = $1`,
         [username]
       )
       if (userInfo.rows.length === 0) {

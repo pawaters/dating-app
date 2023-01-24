@@ -26,16 +26,16 @@ module.exports = function (app, pool, bcrypt) {
 
         const createTables = async () => {
             // With params: const execute = async (query, params = []) => {
-            const execute = async (query, queryDescription) => {
+            const execute = async (query, taskDescription) => {
                 try {
                     const res = await pool.query(query)
                     if (res) {
-                        console.log(`Query '${queryDescription}' has run without errors.`)
+                        console.log(`Query '${taskDescription}' has run without errors.`)
                         // console.log('res here: ', res)
                         // console.log('query here: ', query)
                     }
                 } catch (error) {
-                    console.error(`An error occurred when running the query ${queryDescription}: `, error, 'END OF ERROR MESSAGE')
+                    console.error(`An error occurred when running the query ${taskDescription}: `, error, 'END OF ERROR MESSAGE')
                 }
             }
 
@@ -190,7 +190,7 @@ module.exports = function (app, pool, bcrypt) {
 
                 execute(`
                 SET TIME ZONE 'Europe/Helsinki';
-                `, 'Setting the timezone'),
+                `, 'Setting the timezone to Europe/Helsinki'),
 
                 execute(`
                 CREATE OR REPLACE FUNCTION calculate_distance(lat1 float, lon1 float, lat2 float, lon2 float, units varchar)
