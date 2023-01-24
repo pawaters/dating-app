@@ -192,14 +192,14 @@ const Profile = () => {
                 </Stack>
                 <Stack justifyContent="center" alignItems="flex-start" mb={2} spacing={2}>
                     <Button>
-                        <label>Change profile picture : </label>
+                        <label>   Change profile picture : </label>
                         <input type="file" name="file" id="set_profilepic" accept="image/jpeg, image/png, image/jpg" onChange={setProfilePicture}></input>
                     </Button>
                     <Button>
-                        <label>Add new picture : </label>
+                        <label>   Add new picture : </label>
                         <input type="file" name="file" id="image_upload" accept="image/jpeg, image/png, image/jpg" onChange={uploadImage}></input>
                     </Button>
-                    <Button variant='contained' onClick={() => deleteUser(userid)}> Delete user </Button>
+                    <Button variant='outlined' onClick={() => deleteUser(userid)}>Delete user </Button>
                 </Stack>
             </Paper>
         </Container>
