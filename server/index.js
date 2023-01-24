@@ -23,6 +23,12 @@ app.use(session({
   resave: true
 }))
 
+const socketIO = require('socket.io')(http, {
+	cors: {
+		origin: "http://localhost:3000"
+	}
+});
+
 // POSTGRES SETUP
 const Pool = require('pg').Pool
 
