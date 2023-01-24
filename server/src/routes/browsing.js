@@ -20,6 +20,9 @@ module.exports = (app, pool) => {
     const min_distance = request.body.min_distance
     const max_distance = request.body.max_distance
 
+    console.log('session.userid: ', session.userid)
+    console.log('session.location: ', session.location)
+
     if (session.userid && session.location) {
       try {
         var sql = `SELECT id, username, firstname, lastname, gender, age,
@@ -41,20 +44,38 @@ module.exports = (app, pool) => {
 						      AND age BETWEEN $2 and $3 AND total_pts BETWEEN $4 and $5
 						      AND calculate_distance($6, $7, ip_location[0], ip_location[1], 'K') BETWEEN $8 and $9
 						      ORDER BY username ASC;`
-        var sortingFilter =
+        var { rows } =
           await pool.query(sql, [session.userid, min_age, max_age, min_fame, max_fame,
           session.location.x, session.location.y, min_distance, max_distance, true])
 
         // Check rows if not working.
-        for (let i = 0; i < sortingFilter.rows.length; i++) {
-          var sql = `SELECT tag_content FROM tags WHERE tagged_users @> array[$1]::INT[]`
-          sortingFilter.tags = await pool.query(sql, [sortingFilter.rows[i].id])
-          for (let j = 0; j < tags.length; j++) {
-            tags[j] = tags[j].tag_content
+        console.log('Made it here.')
+
+        const doTags = async (rows) => {
+          for (let i = 0; i < rows.length; i++) {
+            var sql = `SELECT tag_content FROM tags WHERE tagged_users @> array[$1]::INT[]`
+            var { rows: tags } = await pool.query(sql, [rows[i].id])
+            for (let j = 0; j < tags.length; j++) {
+              tags[j] = tags[j].tag_content
+            }
+            rows[i].tags = tags
           }
-          rows[i].tags = tags
+          return (rows)
         }
-        response.send(sortingFilter.rows)
+        doTags(rows)
+          .then((rows) => {
+            console.log('rows in browsing/sorted: ', rows)
+            response.send(rows)
+          })
+        // for (let i = 0; i < sortingFilter.rows.length; i++) {
+        //   var sql = `SELECT tag_content FROM tags WHERE tagged_users @> array[$1]::INT[]`
+        //   sortingFilter.tags = await pool.query(sql, [sortingFilter.rows[i].id])
+        //   for (let j = 0; j < tags.length; j++) {
+        //     tags[j] = tags[j].tag_content
+        //   }
+        //   sortingFilter.rows[i].tags = tags
+        // }
+        // response.send(sortingFilter.rows)
       } catch (error) {
         response.send("Fetching users failed")
       }
