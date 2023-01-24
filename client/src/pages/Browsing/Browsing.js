@@ -174,13 +174,15 @@ const Browsing = () => {
 		dispatch(resetNotification())
 		const getUsers = async () => {
 			const allUsers = await browsingService.getUsers(browsingCriteria)
+			console.log("BROWSING.JS - browsingCriteria: ", browsingCriteria)
+			console.log("BROWSING.JS - allUsers = ", allUsers)
 			if (allUsers && allUsers !== "Fetching users failed") {
 				setUsers(allUsers)
 				setLoading(false);
 			} else {
 				dispatch(changeSeverity('error'))
 				dispatch(changeNotification('Fetching users failed'))
-				navigate('/profile')
+				// navigate('/profile')
 			}
 			await dispatch(getUserLists())
 		}
