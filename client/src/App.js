@@ -16,7 +16,7 @@ import Browsing from "./pages/Browsing/Browsing"
 import Onboarding from "./pages/Profile/Onboarding"
 import Profile from "./pages/Profile/Profile"
 import Swipe from "./pages/Swipe"
-// import RedirectPage from "./pages/RedirectPage"
+import RedirectPage from "./pages/RedirectPage"
 import Navbar from "./components/navbar/Navbar"
 import Login from "./pages/Login/Login"
 import ResetPassword, { SetNewPassword } from "./pages/Login/ResetPassword"
@@ -67,8 +67,8 @@ const theme = createTheme({
 })
 
 const App = () => {
-    const [socket, setSocket] = useState(null)
-    const [socketConnected, setSocketConnected] = useState(false)
+    // const [socket, setSocket] = useState(null)
+    // const [socketConnected, setSocketConnected] = useState(false)
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
 
@@ -83,9 +83,9 @@ const App = () => {
     //     socket.on('connect', () => {
     //         setSocketConnected(true)
     //     })
-    //     // socket.on('connect', () => {
-    //     //     setSocketConnected(true)
-    //     // })
+    //     socket.on('connect', () => {
+    //         setSocketConnected(true)
+    //     })
 
     // })
 
@@ -111,7 +111,7 @@ const App = () => {
             <ThemeProvider theme={theme}>
                 <Container sx={{ height: 'auto', width: 'auto' }}>
                     <BrowserRouter>
-                        {/* <RedirectPage /> */}
+                        <RedirectPage />
                         <Navbar />
                         <Routes>
                             <Route path={"/"} element={<Home />} />
