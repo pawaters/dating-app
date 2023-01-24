@@ -41,13 +41,6 @@ const Profile = () => {
         getData()
     }, [dispatch])
 
-    // const profilePicture = {
-	// 	width: '100%',
-	// 	aspectRatio: '1/1',
-	// 	borderRadius: '50%',
-	// 	objectFit: 'scale-down',
-	// }
-
     if (isLoading) {
         return <Loader text= "Getting profile data ..."/>
     }
@@ -171,7 +164,6 @@ const Profile = () => {
                                 src={profile_pic}
                                 alt='profile'
                                 sx={{ width: 112, height: 112 }}
-                                // style={profilePicture}
                             />
                     </Box> 
                     <Box>
