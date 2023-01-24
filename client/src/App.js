@@ -73,15 +73,27 @@ const App = () => {
     const user = useSelector(state => state.user)
 
     // SOCKET SETUP TO UPDATE
-    useEffect(() => {
-        setSocket(socketIO('http://localhost:3001'))
-    }, [])
+    // useEffect(() => {
+    //     setSocket(socketIO('http://localhost:3001'))
+    // }, [])
 
-    useEffect(() => {
-        // Will have to see if this works in hard reset conditions too.
-        signUpService.setupTables()
-        console.log('Ran through the table creation and population sequence at tableSetup.js.')
-    }, [])
+    // useEffect(() => {
+    //     if (!socket) return
+
+    //     socket.on('connect', () => {
+    //         setSocketConnected(true)
+    //     })
+    //     // socket.on('connect', () => {
+    //     //     setSocketConnected(true)
+    //     // })
+
+    // })
+
+    // useEffect(() => {
+    //     // Will have to see if this works in hard reset conditions too.
+    //     signUpService.setupTables()
+    //     console.log('Ran through the table creation and population sequence at tableSetup.js.')
+    // }, [])
 
     useEffect(() => {
         dispatch(getProfileData())
