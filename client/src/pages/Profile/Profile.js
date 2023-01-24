@@ -41,12 +41,12 @@ const Profile = () => {
         getData()
     }, [dispatch])
 
-    const profilePicture = {
-		width: '100%',
-		aspectRatio: '1/1',
-		borderRadius: '50%',
-		objectFit: 'scale-down',
-	}
+    // const profilePicture = {
+	// 	width: '100%',
+	// 	aspectRatio: '1/1',
+	// 	borderRadius: '50%',
+	// 	objectFit: 'scale-down',
+	// }
 
     if (isLoading) {
         return <Loader text= "Getting profile data ..."/>
@@ -167,10 +167,11 @@ const Profile = () => {
                     }}
                 >
                     <Box sx={{ width: '200px', display: 'inline-block' }}>
-                            <Avatar 
+                            <Avatar
                                 src={profile_pic}
                                 alt='profile'
-                                style={profilePicture}
+                                sx={{ width: 112, height: 112 }}
+                                // style={profilePicture}
                             />
                     </Box> 
                     <Box>
