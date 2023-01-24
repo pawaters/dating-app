@@ -178,7 +178,7 @@ const Profile = () => {
                             return <ProfileInput key={index} text={key} input={ProfileData[key]} />
                         })}
                 </Grid>
-                <Grid sx={{mb:2}} wrap="wrap" >
+                <Grid sx={{mb:2}} >
                     <Typography>
                         {"Biography: "}
                     </Typography>
