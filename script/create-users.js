@@ -84,9 +84,7 @@ const createUser = async (gender) => {
         verified: true
     }
     users.push(user)
-    let sql = `INSERT INTO users (username, firstname, lastname, email, password, verified)
-				VALUES ($1, $2, $3, $4, $5, $6
-				RETURNING *`
+    let sql = `INSERT INTO users (username, firstname, lastname, email, password, verified) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
     let values = [user.username, user.firstname, user.lastname, user.email, user.password, user.verified]
     let res = await pool.query(sql, values)
     return (res.rows[0].id)
@@ -94,22 +92,22 @@ const createUser = async (gender) => {
 
 const createUserSettings = async (id, gender) => {
     let age = getRandomInt(18, 120)
-    let sexual_pref = ["bisexual", "male", "female"].random()
+    let sexual_pref = ["bisexual", "male", "female"][getRandomInt(0,2)]
     let biography = faker.lorem.paragraph()
     //  \/ 5000 km away at max, true for units in kilometers instead of miles.
     let coordinates = faker.address.nearbyGPSCoordinate([60.179700, 24.934400], 5000, true)
     let city_data = await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${coordinates[0]}&longitude=${coordinates[1]}&localityLanguage=en`)
     // Look into Google API, if needed.
     // let city_data = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates[0]},${coordinates[1]}&key=${process.env.GOOGLE_API}`)
-    let user_location
-    let length = city_data.data.results.length
-    if (city_data.data.results.length > 0)
-        user_location = city_data.data.results[length - 1].formatted_address
-    else
-        user_location = "Unknown"
+    let user_location = "Helsinki"
+    // let length = city_data.data.results.length
+    // if (city_data.data.results.length > 0)
+    //     user_location = city_data.data.results[length - 1].formatted_address
+    // else
+    //     user_location = "Unknown"
     console.log('user_location: ', user_location)
     let ip_location = `(${coordinates[0]}, ${coordinates[1]})`
-    let sql = `INSERT INTO user_settings (user_id, gender, age, sexual_pref, biography, user_location, ip_location)*
+    let sql = `INSERT INTO user_settings (user_id, gender, age, sexual_pref, biography, user_location, ip_location)
 				VALUES ($1, $2, $3, $4, $5, $6, $7)`
     let values = [id, gender, age, sexual_pref, biography, user_location, ip_location]
     await pool.query(sql, values)
@@ -127,9 +125,9 @@ const createTags = async (id) => {
     let tag_count = getRandomInt(1, 5)
     let user_tags = []
     for (let i = 0; i < tag_count; i++) {
-        let tag = tags.random()
+        let tag = tags[getRandomInt(0, tag_count)]
         while (user_tags.includes(tag)) {
-            tag = tags.random()
+            tag = tags[getRandomInt(0, tag_count)]
         }
         user_tags.push(tag)
         tag.tagged_user.push(id)
@@ -165,9 +163,9 @@ const createPicture = async (id) => {
 const initUsers = async () => {
     console.log("User creation started")
 
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 10; i++) {
         console.log("Creating user: " + i)
-        let gender = gender_list.random()
+        let gender = "male"
         let id = await createUser(gender)
         await createUserSettings(id, gender)
         let tag_count = await createTags(id)
