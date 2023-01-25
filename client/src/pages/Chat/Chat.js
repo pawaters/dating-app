@@ -68,15 +68,15 @@ const Chat = ({ socket }) => {
 		}
 	}, [params.id, connections, room, joinRoom])
 
-	// useEffect(() => {
-	// 	socket.on('receive_message', (data) => {
-	// 		dispatch(addMessage(data))
-	// 	})
-	// 	return () => socket.off('receive_message')
-	// }, [socket, dispatch])
+	useEffect(() => {
+		socket.on('receive_message', (data) => {
+			dispatch(addMessage(data))
+		})
+		return () => socket.off('receive_message')
+	}, [socket, dispatch])
 
 	// if (!connections) return <Loader text="Loading chat..." />
-	// if (connections.length === 0) return <NoConnections />
+	if (connections.length === 0) return <NoConnections />
 
     return <NoConnections />
 
