@@ -191,7 +191,7 @@ const Profile = () => {
                         <Typography variant='h2'>
                             {profileData.Username}
                         </Typography>
-                        <Typography variant='h5'>Fame rating: {profileData.fame_rating} </Typography>
+                        <Typography variant='h5'>Fame rating: {profileData.total_pts} </Typography>
                     </Box>
                 </Grid>
                 <Grid container spacing={1} direction="row" sx={{mb:2}}>
