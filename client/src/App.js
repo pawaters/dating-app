@@ -107,6 +107,15 @@ const App = () => {
 
     }, [dispatch])
 
+    useEffect(() => {
+		if (user && socketConnected) {
+			if (user.name && socket.id) {
+				socket.emit("newUser", { name: user.name, id: user.id, socketID: socket.id })
+				socket.emit("join_notification", { id: user.id })
+			}
+		}
+	}, [user, socket, socketConnected])
+
     return (
             <ThemeProvider theme={theme}>
                 <Container sx={{ height: 'auto', width: 'auto' }}>
