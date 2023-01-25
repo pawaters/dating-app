@@ -231,27 +231,27 @@ module.exports = (app, pool, transporter, socketIO) => {
                       RETURNING connection_id`
             const room_id = await pool.query(sql, [session.userid, liked_person_id])
 
-            // Generate and send a notification to both parties.
-            var notification = `User ${session.username} also likes you!
-										You are now able to chat with each other.`
-            var sql = `INSERT INTO notifications (user_id, notification_text, redirect_path, sender_id)
-									    VALUES ($1, $2, $3, $4)
-                      RETURNING notification_id`
-            var inserted_notif_id = await pool.query(
-              sql, [liked_person_id, notification, `/chat/${room_id.rows[0]['connection_id']}`, session.userid])
+            // // Generate and send a notification to both parties.
+            // var notification = `User ${session.username} also likes you!
+						// 				You are now able to chat with each other.`
+            // var sql = `INSERT INTO notifications (user_id, notification_text, redirect_path, sender_id)
+						// 			    VALUES ($1, $2, $3, $4)
+            //           RETURNING notification_id`
+            // var inserted_notif_id = await pool.query(
+            //   sql, [liked_person_id, notification, `/chat/${room_id.rows[0]['connection_id']}`, session.userid])
 
-            sendNotification(session.userid, inserted_notif_id.rows[0]['notification_id'], notification,
-              liked_person_id, `/chat/${room_id.rows[0]['connection_id']}`)
+            // // sendNotification(session.userid, inserted_notif_id.rows[0]['notification_id'], notification,
+            // //   liked_person_id, `/chat/${room_id.rows[0]['connection_id']}`)
 
-            notification = `Click here to start chatting with your new match!`
-            var sql = `INSERT INTO notifications (user_id, notification_text, redirect_path, sender_id)
-						          VALUES ($1, $2, $3, $4)
-                      RETURNING notification_id`
-            inserted_notif_id = await pool.query(sql, [session.userid, notification,
-            `/chat/${room_id.rows[0]['connection_id']}`, liked_person_id])
+            // notification = `Click here to start chatting with your new match!`
+            // var sql = `INSERT INTO notifications (user_id, notification_text, redirect_path, sender_id)
+						//           VALUES ($1, $2, $3, $4)
+            //           RETURNING notification_id`
+            // inserted_notif_id = await pool.query(sql, [session.userid, notification,
+            // `/chat/${room_id.rows[0]['connection_id']}`, liked_person_id])
 
-            sendNotification(liked_person_id, inserted_notif_id.rows[0]['notification_id'], notification,
-              session.userid, `/chat/${room_id.rows[0]['connection_id']}`)
+            // // sendNotification(liked_person_id, inserted_notif_id.rows[0]['notification_id'], notification,
+            // //   session.userid, `/chat/${room_id.rows[0]['connection_id']}`)
 
             var sql = `UPDATE fame_rates SET connection_pts = connection_pts + 5, total_pts = total_pts + 5
 								      WHERE (user_id = $1 AND connection_pts <= 25 )
@@ -263,11 +263,11 @@ module.exports = (app, pool, transporter, socketIO) => {
             var sql = `INSERT INTO notifications (user_id, notification_text, redirect_path, sender_id)
                       VALUES ($1, $2, $3, $4)
                       RETURNING notification_id`
-            var inserted_notif_id = await pool.query(
-              sql, [liked_person_id, notification, `/profile/${session.userid}`, session.userid])
+            // var inserted_notif_id = await pool.query(
+            //   sql, [liked_person_id, notification, `/profile/${session.userid}`, session.userid])
 
-            sendNotification(session.userid, inserted_notif_id.rows[0]['notification_id'], notification,
-              liked_person_id, `/profile/${session.userid}`)
+            // sendNotification(session.userid, inserted_notif_id.rows[0]['notification_id'], notification,
+            //   liked_person_id, `/profile/${session.userid}`)
           }
         }
         response.status(200).send("Liked user!")
