@@ -9,23 +9,14 @@ import { changeSeverity } from "../../reducers/severityReducer"
 import signUpService from "../../services/signUpService"
 import { setUser } from "../../reducers/userReducer"
 import { getProfileData } from '../../reducers/profileReducer'
-
 import { getUserLists } from "../../reducers/userListsReducer"
 import { getUserNotifications } from "../../reducers/userNotificationsReducer"
 
 
-const Login = () => {
+const Login = ({ socket }) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-    // const user = useSelector(state => state.user)
-
-    // useEffect(() => {
-    //     if (user !== undefined && user !== '') {
-    //         navigate('/profile')
-    //     }
-    // }, [user, navigate])
 
     const submitUser = async (event) => {
         event.preventDefault()
@@ -34,7 +25,6 @@ const Login = () => {
             username: event.target.username.value,
             password: event.target.password.value,
         }
-        // console.log('user:', user, 'empty space right before that?')
 
         signUpService.logInUser(signedUpUser)
             .then(result => {
@@ -43,12 +33,12 @@ const Login = () => {
                     console.log("sessionUser sent to dispatch", sessionUser)
                     dispatch(setUser(sessionUser))
 
-                    // dispatch(getUserLists())
-                    // dispatch(getUserNotifications())
+                    dispatch(getUserLists())
+                    dispatch(getUserNotifications())
                     dispatch(getProfileData())
                     dispatch(changeNotification(""))
-                    // socket.emit("newUser", { name: result.username, id: result.userid, socketID: socket.id })
-                    // socket.emit("join_notification", { id: result.userid })
+                    socket.emit("newUser", { name: result.username, id: result.userid, socketID: socket.id })
+                    socket.emit("join_notification", { id: result.userid })
 
                 } else {
                     dispatch(changeSeverity('error'))

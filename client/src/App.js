@@ -98,7 +98,7 @@ const App = () => {
     useEffect(() => {
         dispatch(getProfileData())
         dispatch(getUserLists())
-        // dispatch(getUserNotifications())
+        dispatch(getUserNotifications())
         signUpService
             .getSessionUser()
             .then(result => {
