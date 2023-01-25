@@ -121,10 +121,10 @@ const App = () => {
                 <Container sx={{ height: 'auto', width: 'auto' }}>
                     <BrowserRouter>
                         <RedirectPage />
-                        <Navbar />
+                        <Navbar socket={socket} />
                         <Routes>
                             <Route path={"/"} element={<Home />} />
-                            <Route path={"/login"} element={<Login />} />
+                            <Route path={"/login"} element={<Login socket={socket} />} />
                             <Route path={"/login/resetpassword"} element={<ResetPassword />} />
                             <Route path={"/resetpassword/:user/:code"} element={<SetNewPassword />} />
                             <Route path={"/signup"} element={<Signup />} />
@@ -135,10 +135,10 @@ const App = () => {
                             <Route path={"/onboarding"} element={<Onboarding />} />
                             <Route path={"/profile"} element={<Profile />} />
                             <Route path={"/profile/:id"} element={<UserProfile />} />
-                            <Route path={"/chat"} element={<Chat />} />
-                            <Route path={"/chat/:id"} element={<Chat />} />
-                            <Route path={"/swipe"} element={<Swipe />} />
-                            <Route path={"/logout"} element={<Logout />} />
+                            <Route path={"/chat"} element={<Chat socket={socket} />} />
+                            <Route path={"/chat/:id"} element={<Chat socket={socket} />} />
+                            {/* <Route path={"/swipe"} element={<Swipe />} /> */}
+                            <Route path={"/logout"} element={<Logout socket={socket}/>} />
                             <Route path='*' element={<PathNotExists />} />
                         </Routes>
                     </BrowserRouter>
