@@ -168,6 +168,6 @@ require('./src/routes/tableSetup.js')(app, pool)
 require('./src/routes/browsing.js')(app, pool, transporter, socketIO)
 // require('./src/routes/resetpassword.js')(app, pool)
 
-app.listen(config.PORT, () => {
+http.listen(config.PORT, () => {
   logger.info(` Server running on port ${config.PORT}`)
 })

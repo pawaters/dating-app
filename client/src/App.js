@@ -67,15 +67,15 @@ const theme = createTheme({
 })
 
 const App = () => {
-    // const [socket, setSocket] = useState(null)
-    // const [socketConnected, setSocketConnected] = useState(false)
+    const [socket, setSocket] = useState(null)
+    const [socketConnected, setSocketConnected] = useState(false)
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
 
     // SOCKET SETUP TO UPDATE
-    // useEffect(() => {
-    //     setSocket(socketIO('http://localhost:3001'))
-    // }, [])
+    useEffect(() => {
+        setSocket(socketIO('http://localhost:3001'))
+    }, [])
 
     // useEffect(() => {
     //     if (!socket) return
