@@ -1,7 +1,7 @@
 module.exports = (app, pool, transporter, socketIO) => {
   app.get('/api/browsing/tags', async (request, response) => {
     try {
-      var sql = 'SELECT tag_content FROM tags ORDER BY tag_id ASC;'
+      var sql = 'SELECT * FROM tags ORDER BY tag_content ASC;'
       const result = await pool.query(sql)
       response.send(result.rows)
     } catch (error) {
@@ -111,7 +111,7 @@ module.exports = (app, pool, transporter, socketIO) => {
 
   const sendNotification = async (userid, notification_id, notification, target_id, redirect_address) => {
     if (userid) {
-      var sql = `SELECT picture_data FROM user_pictures
+      var sql = `SELECT picture_data FROM user_images
                 WHERE user_id = $1
                 AND profile_pic = $2;`
       const { rows } = await pool.query(sql, [userid, true])
@@ -196,8 +196,8 @@ module.exports = (app, pool, transporter, socketIO) => {
     const session = request.session
 
     if (session.userid) {
-      var sql = `SELECT picture_data FROM user_pictures
-						WHERE user_id = $1 AND profile_pic = 'YES'`
+      var sql = `SELECT picture_data FROM user_images
+						    WHERE user_id = $1 AND profile_pic = 'YES'`
       const { rows } = await pool.query(sql, [session.userid])
       if (rows[0] == undefined || rows[0]['picture_data'] === null || rows[0]['picture_data'] === 'http://localhost:3000/images/default_pic.jpg') {
         return response.send('No profile picture')
