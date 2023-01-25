@@ -1,8 +1,6 @@
 const { faker } = require('@faker-js/faker')
-const { Pool } = require('pg').Pool
+const Pool = require('pg').Pool
 const axios = require('axios')
-
-const { pgUser, pgPassword, pgDatabase, pgHost } = require('../server/src/utils/config')
 
 const users = []
 const gender_list = ["male", "female", "other"]
@@ -14,10 +12,11 @@ const tag_names = ["dogs", "cinema", "travel", "books", "astrology", "islam",
     "psychology", "cats", "baking", "long walks on the beach", "hinduism"]
 
 const pool = new Pool({
-    user: pgUser,
-    password: pgPassword,
-    host: pgHost,
-    database: pgDatabase
+    user: 'postgres',
+    password: 'postgres',
+    host: 'db',
+    database: 'matcha',
+    port: 5432
 })
 
 function getRandomInt(min, max) {
@@ -98,7 +97,7 @@ const createUserSettings = async (id, gender) => {
     let sexual_pref = ["bisexual", "male", "female"].random()
     let biography = faker.lorem.paragraph()
     //  \/ 5000 km away at max, true for units in kilometers instead of miles.
-    let coordinates = faker.address.nearbyGPSCoordinate([60.180929, 24.957521], 5000, true)
+    let coordinates = faker.address.nearbyGPSCoordinate([60.179700, 24.934400], 5000, true)
     let city_data = await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${coordinates[0]}&longitude=${coordinates[1]}&localityLanguage=en`)
     // Look into Google API, if needed.
     // let city_data = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates[0]},${coordinates[1]}&key=${process.env.GOOGLE_API}`)
