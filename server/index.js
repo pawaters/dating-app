@@ -166,7 +166,7 @@ require('./src/routes/profile.js')(app, pool, upload, fs, path, bcrypt)
 require('./src/routes/signup.js')(app, pool, bcrypt, transporter, crypto)
 require('./src/routes/tableSetup.js')(app, pool)
 require('./src/routes/browsing.js')(app, pool, transporter, socketIO)
-// require('./src/routes/resetpassword.js')(app, pool)
+require('./src/routes/resetpassword.js')(app, pool, bcrypt, transporter)
 
 http.listen(config.PORT, () => {
   logger.info(` Server running on port ${config.PORT}`)
