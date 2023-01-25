@@ -77,17 +77,18 @@ const App = () => {
         setSocket(socketIO('http://localhost:3001'))
     }, [])
 
-    // useEffect(() => {
-    //     if (!socket) return
+    useEffect(() => {
 
-    //     socket.on('connect', () => {
-    //         setSocketConnected(true)
-    //     })
-    //     socket.on('connect', () => {
-    //         setSocketConnected(true)
-    //     })
-
-    // })
+        console.log("APP.JS l82 :", socket)
+		if (!socket) return
+		socket.on('connect', () => {
+			setSocketConnected(true)
+            console.log("APP.JS l86 :", socketConnected)
+		})
+		// socket.on('newUserResponse', (data) => {
+		// 	dispatch(changeOnlineUsers(data))
+		// })
+	}, [socket, dispatch, user])
 
     // useEffect(() => {
     //     // Will have to see if this works in hard reset conditions too.
