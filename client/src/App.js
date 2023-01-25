@@ -83,7 +83,6 @@ const App = () => {
 		if (!socket) return
 		socket.on('connect', () => {
 			setSocketConnected(true)
-            console.log("APP.JS l86 :", socketConnected)
 		})
 		// socket.on('newUserResponse', (data) => {
 		// 	dispatch(changeOnlineUsers(data))
