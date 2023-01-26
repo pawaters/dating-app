@@ -6,6 +6,7 @@ Prep: Please make sure you have [Docker](https://www.docker.com/) installed on y
 1. Clone the repository
 3. Run `docker-compose up --build` in the root directory
 4. Go to `localhost:3000` in your browser, `localhost:3001` for the backend
+5. To create users, go to script folder, Run `docker-compose up --build`. All fake user's password is Matcha1!
 
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
