@@ -17,7 +17,7 @@ PGHOST=db
 
 # For email functions
 EMAIL_ADDRESS={INCLUDE YOUR GMAIL ADDRESS}
-EMAIL_PASSWORD={INCLUDE YOUR GMAIL ADDRESS}
+EMAIL_PASSWORD={INCLUDE YOUR GMAIL PASSWORD}
 
 4. Run `docker-compose up --build` in the root directory 
 5. Go to `localhost:3000` in your browser, `localhost:3001` for the backend
