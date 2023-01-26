@@ -2,5 +2,5 @@ node_modules
 .DS_Store
 pgdata
 .env
-/server/images
-# .env - to be ignored when delivering final version
+/server/images/
+!*/server/images/default_profilepic.jpeg

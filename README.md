@@ -20,7 +20,7 @@ EMAIL_ADDRESS={INCLUDE YOUR GMAIL ADDRESS}
 EMAIL_PASSWORD={INCLUDE YOUR GMAIL PASSWORD}
 
 4. Run `docker-compose up --build` in the root directory (takes 1 minutes)
-5. To create users, go to /script folder, Run `docker-compose up --build` (takes 1 minute). All fake user's password is Matcha1!
+5. To create users, go to /script folder, Run `docker-compose up --build` (takes 1-2 minutes). All fake users' password is Matcha1!
 5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin
 
 Bonus: if needed, clean up your docker if the "lack of space" docker error comes up:
@@ -30,7 +30,7 @@ Careful, this will delete all you have going on your docker.
 
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
-Socket.io for chat. OAuth. Docker (docker-compose).
+Socket.io for chat. Docker (docker-compose).
 Architectural pattern: MVC. Basically:
 - View: The react front end part, each with components for each part
 - Models: db. (no ORM like Mongoose allowed by subject)
