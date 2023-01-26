@@ -81,7 +81,7 @@ const createUser = async (gender) => {
         lastname,
         email,
         password: "$2b$10$7yu6NkhTEk/uCAsXjlAS2OqpDQ2mSP0WQCNtKK97hCDDC12xB/PPa", // password: Matcha1!
-        verified: true
+        verified: "YES"
     }
     users.push(user)
     let sql = `INSERT INTO users (username, firstname, lastname, email, password, verified) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
@@ -156,7 +156,7 @@ const createPicture = async (id) => {
     let image = await getImageUrl(picture)
     let sql = `INSERT INTO user_images (user_id, picture_data, profile_pic)
 				VALUES ($1, $2, $3)`
-    let values = [id, image, true]
+    let values = [id, image, 'YES']
     await pool.query(sql, values)
 }
 

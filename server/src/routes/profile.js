@@ -257,7 +257,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 if (profilePic.rows.length === 0) {
                     sql = `INSERT INTO user_images (user_id, picture_data, profile_pic)
                             VALUES ($1, $2, $3);`
-                    await pool.query(sql, [session.userid, picture, true])
+                    await pool.query(sql, [session.userid, picture, 'YES'])
                     console.log('session.userid: ', session.userid)
 
                     // Fame rates. Adjust later.

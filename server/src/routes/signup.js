@@ -22,7 +22,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
       // Generating a code and checking for the very unlikely case that a similar code already exists in the table.
       while (true) {
         var code = crypto.randomBytes(20).toString('hex')
-        var sql = 'SELECT * FROM verification_codes WHERE code = $1;'
+        var sql = 'SELECT * FROM email_verify WHERE code = $1;'
         const result = await pool.query(sql, [code])
         if (result.rows.length < 1) {
           console.log('No duplicates found for the newly generated code in signup.')
@@ -35,7 +35,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
 
       retrieveUserId()
         .then((user_id) => {
-          var sql = 'INSERT INTO verification_codes (user_id, email, code) VALUES ($1, $2, $3);'
+          var sql = 'INSERT INTO email_verify (user_id, email, verify_code) VALUES ($1, $2, $3);'
           pool.query(sql, [user_id, email, code])
         }).catch(error => {
           console.log(error)
@@ -100,10 +100,10 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
 
     const checkCodeValidity = async () => {
       var sql =
-        `SELECT * FROM verification_codes
+        `SELECT * FROM email_verify
                 INNER JOIN users
-                ON verification_codes.user_id = users.id
-                WHERE verification_codes.code = $1;`
+                ON email_verify.user_id = users.id
+                WHERE email_verify.code = $1;`
       const result = await pool.query(sql, [code])
       if (result.rows.length < 1) {
         throw ('Invalid code!')
@@ -115,7 +115,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
     const setAccountVerified = () => {
       var sql = 'UPDATE users SET verified = \'true\' WHERE username = $1'
       pool.query(sql, [username])
-      var sql = 'DELETE FROM verification_codes WHERE code = $1'
+      var sql = 'DELETE FROM email_verify WHERE code = $1'
       pool.query(sql, [code])
     }
 

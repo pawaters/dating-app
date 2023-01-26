@@ -83,13 +83,13 @@ module.exports = function (app, pool, bcrypt) {
                 `, "Creation of the table 'tags'"),
 
                 execute(`
-                CREATE TABLE IF NOT EXISTS verification_codes (
+                CREATE TABLE IF NOT EXISTS email_verify (
                     running_id SERIAL NOT NULL PRIMARY KEY,
                     user_id INT NOT NULL,
                     email VARCHAR(255) NOT NULL,
                     code VARCHAR(255) NOT NULL
                 );
-                `, "Creation of the table 'verification_codes'"),
+                `, "Creation of the table 'email_verify'"),
 
                 execute(`
                 CREATE TABLE IF NOT EXISTS user_images (
