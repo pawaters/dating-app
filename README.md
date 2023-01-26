@@ -7,7 +7,6 @@ Prep: Please make sure you have [Docker](https://www.docker.com/) installed on y
 2. Start your docker app (or install if needed)
 3. Add a .env file at the root directory level with the following info:
 
-# Database
 PORT=3001
 PGUSER=postgres
 PGDATABASE=matcha
@@ -15,7 +14,6 @@ PGPASSWORD=postgres
 PGPORT=5432
 PGHOST=db
 
-# For email functions
 EMAIL_ADDRESS={INCLUDE YOUR GMAIL ADDRESS}
 EMAIL_PASSWORD={INCLUDE YOUR GMAIL PASSWORD}
 
