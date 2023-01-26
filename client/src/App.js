@@ -84,9 +84,9 @@ const App = () => {
 		socket.on('connect', () => {
 			setSocketConnected(true)
 		})
-		// socket.on('newUserResponse', (data) => {
-		// 	dispatch(changeOnlineUsers(data))
-		// })
+		socket.on('newUserResponse', (data) => {
+			dispatch(changeOnlineUsers(data))
+		})
 	}, [socket, dispatch, user])
 
     // useEffect(() => {
