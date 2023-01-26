@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS user_settings (
 	FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS user_pictures (
+CREATE TABLE IF NOT EXISTS user_images (
 	picture_id SERIAL NOT NULL PRIMARY KEY,
 	user_id INT NOT NULL,
 	picture_data TEXT NOT NULL,

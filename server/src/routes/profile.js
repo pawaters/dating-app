@@ -386,7 +386,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 }
             }
             try {
-                sql = "DELETE FROM user_pictures WHERE user_id = $1 AND picture_id = $2"
+                sql = "DELETE FROM user_images WHERE user_id = $1 AND picture_id = $2"
                 await pool.query(sql, [session.userid, picture_id])
                 sql = `UPDATE fame_rates SET picture_pts = picture_pts - 2, total_pts = total_pts - 2
                         WHERE user_id = $1 AND picture_pts > 0`
@@ -407,7 +407,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 var sql = `SELECT notification_id AS id, notifications.user_id AS user_id, sender_id,
 							notification_text AS text, redirect_path, read, picture_data AS picture
 							FROM notifications
-							INNER JOIN user_pictures ON notifications.sender_id = user_pictures.user_id AND user_pictures.profile_pic = $1
+							INNER JOIN user_images ON notifications.sender_id = user_images.user_id AND user_images.profile_pic = $1
 							WHERE notifications.user_id = $2
 							ORDER BY notification_id DESC`
                 const notificationsData = await pool.query(sql, [true, session.userid])
