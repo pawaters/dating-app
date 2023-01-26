@@ -3,10 +3,16 @@
 **Installation:**
 Prep: Please make sure you have [Docker](https://www.docker.com/) installed on your machine.
 
-1. Clone the repository
+1. Clone the repository: git clone https://github.com/pawaters/matcha
+2. Start your docker app (or install if needed)
 3. Run `docker-compose up --build` in the root directory
 4. Go to `localhost:3000` in your browser, `localhost:3001` for the backend
 5. To create users, go to script folder, Run `docker-compose up --build`. All fake user's password is Matcha1!
+
+Bonus: if needed, clean up your docker if the "lack of space" docker error comes up:
+- docker volume rm $(docker volume ls -qf dangling=true)
+- docker rmi $(docker images -a -q) 
+Careful, this will delete all you have going on your docker.
 
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
