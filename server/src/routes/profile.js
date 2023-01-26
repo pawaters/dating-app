@@ -114,10 +114,10 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     var tags_of_user = await pool.query(sql, [session.userid])
                     profileData.tags = tags_of_user.rows.map(tag => tag.tag_content)
                     // Profile pic and other pics' retrieval below:
-                    sql = `SELECT * FROM user_images
+                    sql = `SELECT * FROM user_pictures
                             WHERE user_id = $1
                             AND profile_pic = $2;`
-                    const profile_pic = await pool.query(sql, [session.userid, true])
+                    const profile_pic = await pool.query(sql, [session.userid, 'YES'])
                     if (profile_pic.rows[0]) {
                         profileData.profile_pic = profile_pic.rows[0]
                         console.log('profileData.profile_pic: ', profileData.profile_pic)
@@ -125,11 +125,11 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                         console.log('profile pic NOT found.')
                         profileData.profile_pic = { user_id: session.userid, picture_data: null }
                     }
-                    sql = `SELECT * FROM user_images
+                    sql = `SELECT * FROM user_pictures
                             WHERE user_id = $1
                             AND profile_pic = $2
                             ORDER BY picture_id ASC;`
-                    const other_pics = await pool.query(sql, [session.userid, false])
+                    const other_pics = await pool.query(sql, [session.userid, 'NO'])
                     if (other_pics.rows) {
                         profileData.other_pictures = other_pics.rows
                     }
@@ -249,13 +249,13 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 return response.send('The maximum size for uploaded images is 5 megabytes.')
             }
             try {
-                var sql = `SELECT * FROM user_images
+                var sql = `SELECT * FROM user_pictures
                             WHERE user_id = $1
                             AND profile_pic = $2;`
-                const profilePic = await pool.query(sql, [session.userid, true])
+                const profilePic = await pool.query(sql, [session.userid, 'YES'])
                 // We check for an existing profile picture.
                 if (profilePic.rows.length === 0) {
-                    sql = `INSERT INTO user_images (user_id, picture_data, profile_pic)
+                    sql = `INSERT INTO user_pictures (user_id, picture_data, profile_pic)
                             VALUES ($1, $2, $3);`
                     await pool.query(sql, [session.userid, picture, 'YES'])
                     console.log('session.userid: ', session.userid)
@@ -283,10 +283,10 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                         })
                     }
                     // We set the profile picture
-                    sql = `UPDATE user_images SET picture_data = $1
+                    sql = `UPDATE user_pictures SET picture_data = $1
                             WHERE user_id = $2
                             AND profile_pic = $3`
-                    await pool.query(sql, [picture, session.userid, true])
+                    await pool.query(sql, [picture, session.userid, 'YES'])
                 }
                 response.send(true)
             } catch (error) {
@@ -304,13 +304,13 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 return response.send('The maximum size for uploaded images is 5 megabytes.')
             }
             try {
-                var sql = `SELECT * FROM user_images
+                var sql = `SELECT * FROM user_pictures
                     WHERE user_id = $1;`
                 const number_of_images = await pool.query(sql, [session.userid])
                 if (number_of_images.rows.length < 5) {
-                    sql = `INSERT INTO user_images (user_id, picture_data, profile_pic)
+                    sql = `INSERT INTO user_pictures (user_id, picture_data, profile_pic)
                         VALUES ($1, $2, $3);`
-                    await pool.query(sql, [session.userid, picture, false])
+                    await pool.query(sql, [session.userid, picture, 'NO'])
                     sql = `UPDATE fame_rates SET picture_pts = picture_pts + 2, total_pts = total_pts + 2
 					    WHERE user_id = $1 AND picture_pts < 10 AND total_pts <= 98`
 
@@ -369,7 +369,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         if (session.userid) {
             const picture_id = request.params.id
 
-            var sql = `SELECT * FROM user_images WHERE user_id = $1 AND picture_id = $2`
+            var sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND picture_id = $2`
             var pictureData = await pool.query(sql, [session.userid, picture_id])
 
             var oldImageData = pictureData.rows[0]['picture_data']
@@ -386,7 +386,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 }
             }
             try {
-                sql = "DELETE FROM user_images WHERE user_id = $1 AND picture_id = $2"
+                sql = "DELETE FROM user_pictures WHERE user_id = $1 AND picture_id = $2"
                 await pool.query(sql, [session.userid, picture_id])
                 sql = `UPDATE fame_rates SET picture_pts = picture_pts - 2, total_pts = total_pts - 2
                         WHERE user_id = $1 AND picture_pts > 0`
@@ -407,10 +407,10 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 var sql = `SELECT notification_id AS id, notifications.user_id AS user_id, sender_id,
 							notification_text AS text, redirect_path, read, picture_data AS picture
 							FROM notifications
-							INNER JOIN user_images ON notifications.sender_id = user_images.user_id AND user_images.profile_pic = $1
+							INNER JOIN user_pictures ON notifications.sender_id = user_pictures.user_id AND user_pictures.profile_pic = $1
 							WHERE notifications.user_id = $2
 							ORDER BY notification_id DESC`
-                const notificationsData = await pool.query(sql, [true, session.userid])
+                const notificationsData = await pool.query(sql, ['YES', session.userid])
                 response.send(notificationsData.rows)
             } catch (error) {
                 console.log('Something went wrong when trying to retrieve notifications: ', error)
@@ -445,7 +445,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 var sql = `UPDATE notifications SET read = $1
                             WHERE user_id = $2
                             AND notification_id = $3`
-                pool.query(sql, [true, session.userid, notification_id])
+                pool.query(sql, ['YES', session.userid, notification_id])
                 response.send(true)
             } catch (error) {
                 console.log(error)
@@ -461,7 +461,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
             try {
                 var sql = `UPDATE notifications SET read = $1
                             WHERE user_id = $2`
-                pool.query(sql, [true, session.userid])
+                pool.query(sql, ['YES', session.userid])
                 response.send(true)
             } catch (error) {
                 console.log(error)

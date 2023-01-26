@@ -22,7 +22,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
       // Generating a code and checking for the very unlikely case that a similar code already exists in the table.
       while (true) {
         var code = crypto.randomBytes(20).toString('hex')
-        var sql = 'SELECT * FROM email_verify WHERE code = $1;'
+        var sql = 'SELECT * FROM email_verify WHERE verify_code = $1;'
         const result = await pool.query(sql, [code])
         if (result.rows.length < 1) {
           console.log('No duplicates found for the newly generated code in signup.')
@@ -113,9 +113,9 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
     }
 
     const setAccountVerified = () => {
-      var sql = 'UPDATE users SET verified = \'true\' WHERE username = $1'
+      var sql = 'UPDATE users SET verified = \'YES\' WHERE username = $1'
       pool.query(sql, [username])
-      var sql = 'DELETE FROM email_verify WHERE code = $1'
+      var sql = 'DELETE FROM email_verify WHERE verify_code = $1'
       pool.query(sql, [code])
     }
 

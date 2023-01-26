@@ -92,13 +92,13 @@ module.exports = function (app, pool, bcrypt) {
                 `, "Creation of the table 'email_verify'"),
 
                 execute(`
-                CREATE TABLE IF NOT EXISTS user_images (
+                CREATE TABLE IF NOT EXISTS user_pictures (
                     picture_id SERIAL NOT NULL PRIMARY KEY,
                     user_id INT NOT NULL,
                     picture_data TEXT NOT NULL,
                     profile_pic BOOLEAN NOT NULL DEFAULT false
                 );
-                `, "Creation of the table 'user_images'"),
+                `, "Creation of the table 'user_pictures'"),
 
                 execute(`
                 CREATE TABLE IF NOT EXISTS fame_rates (

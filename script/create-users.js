@@ -154,7 +154,7 @@ const createPicture = async (id) => {
     // Replace 'people' with what we want the user pics to be about.
     let picture = faker.image.people(640, 640, true)
     let image = await getImageUrl(picture)
-    let sql = `INSERT INTO user_images (user_id, picture_data, profile_pic)
+    let sql = `INSERT INTO user_pictures (user_id, picture_data, profile_pic)
 				VALUES ($1, $2, $3)`
     let values = [id, image, 'YES']
     await pool.query(sql, values)

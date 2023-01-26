@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS email_verify (
 	running_id SERIAL NOT NULL PRIMARY KEY,
 	user_id INT NOT NULL,
 	email VARCHAR(255) NOT NULL,
-	verify_code INT NOT NULL,
+	verify_code VARCHAR(255) NOT NULL,
 	expire_time TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + interval '30 minutes'),
 	FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS user_settings (
 	FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS user_images (
+CREATE TABLE IF NOT EXISTS user_pictures (
 	picture_id SERIAL NOT NULL PRIMARY KEY,
 	user_id INT NOT NULL,
 	picture_data TEXT NOT NULL,

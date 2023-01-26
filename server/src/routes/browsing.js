@@ -50,8 +50,8 @@ module.exports = (app, pool, transporter, socketIO) => {
 						      FROM users
 						      INNER JOIN user_settings ON users.id = user_settings.user_id
 						      INNER JOIN fame_rates ON users.id = fame_rates.user_id
-						      LEFT JOIN user_images ON users.id = user_images.user_id
-                    AND user_images.profile_pic = $10
+						      LEFT JOIN user_pictures ON users.id = user_pictures.user_id
+                    AND user_pictures.profile_pic = $10
 						      LEFT JOIN blocks ON (users.id = blocks.target_id
                     AND blocks.blocker_id = $1)
                     OR (users.id = blocks.blocker_id AND blocks.target_id = $1)
@@ -63,7 +63,7 @@ module.exports = (app, pool, transporter, socketIO) => {
 						      ORDER BY username ASC;`
         var { rows } =
           await pool.query(sql, [session.userid, min_age, max_age, min_fame, max_fame,
-          session.location.x, session.location.y, min_distance, max_distance, true])
+          session.location.x, session.location.y, min_distance, max_distance, 'YES'])
 
         // Check rows if not working.
         console.log('Made it here.')
@@ -111,10 +111,10 @@ module.exports = (app, pool, transporter, socketIO) => {
 
   const sendNotification = async (userid, notification_id, notification, target_id, redirect_address) => {
     if (userid) {
-      var sql = `SELECT picture_data FROM user_images
+      var sql = `SELECT picture_data FROM user_pictures
                 WHERE user_id = $1
                 AND profile_pic = $2;`
-      const { rows } = await pool.query(sql, [userid, true])
+      const { rows } = await pool.query(sql, [userid, 'YES'])
       let picture = rows[0] ? rows[0]['picture_data'] : null
       var data = {
         id: notification_id,
@@ -155,8 +155,8 @@ module.exports = (app, pool, transporter, socketIO) => {
         // Test if this needs a promise operation.
         profileData.tags = requestedUserTags.rows.map(tag => tag.tag_content)
 
-        sql = `SELECT * FROM user_images WHERE user_id = $1 AND profile_pic = $2`
-        const profile_pic = await pool.query(sql, [profile_id, true])
+        sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = $2`
+        const profile_pic = await pool.query(sql, [profile_id, 'YES'])
 
         if (profile_pic.rows[0]) {
           profileData.profile_pic = profile_pic.rows[0]
@@ -165,8 +165,8 @@ module.exports = (app, pool, transporter, socketIO) => {
           profileData.profile_pic = { user_id: session.userid, picture_data: null }
         }
 
-        sql = `SELECT * FROM user_images WHERE user_id = $1 AND profile_pic = $2`
-        const other_pics = await pool.query(sql, [profile_id, false])
+        sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = $2`
+        const other_pics = await pool.query(sql, [profile_id, 'YES'])
 
         // Check with console.log, if you should use other_pics.rows.length instead.
         if (other_pics.rows) {
@@ -196,7 +196,7 @@ module.exports = (app, pool, transporter, socketIO) => {
     const session = request.session
 
     if (session.userid) {
-      var sql = `SELECT picture_data FROM user_images
+      var sql = `SELECT picture_data FROM user_pictures
 						    WHERE user_id = $1 AND profile_pic = 'YES'`
       const { rows } = await pool.query(sql, [session.userid])
       if (rows[0] == undefined || rows[0]['picture_data'] === null || rows[0]['picture_data'] === 'http://localhost:3000/images/default_pic.jpg') {
