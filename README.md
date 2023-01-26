@@ -19,9 +19,9 @@ PGHOST=db
 EMAIL_ADDRESS={INCLUDE YOUR GMAIL ADDRESS}
 EMAIL_PASSWORD={INCLUDE YOUR GMAIL PASSWORD}
 
-4. Run `docker-compose up --build` in the root directory 
-5. Go to `localhost:3000` in your browser, `localhost:3001` for the backend
-6. To create users, go to script folder, Run `docker-compose up --build`. All fake user's password is Matcha1!
+4. Run `docker-compose up --build` in the root directory (takes 1 minutes)
+5. To create users, go to /script folder, Run `docker-compose up --build` (takes 1 minute). All fake user's password is Matcha1!
+5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin
 
 Bonus: if needed, clean up your docker if the "lack of space" docker error comes up:
 - docker volume rm $(docker volume ls -qf dangling=true)
