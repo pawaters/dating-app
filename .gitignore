@@ -3,3 +3,4 @@ node_modules
 pgdata
 .env
 /server/images/*
+!*server/images/default_profilepic.jpeg
