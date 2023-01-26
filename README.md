@@ -5,9 +5,23 @@ Prep: Please make sure you have [Docker](https://www.docker.com/) installed on y
 
 1. Clone the repository: git clone https://github.com/pawaters/matcha
 2. Start your docker app (or install if needed)
-3. Run `docker-compose up --build` in the root directory
-4. Go to `localhost:3000` in your browser, `localhost:3001` for the backend
-5. To create users, go to script folder, Run `docker-compose up --build`. All fake user's password is Matcha1!
+3. Add a .env file at the root directory level with the following info:
+
+# Database
+PORT=3001
+PGUSER=postgres
+PGDATABASE=matcha
+PGPASSWORD=postgres
+PGPORT=5432
+PGHOST=db
+
+# For email functions
+EMAIL_ADDRESS={INCLUDE YOUR GMAIL ADDRESS}
+EMAIL_PASSWORD={INCLUDE YOUR GMAIL ADDRESS}
+
+4. Run `docker-compose up --build` in the root directory 
+5. Go to `localhost:3000` in your browser, `localhost:3001` for the backend
+6. To create users, go to script folder, Run `docker-compose up --build`. All fake user's password is Matcha1!
 
 Bonus: if needed, clean up your docker if the "lack of space" docker error comes up:
 - docker volume rm $(docker volume ls -qf dangling=true)
