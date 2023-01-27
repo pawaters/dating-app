@@ -82,3 +82,10 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 **Summary of task division**
 - Pierre: Frontend, organisation
 - Joonas: Backend, testing
+
+**Bonuses**
+- Little green point when a user is live and connected in browsing view
+- Browsing sorted by country by default
+- jira organisation
+- UI theme
+- Reduc store
