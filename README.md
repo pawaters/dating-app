@@ -17,9 +17,13 @@ PGHOST=db
 EMAIL_ADDRESS={INCLUDE YOUR GMAIL ADDRESS}
 EMAIL_PASSWORD={INCLUDE YOUR GMAIL PASSWORD}
 
-4. Run `docker-compose up --build` in the root directory (takes 1 minutes)
-5. To create users, go to /script folder, Run `docker-compose up --build` (takes 1-2 minutes). All fake users' password is Matcha1!
-5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin
+5.  Run `docker-compose up --build` in the root directory (takes 1 minutes)
+6. To create users, go to /script folder, add a .env file at the root of /script folder, with the following info:
+
+GOOGLE_API={INCLUDE YOUR GOOGLE API with geocode API activated}
+
+8. Run `docker-compose up --build` (takes 1-2 minutes). All fake users' password is Matcha1!
+9. Go to `localhost:3000` in your browser, `localhost:8080` for db admin
 
 Bonus: if needed, clean up your docker if the "lack of space" docker error comes up:
 - docker volume rm $(docker volume ls -qf dangling=true)
