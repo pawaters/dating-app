@@ -28,6 +28,8 @@ GOOGLE_API={INCLUDE YOUR GOOGLE API with geocode API activated}
 Bonus: if needed, clean up your docker if the "lack of space" docker error comes up:
 - docker volume rm $(docker volume ls -qf dangling=true)
 - docker rmi $(docker images -a -q) 
+- docker system prune --all --force
+
 Careful, this will delete all you have going on your docker.
 
 **Stack:**
