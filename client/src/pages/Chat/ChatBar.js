@@ -28,7 +28,7 @@ const ChatBar = ({ connections, joinRoom }) => {
 
 	return (
 		<Paper className='chat_sidebar' theme={theme} color='gray'>
-			<Typography variant='h5' align='center' sx={{ pt: 1 }}>Messages</Typography>
+			<Typography variant='h5' align='center' sx={{ pt: 1 }}>Connected</Typography>
 			<Box sx={{ p: 1 }} >
 				<Box>
 					{connections.map(user => {

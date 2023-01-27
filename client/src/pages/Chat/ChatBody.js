@@ -15,7 +15,11 @@ const ChatBody = ({ connections }) => {
 	useEffect(() => {
 		if (room !== '') {
 			chatService.getRoomMessages(room)
-				.then(data => dispatch(setMessages(data)))
+				.then(
+					data => dispatch(setMessages(data),
+					console.log("chatbody.js l20 data:", data),
+					console.log("chatbody.js l19 room:", room)
+					))
 		}
 	}, [room, dispatch])
 
@@ -25,16 +29,16 @@ const ChatBody = ({ connections }) => {
 			align='center'
 			sx={{ p: 2 }}
 		>
-			Choose your Matcha!
+			Find someone to chat to!
 		</Typography>
 	)
 
 	return (
 		<>
 			<div>
-				<Typography variant='h5'>Find your true love</Typography>
+				<Typography variant='h5'>Messages</Typography>
 			</div>
-
+			{/* //what if no messages? */}
 			{messages.map(message => {
 				if (message.name === user.name) {
 					return (
