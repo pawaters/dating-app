@@ -19,6 +19,10 @@ const pool = new Pool({
     port: 5432
 })
 
+Array.prototype.random = function () {
+	return this[Math.floor((Math.random() * this.length))];
+}
+
 function getRandomInt(min, max) {
     min = Math.ceil(min)
     max = Math.floor(max)
@@ -92,7 +96,7 @@ const createUser = async (gender) => {
 
 const createUserSettings = async (id, gender) => {
     let age = getRandomInt(18, 120)
-    let sexual_pref = ["bisexual", "male", "female"][getRandomInt(0,2)]
+    let sexual_pref = ["bisexual", "male", "female"].random()
     let biography = faker.lorem.paragraph()
     //  \/ 5000 km away at max, true for units in kilometers instead of miles.
     let coordinates = faker.address.nearbyGPSCoordinate([60.179700, 24.934400], 5000, true)
@@ -125,9 +129,9 @@ const createTags = async (id) => {
     let tag_count = getRandomInt(1, 5)
     let user_tags = []
     for (let i = 0; i < tag_count; i++) {
-        let tag = tags[getRandomInt(0, tag_count)]
+        let tag = tags.random()
         while (user_tags.includes(tag)) {
-            tag = tags[getRandomInt(0, tag_count)]
+            tag = tags.random()
         }
         user_tags.push(tag)
         tag.tagged_user.push(id)
@@ -165,7 +169,7 @@ const initUsers = async () => {
 
     for (let i = 0; i < 500; i++) {
         console.log("Creating user: " + i)
-        let gender = "male"
+        let gender = gender_list.random()
         let id = await createUser(gender)
         await createUserSettings(id, gender)
         let tag_count = await createTags(id)
