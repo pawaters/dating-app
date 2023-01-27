@@ -87,6 +87,8 @@ const App = () => {
 		socket.on('newUserResponse', (data) => {
 			dispatch(changeOnlineUsers(data))
 		})
+        // socket.emit('message', (data))
+        // socket.on('message')
 	}, [socket, dispatch, user])
 
     // useEffect(() => {
