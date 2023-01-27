@@ -7,9 +7,9 @@ import chatService from '../../services/chatService'
 import ChatBar from './ChatBar'
 import ChatBody from './ChatBody'
 import ChatFooter from './ChatFooter'
-// import Loader from '../Loader'
 import { changeRoom } from '../../reducers/roomReducer'
 import { useParams } from 'react-router-dom'
+import Loader from '../../components/Loader'
 
 const NoConnections = () => {
 	return (
@@ -55,6 +55,7 @@ const Chat = ({ socket }) => {
 	useEffect(() => {
 		const getConnections = async () => {
 			const connections = await chatService.chat_connections()
+			console.log("chat.js l58 - connections =", connections)
 			setConnections(connections)
 		}
 		getConnections()
@@ -68,41 +69,39 @@ const Chat = ({ socket }) => {
 		}
 	}, [params.id, connections, room, joinRoom])
 
-	// useEffect(() => {
-	// 	socket.on('receive_message', (data) => {
-	// 		dispatch(addMessage(data))
-	// 	})
-	// 	return () => socket.off('receive_message')
-	// }, [socket, dispatch])
+	useEffect(() => {
+		socket.on('receive_message', (data) => {
+			dispatch(addMessage(data))
+		})
+		return () => socket.off('receive_message')
+	}, [socket, dispatch])
 
-	// if (!connections) return <Loader text="Loading chat..." />
-	// if (connections.length === 0) return <NoConnections />
+	if (!connections) return <Loader text="Loading chat..." />
+	if (connections.length === 0) return <NoConnections />
 
-    return <NoConnections />
-
-	// return (
-	// 	<Container maxWidth='lg' sx={{ pt: 5, pb: 5 }}>
-	// 		<Grid container spacing={2} direction={matches ? 'column' : 'row'}>
-	// 			<Grid item xs={4} md={4}>
-	// 				<ChatBar
-	// 					// connections={connections}
-	// 					// joinRoom={joinRoom}
-	// 				/>
-	// 			</Grid>
-	// 			<Grid item xs={8} md={8}>
-	// 				<Paper>
-	// 					<ChatBody
-	// 						// connections={connections}
-	// 					/>
-	// 					<ChatFooter
-	// 						// socket={socket}
-	// 						// connections={connections}
-	// 					/>
-	// 				</Paper>
-	// 			</Grid>
-	// 		</Grid>
-	// 	</Container>
-	// )
+	return (
+		<Container maxWidth='lg' sx={{ pt: 5, pb: 5 }}>
+			<Grid container spacing={2} direction={matches ? 'column' : 'row'}>
+				<Grid item xs={4} md={4}>
+					<ChatBar
+						connections={connections}
+						joinRoom={joinRoom}
+					/>
+				</Grid>
+				<Grid item xs={8} md={8}>
+					<Paper>
+						<ChatBody
+							connections={connections}
+						/>
+						<ChatFooter
+							socket={socket}
+							connections={connections}
+						/>
+					</Paper>
+				</Grid>
+			</Grid>
+		</Container>
+	)
 }
 
 export default Chat
