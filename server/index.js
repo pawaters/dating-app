@@ -5,12 +5,11 @@ const session = require('express-session')
 const nodemailer = require('nodemailer')
 const crypto = require('crypto')
 const bcrypt = require('bcrypt')
-const config = require('./src/utils/config')
-const logger = require('./src/utils/logger')
+const config = require('./config')
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
-const { pgUser, pgPassword, pgDatabase, pgHost, EMAIL_ADDRESS, EMAIL_PASSWORD } = require('./src/utils/config')
+const { pgUser, pgPassword, pgDatabase, pgHost, EMAIL_ADDRESS, EMAIL_PASSWORD } = require('./config')
 // const { getMaxListeners } = require('process')
 const http = require('http').Server(app) //required for socket to work
 
@@ -40,13 +39,6 @@ const pool = new Pool({
   database: pgDatabase
 })
 
-// Tables are created upon opening the home page of the app now. May need tweaking later. -JJ, Jan 9 2023
-// pool.on('connect', client => {
-// client
-// .query('CREATE TABLE IF NOT EXISTS test5 (users_id3 SERIAL PRIMARY KEY, first_name3 VARCHAR(255) NOT NULL);') // This is created under certain conditions.
-// .catch(err => console.log(err))
-// })
-
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -68,108 +60,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-// // For testing
-// let mailDetails = {
-// from: 'jamsa.joonas@gmail.com',
-// to: 'jamsa.joonas@gmail.com',
-// subject: 'Test mail',
-// text: 'Node.js testing mail.'
-// }
-
-// transporter.sendMail(mailDetails, function(err, data) {
-// if(err) {
-// console.log('Error Occurs')
-// } else {
-// console.log('Email sent successfully')
-// }
-// })
-
-//ROUTES CRUD
-
-//GET ALL USERS
-app.get('/users', async (request, response) => {
-  try {
-    // const allUsers = await pool.query('SELECT * FROM test_users')
-    const allUsers = await pool.query('SELECT * FROM test_users')
-    response.json(allUsers.rows)
-  } catch (err) {
-    console.error(err.message)
-  }
-})
-
-//GET A SPECIFIC USER
-app.get('/users/:id', async (request, response) => {
-  try {
-    const { id } = request.params
-    const user = await pool.query('SELECT * FROM test_users WHERE users_id = $1', [id])
-
-    response.json(user.rows[0])
-  } catch (err) {
-    console.error(err.message)
-  }
-})
-
-
-//CREATE A USER
-app.post('/users', async (request, response) => {
-
-  try {
-    const firstName = request.body.first_name
-
-    const newUser = await pool.query(
-      'INSERT INTO test_users (first_name) VALUES($1) RETURNING *',
-      [firstName]
-    )
-
-    response.json(newUser.rows[0])
-  } catch (err) {
-    console.error(err.message)
-  }
-})
-
-//UPDATE A USER - THERE FOR TESTING
-app.put('/users/:id', async (request, response) => {
-
-  try {
-    // define const we use
-    // const firstName = req.body.first_name
-    const { id } = request.params
-
-    // const with query result
-    // const updatedUser = await pool.query(
-    //   'UPDATE users SET first_name = $1 WHERE users_id = $2',
-    //   [firstName, id]
-    // )
-
-    response.json(id)
-
-  } catch (err) {
-    console.error(err.message)
-  }
-})
-
-//DELETE A USER - THERE FOR TESTING
-
-app.delete('/users/:id', async (request, response) => {
-  try {
-    const { id } = request.params
-    const deleteUser = await pool.query('DELETE FROM users WHERE users_id = $1',
-      [id])
-    response.json('user deleted')
-  } catch (err) {
-    console.error(err.message)
-  }
-})
-
-require('./src/routes/login.js')(app, pool, bcrypt)
-require('./src/routes/profile.js')(app, pool, upload, fs, path, bcrypt)
-require('./src/routes/signup.js')(app, pool, bcrypt, transporter, crypto)
-require('./src/routes/tableSetup.js')(app, pool)
-require('./src/routes/browsing.js')(app, pool, transporter, socketIO)
-require('./src/routes/resetpassword.js')(app, pool, bcrypt, transporter)
-require('./src/routes/chat_api.js')(app, pool)
-require('./src/routes/chat.js')(pool, socketIO)
+require('./routes/login.js')(app, pool, bcrypt)
+require('./routes/profile.js')(app, pool, upload, fs, path, bcrypt)
+require('./routes/signup.js')(app, pool, bcrypt, transporter, crypto)
+require('./routes/browsing.js')(app, pool, transporter, socketIO)
+require('./routes/resetpassword.js')(app, pool, bcrypt, transporter)
+require('./routes/chat_api.js')(app, pool)
+require('./routes/chat.js')(pool, socketIO)
 
 http.listen(config.PORT, () => {
-  logger.info(` Server running on port ${config.PORT}`)
+  console.log(` Server running on port ${config.PORT}`)
 })
