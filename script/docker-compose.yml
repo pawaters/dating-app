@@ -4,7 +4,7 @@ services:
   script:
     build: ./
     env_file:
-      - .env2
+      - .env
     volumes:
       - ./:/app
       - /app/node_modules
