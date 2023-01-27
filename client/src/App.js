@@ -4,9 +4,6 @@ import "./style/App.css"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider, createTheme, Container, responsiveFontSizes } from "@mui/material"
 import { Provider, useDispatch, useSelector } from "react-redux"
-import store from "./store/store"
-
-// Joonas's meddling
 import signUpService from './services/signUpService'
 
 //pages & components
@@ -15,7 +12,7 @@ import Signup from "./pages/Signup"
 import Browsing from "./pages/Browsing/Browsing"
 import Onboarding from "./pages/Profile/Onboarding"
 import Profile from "./pages/Profile/Profile"
-import Swipe from "./pages/Swipe"
+// import Swipe from "./pages/Swipe"
 import RedirectPage from "./pages/RedirectPage"
 import Navbar from "./components/navbar/Navbar"
 import Login from "./pages/Login/Login"
@@ -35,7 +32,8 @@ import { getUserLists } from "./reducers/userListsReducer"
 import { getUserNotifications } from "./reducers/userNotificationsReducer"
 import { setUser } from "./reducers/userReducer"
 import { changeOnlineUsers } from './reducers/onlineUsersReducer'
-import socketIO from 'socket.io-client'; //npm install socket.io-client
+import socketIO from 'socket.io-client'; 
+import Loader from "./components/Loader"
 
 const font = "'Readex Pro', sans-serif";
 
@@ -87,15 +85,7 @@ const App = () => {
 		socket.on('newUserResponse', (data) => {
 			dispatch(changeOnlineUsers(data))
 		})
-        // socket.emit('message', (data))
-        // socket.on('message')
 	}, [socket, dispatch, user])
-
-    // useEffect(() => {
-    //     // Will have to see if this works in hard reset conditions too.
-    //     signUpService.setupTables()
-    //     console.log('Ran through the table creation and population sequence at tableSetup.js.')
-    // }, [])
 
     useEffect(() => {
         dispatch(getProfileData())
@@ -117,6 +107,8 @@ const App = () => {
 			}
 		}
 	}, [user, socket, socketConnected])
+
+    if (!socketConnected) return <Loader text="Waiting for socket..." />
 
     return (
             <ThemeProvider theme={theme}>
