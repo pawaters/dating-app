@@ -108,7 +108,7 @@ const App = () => {
 		}
 	}, [user, socket, socketConnected])
 
-    if (!socketConnected) return <Loader text="Waiting for socket..." />
+    // if (!socketConnected) return <Loader text="Waiting for socket..." />
 
     return (
             <ThemeProvider theme={theme}>
