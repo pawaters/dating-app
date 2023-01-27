@@ -25,7 +25,7 @@ module.exports = (app, pool) => {
                     }
                 }
 
-                // Add to the previous array the username of the other person and their profile_pic
+                // Add to the previous array the username of the other person and their profile_pic for each user.
                 for (var i = 0; i < user_connection_info.length; i++) {
                     var chat_partner_id = user_connection_info[i].user_id 
                     sql = `SELECT username FROM users WHERE id = $1`
@@ -43,8 +43,8 @@ module.exports = (app, pool) => {
             } else {
                 response.send(false)
             }
-        } catch (err) {
-            console.log(err)
+        } catch (error) {
+            console.error(error)
         }
     })
 
@@ -63,8 +63,8 @@ module.exports = (app, pool) => {
             } else {
                 response.send(false)
             }
-        } catch (err) {
-            console.log(err)
+        } catch (error) {
+            console.error(error)
         }
     })
 
