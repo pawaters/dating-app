@@ -3,8 +3,8 @@ version: '3.8'
 services:
   script:
     build: ./
-    # env_file:
-    #   - .env
+    env_file:
+      - .env
     volumes:
       - ./:/app
       - /app/node_modules

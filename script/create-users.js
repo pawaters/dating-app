@@ -100,15 +100,14 @@ const createUserSettings = async (id, gender) => {
     let biography = faker.lorem.paragraph()
     //  \/ 5000 km away at max, true for units in kilometers instead of miles.
     let coordinates = faker.address.nearbyGPSCoordinate([60.179700, 24.934400], 5000, true)
-    let city_data = await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${coordinates[0]}&longitude=${coordinates[1]}&localityLanguage=en`)
-    // Look into Google API, if needed.
-    // let city_data = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates[0]},${coordinates[1]}&key=${process.env.GOOGLE_API}`)
-    let user_location = "Helsinki"
-    // let length = city_data.data.results.length
-    // if (city_data.data.results.length > 0)
-    //     user_location = city_data.data.results[length - 1].formatted_address
-    // else
-    //     user_location = "Unknown"
+    // let city_data = await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${coordinates[0]}&longitude=${coordinates[1]}&localityLanguage=en`)
+    let city_data = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates[0]},${coordinates[1]}&key=${process.env.GOOGLE_API}`)
+    let user_location
+    let length = city_data.data.results.length
+    if (city_data.data.results.length > 0)
+        user_location = city_data.data.results[length - 1].formatted_address
+    else
+        user_location = "Unknown"
     console.log('user_location: ', user_location)
     let ip_location = `(${coordinates[0]}, ${coordinates[1]})`
     let sql = `INSERT INTO user_settings (user_id, gender, age, sexual_pref, biography, user_location, ip_location)
