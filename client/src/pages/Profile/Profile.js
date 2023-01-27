@@ -3,7 +3,7 @@ import { Avatar, Button, Grid, Paper, Typography } from "@mui/material"
 import { Box, Container } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate} from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { getProfileData, setProfileData } from '../../reducers/profileReducer'
 import Loader from '../../components/Loader'
 import Onboarding from '../../pages/Profile/Onboarding'
@@ -70,38 +70,38 @@ const Profile = () => {
 		'Location:': profileData.user_location,
 		'GPS:': Object.values(profileData.ip_location).map((value, i) => ((i ? ', ' : '') + value)),
 		'Tags:': profileData.tags.map((tag, i) => ((i ? ', ' : '') + tag)),
-        // 'Users you have liked:': profileData.liked.map((liked, i) => {
-		// 	return (
-		// 		<Typography key={i}
-		// 			component={Link} to={`/profile/${liked.target_id}`}>
-		// 			{(i ? ', ' : '') + liked.username}
-		// 		</Typography>)
-		// }),
-		// 'Users who liked you:': profileData.likers.map((liker, i) => {
-		// 	return (
-		// 		<Typography key={i}
-		// 			component={Link} to={`/profile/${liker.liker_id}`}>
-		// 			{(i ? ', ' : '') + liker.username}
-		// 		</Typography>)
-		// }),
-		// 'Users who watched your profile:': profileData.watchers.map((watcher, i) => {
-		// 	return (
-		// 		<Typography key={i}
-		// 			component={Link} to={`/profile/${watcher.watcher_id}`}>
-		// 			{(i ? ', ' : '') + watcher.username}
-		// 		</Typography>)
-		// })
+        'Users you have liked:': profileData.liked.map((liked, i) => {
+			return (
+				<Typography key={i}
+					component={Link} to={`/profile/${liked.target_id}`}>
+					{(i ? ', ' : '') + liked.username}
+				</Typography>)
+		}),
+		'Users who liked you:': profileData.likers.map((liker, i) => {
+			return (
+				<Typography key={i}
+					component={Link} to={`/profile/${liker.liker_id}`}>
+					{(i ? ', ' : '') + liker.username}
+				</Typography>)
+		}),
+		'Users who watched your profile:': profileData.watchers.map((watcher, i) => {
+			return (
+				<Typography key={i}
+					component={Link} to={`/profile/${watcher.watcher_id}`}>
+					{(i ? ', ' : '') + watcher.username}
+				</Typography>)
+		})
     }
     // _______________________
 
     // //replace with a hook as this code might be repeated in other parts?
 
-    // const deleteImage = async (id) => {
-	// 	if (window.confirm("Are you sure you want to delete this picture?")) {
-	// 		await profileService.deletePicture(id)
-	// 		dispatch(getProfileData())
-	// 	}
-	// }
+    const deleteImage = async (id) => {
+		if (window.confirm("Are you sure you want to delete this picture?")) {
+			await profileService.deletePicture(id)
+			dispatch(getProfileData())
+		}
+	}
 
     // //replace with a hook as this code is repeated from other parts?
 

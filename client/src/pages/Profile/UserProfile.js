@@ -67,8 +67,8 @@ const UserProfile = () => {
 	const userLists = useSelector(state => state.userLists)
 	const [userData, setUserData] = useState([])
 	const params = useParams()
-	// const onlineUsers = useSelector(state => state.onlineUsers)
-	// const usernames = onlineUsers.map(user => user.name)
+	const onlineUsers = useSelector(state => state.onlineUsers)
+	const usernames = onlineUsers.map(user => user.name)
 
 	useEffect(() => {
 		const getData = async () => {
@@ -80,13 +80,13 @@ const UserProfile = () => {
 		getData()
 	}, [params, dispatch])
 
-	// if (isLoading) {
-	// 	return <Loader text="Getting user profile..." />
-	// }
+	if (isLoading) {
+		return <Loader text="Getting user profile..." />
+	}
 
-	// if (userData === false) {
-	// 	return <PathNotExists />
-	// }
+	if (userData === false) {
+		return <PathNotExists />
+	}
 
 	const other_pictures = userData.other_pictures
 
