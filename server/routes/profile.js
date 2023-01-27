@@ -10,7 +10,25 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         const biography = request.body.biography
         const tags_of_user = request.body.tags
 
-        // Validation for above values needs to be implemented here. Remember to do these with 'return response.send!'
+        if (!session.userid)
+            return response.send("User not signed in!")
+        if (gender !== 'male' && gender !== 'female' && gender !== 'other')
+            return response.send("Invalid gender!")
+        if (isNaN(age) || age < 18 || age > 120)
+            return response.send("Invalid age!")
+        if (location.length > 50)
+            return response.send("Maximum length for location is 50 characters.")
+        if (!location.match(/^[a-z, åäö-]+$/i))
+            return response.send("Invalid characters in location! Allowed characters are a-z, å, ä, ö, comma (,) and dash (-).")
+        if (isNaN(gps[0]) || isNaN(gps[1]) || gps[0] < -90 || gps[0] > 90 || gps[1] < -180 || gps[1] > 180)
+            return response.send("Invalid coordinates! The range for latitude is -90 to 90, and for longitude -180 to 180.")
+        if (sexual_pref !== 'male' && sexual_pref !== 'female' && sexual_pref !== 'bisexual')
+            return response.send("Invalid sexual preference!")
+        if (biography.length > 500)
+            return response.send("The maximum length for biography is 500 characters!")
+        const forbiddenTags = tags_of_user.filter(tag => !tag.match(/(?=^.{1,23}$)[a-z åäö-]+$/i))
+        if (forbiddenTags.length !== 0)
+            return response.send("Allowed characters in tags are a-z, å, ä, ö and dash (-). The maximum length of a tag is 23 characters.")
 
         if (session.userid) {
             try {
@@ -28,10 +46,8 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
 
                 // We are removing the user from all the tags they didn't pick as their tags. This is useful in profile settings, but is this necessary in Onboarding?
                 var sql = `UPDATE tags SET tagged_users = array_remove(tagged_users, $1)
-                            WHERE (array[LOWER($2)] @> array[LOWER(tag_content)]::TEXT[]) IS NOT TRUE
-                            RETURNING *;`
-                const removed = await pool.query(sql, [session.userid, tags_of_user])
-                console.log('removed.rows: ', removed.rows)
+                            WHERE (array[LOWER($2)] @> array[LOWER(tag_content)]::TEXT[]) IS NOT TRUE;`
+                await pool.query(sql, [session.userid, tags_of_user])
 
                 // We go through all of the tags that the user chose and see if they already exist in the table 'tags.'
                 // 'await Promise.all' ensures all of them are mapped before the code speeds on forward.
@@ -73,67 +89,67 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
     })
 
     app.get('/api/profile', async (request, response) => {
-		const sess = request.session
+        const session = request.session
 
-		if (sess.userid) {
-			try {
-				var sql = `SELECT * FROM users
+        if (session.userid) {
+            try {
+                var sql = `SELECT * FROM users
 						INNER JOIN user_settings ON users.id = user_settings.user_id
 						LEFT JOIN fame_rates ON users.id = fame_rates.user_id
 						WHERE users.id = $1`
-				var { rows } = await pool.query(sql, [sess.userid])
-				const { password: removed_password, ...profileData } = rows[0]
+                var { rows } = await pool.query(sql, [session.userid])
+                const { password: removed_password, ...profileData } = rows[0]
 
-				var sql = `SELECT * FROM tags WHERE tagged_users @> array[$1]::INT[]
+                sql = `SELECT * FROM tags WHERE tagged_users @> array[$1]::INT[]
 						ORDER BY tag_id`
-				var tags = await pool.query(sql, [sess.userid])
+                var tags_of_user = await pool.query(sql, [session.userid])
 
-				profileData.tags = tags.rows.map(tag => tag.tag_content)
+                profileData.tags = tags_of_user.rows.map(tag => tag.tag_content)
 
-				var sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'YES'`
-				var profile_pic = await pool.query(sql, [sess.userid])
+                sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'YES'`
+                var profile_pic = await pool.query(sql, [session.userid])
 
-				if (profile_pic.rows[0]) {
-					profileData.profile_pic = profile_pic.rows[0]
-				} else {
-					profileData.profile_pic = { user_id: sess.userid, picture_data: null }
-				}
+                if (profile_pic.rows[0]) {
+                    profileData.profile_pic = profile_pic.rows[0]
+                } else {
+                    profileData.profile_pic = { user_id: session.userid, picture_data: null }
+                }
 
-				var sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'NO' ORDER BY picture_id`
-				var other_pictures = await pool.query(sql, [sess.userid])
-				if (other_pictures.rows) {
-					profileData.other_pictures = other_pictures.rows
-				}
+                sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'NO' ORDER BY picture_id`
+                var other_pictures = await pool.query(sql, [session.userid])
+                if (other_pictures.rows) {
+                    profileData.other_pictures = other_pictures.rows
+                }
 
-				var sql = `SELECT target_id, username
+                sql = `SELECT target_id, username
 						FROM likes INNER JOIN users on likes.target_id = users.id
 						WHERE liker_id = $1
 						GROUP BY target_id, username`
-				const liked = await pool.query(sql, [sess.userid])
-				profileData.liked = liked.rows
+                const liked = await pool.query(sql, [session.userid])
+                profileData.liked = liked.rows
 
-				var sql = `SELECT watcher_id, username
+                sql = `SELECT watcher_id, username
 						FROM watches INNER JOIN users on watches.watcher_id = users.id
 						WHERE target_id = $1
 						GROUP BY watcher_id, username`
-				const watchers = await pool.query(sql, [sess.userid])
-				profileData.watchers = watchers.rows
+                const watchers = await pool.query(sql, [session.userid])
+                profileData.watchers = watchers.rows
 
-				var sql = `SELECT liker_id, username
+                sql = `SELECT liker_id, username
 						FROM likes INNER JOIN users on likes.liker_id = users.id
 						WHERE target_id = $1
 						GROUP BY liker_id, username`
-				const likers = await pool.query(sql, [sess.userid])
-				profileData.likers = likers.rows
+                const likers = await pool.query(sql, [session.userid])
+                profileData.likers = likers.rows
 
-				response.send(profileData)
-			} catch (error) {
-				response.send(false)
-			}
-		} else {
-			response.send(false)
-		}
-	})
+                response.send(profileData)
+            } catch (error) {
+                response.send(false)
+            }
+        } else {
+            response.send(false)
+        }
+    })
 
     app.post('/api/profile/editsettings', async (request, response) => {
         const session = request.session
@@ -243,13 +259,12 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     // path.resolve gets the absolute path of '../images'
                     const oldImage = path.resolve(__dirname, '../images') + oldImageData.replace('http://localhost:3000/images', '')
                     // fs.existsSync checks if the image already exists, so if there is already an image with same name
-                    // in the /images folder
+                    // in the images folder
                     console.log('Set a new profile picture to replace the old one.')
                     if (fs.existsSync(oldImage)) {
                         console.log('Went to fs.existSync')
                         // If it is, we remove it with fs.unlink
                         fs.unlink(oldImage, (error) => {
-                            console.log('called fs.unlink on: ', oldImage)
                             if (error) {
                                 console.error('fs.unlink failed: ', error)
                                 return
@@ -279,7 +294,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
             }
             try {
                 var sql = `SELECT * FROM user_pictures
-                    WHERE user_id = $1;`
+                        WHERE user_id = $1;`
                 const number_of_images = await pool.query(sql, [session.userid])
                 if (number_of_images.rows.length < 5) {
                     sql = `INSERT INTO user_pictures (user_id, picture_data, profile_pic)
@@ -292,7 +307,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     await pool.query(sql, [session.userid])
                     response.send(true)
                 } else {
-                    response.send('Your profile can have a maximum of five (5) pictures. Delete a picture to make room for more.')
+                    response.send('Your profile can have a maximum of 5 pictures. Delete a picture to make room for more.')
                 }
             } catch (error) {
                 console.error(error)
@@ -336,7 +351,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         }
     })
 
-    // Check if this needs to return something to the frontend on success.
     app.delete('/api/profile/deletepicture/:id', async (request, response) => {
         const session = request.session
 
@@ -404,7 +418,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 pool.query(sql, [session.userid])
                 response.send(true)
             } catch (error) {
-                console.log('Something went wrong when trying to clear notifications: ', error)
+                console.error('Something went wrong when trying to clear notifications: ', error)
                 response.send("Something went wrong when trying to clear notifications.")
             }
         }
@@ -422,8 +436,8 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 pool.query(sql, ['YES', session.userid, notification_id])
                 response.send(true)
             } catch (error) {
-                console.log(error)
-                response.send("Something went wrong when trying mark notification as 'read'")
+                console.error(error)
+                response.send("Something went wrong when trying mark the notification as 'read'")
             }
         }
     })
@@ -438,8 +452,8 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 pool.query(sql, ['YES', session.userid])
                 response.send(true)
             } catch (error) {
-                console.log(error)
-                response.send("Something went wrong when trying mark all notification as 'read'")
+                console.error(error)
+                response.send("Something went wrong when trying mark all notifications as 'read'")
             }
         }
     })
