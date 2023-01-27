@@ -95,6 +95,6 @@ module.exports = (pool, socketIO) => {
     })
 
     socketIO.on("connect_error", (error) => {
-        console.error(`connect_error: ${error.message}`)
+        console.log(`connect_error: ${error.message}`)
     })
 }

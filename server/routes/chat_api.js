@@ -44,7 +44,7 @@ module.exports = (app, pool) => {
                 response.send(false)
             }
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     })
 
@@ -64,7 +64,7 @@ module.exports = (app, pool) => {
                 response.send(false)
             }
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     })
 
