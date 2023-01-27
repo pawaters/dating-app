@@ -73,93 +73,67 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
     })
 
     app.get('/api/profile', async (request, response) => {
-        const session = request.session
+		const sess = request.session
 
-        const getDataFromUsers = async () => {
-            try {
-                console.log('session.userid right before doing SQL query for getprofile', session.userid)
-                // var sql = `SELECT id, username, firstname, lastname,
-                // email, last_connection, verified, running_id,
-                // user_settings.user_id, gender, age, sexual_pref,
-                // biography, user_location, ip_location,
-                // famerate_id, fame_rates.user_id, setup_pts
-                // picture_pts, tag_pts, like_pts, connection_pts
-                // total_pts
-                // FROM users
-                // INNER JOIN user_settings ON users.id = user_settings.user_id
-                // LEFT JOIN fame_rates ON users.id = fame_rates.user_id
-                // WHERE users.id = $1;`
-                var sql = `SELECT * FROM users
-			                INNER JOIN user_settings ON users.id = user_settings.user_id
-			                LEFT JOIN fame_rates ON users.id = fame_rates.user_id
-			                WHERE users.id = $1`
-                var { rows } = await pool.query(sql, [session.userid])
-                // console.log('rows: ', rows)
-                // console.log('rows[0]: ', rows[0])
-                const profileData = rows[0]
-                console.log('profileData: ', profileData)
-                return (profileData)
-            } catch (error) {
-                console.error('Error in getDataFromUsers(): ', error)
-            }
-        }
+		if (sess.userid) {
+			try {
+				var sql = `SELECT * FROM users
+						INNER JOIN user_settings ON users.id = user_settings.user_id
+						LEFT JOIN fame_rates ON users.id = fame_rates.user_id
+						WHERE users.id = $1`
+				var { rows } = await pool.query(sql, [sess.userid])
+				const { password: removed_password, ...profileData } = rows[0]
 
-        if (session.userid) {
-            getDataFromUsers()
-                .then(async (profileData) => {
-                    console.log('profileData right before getting tags: ', profileData)
-                    sql = `SELECT * FROM tags   
-                            WHERE tagged_users @> array[$1]::INT[]
-		                    ORDER BY tag_id ASC;`
-                    var tags_of_user = await pool.query(sql, [session.userid])
-                    profileData.tags = tags_of_user.rows.map(tag => tag.tag_content)
-                    // Profile pic and other pics' retrieval below:
-                    sql = `SELECT * FROM user_pictures
-                            WHERE user_id = $1
-                            AND profile_pic = $2;`
-                    const profile_pic = await pool.query(sql, [session.userid, 'YES'])
-                    if (profile_pic.rows[0]) {
-                        profileData.profile_pic = profile_pic.rows[0]
-                        console.log('profileData.profile_pic: ', profileData.profile_pic)
-                    } else {
-                        console.log('profile pic NOT found.')
-                        profileData.profile_pic = { user_id: session.userid, picture_data: null }
-                    }
-                    sql = `SELECT * FROM user_pictures
-                            WHERE user_id = $1
-                            AND profile_pic = $2
-                            ORDER BY picture_id ASC;`
-                    const other_pics = await pool.query(sql, [session.userid, 'NO'])
-                    if (other_pics.rows) {
-                        profileData.other_pictures = other_pics.rows
-                    }
-                    // Likes and watches
-                    sql = `SELECT target_id, username
-		                    FROM likes INNER JOIN users on likes.target_id = users.id
-		                    WHERE liker_id = $1
-		                    GROUP BY target_id, username`
-                    const liked = await pool.query(sql, [session.userid])
-                    profileData.liked = liked.rows
-                    sql = `SELECT watcher_id, username
-		                    FROM watches INNER JOIN users on watches.watcher_id = users.id
-		                    WHERE target_id = $1
-		                    GROUP BY watcher_id, username`
-                    const watchers = await pool.query(sql, [session.userid])
-                    profileData.watchers = watchers.rows
-                    sql = `SELECT liker_id, username
-		                    FROM likes INNER JOIN users on likes.liker_id = users.id
-		                    WHERE target_id = $1
-		                    GROUP BY liker_id, username`
-                    const likers = await pool.query(sql, [session.userid])
-                    profileData.likers = likers.rows
-                    // console.log('profileData JUST BEFORE RESPONSE.SEND : ', profileData)
-                    response.send(profileData)
-                }).catch((error) => {
-                    console.error('catching error from profile.js: ', error)
-                    response.send(error)
-                })
-        }
-    })
+				var sql = `SELECT * FROM tags WHERE tagged_users @> array[$1]::INT[]
+						ORDER BY tag_id`
+				var tags = await pool.query(sql, [sess.userid])
+
+				profileData.tags = tags.rows.map(tag => tag.tag_content)
+
+				var sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'YES'`
+				var profile_pic = await pool.query(sql, [sess.userid])
+
+				if (profile_pic.rows[0]) {
+					profileData.profile_pic = profile_pic.rows[0]
+				} else {
+					profileData.profile_pic = { user_id: sess.userid, picture_data: null }
+				}
+
+				var sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'NO' ORDER BY picture_id`
+				var other_pictures = await pool.query(sql, [sess.userid])
+				if (other_pictures.rows) {
+					profileData.other_pictures = other_pictures.rows
+				}
+
+				var sql = `SELECT target_id, username
+						FROM likes INNER JOIN users on likes.target_id = users.id
+						WHERE liker_id = $1
+						GROUP BY target_id, username`
+				const liked = await pool.query(sql, [sess.userid])
+				profileData.liked = liked.rows
+
+				var sql = `SELECT watcher_id, username
+						FROM watches INNER JOIN users on watches.watcher_id = users.id
+						WHERE target_id = $1
+						GROUP BY watcher_id, username`
+				const watchers = await pool.query(sql, [sess.userid])
+				profileData.watchers = watchers.rows
+
+				var sql = `SELECT liker_id, username
+						FROM likes INNER JOIN users on likes.liker_id = users.id
+						WHERE target_id = $1
+						GROUP BY liker_id, username`
+				const likers = await pool.query(sql, [sess.userid])
+				profileData.likers = likers.rows
+
+				response.send(profileData)
+			} catch (error) {
+				response.send(false)
+			}
+		} else {
+			response.send(false)
+		}
+	})
 
     app.post('/api/profile/editsettings', async (request, response) => {
         const session = request.session
