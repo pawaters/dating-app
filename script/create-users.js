@@ -98,8 +98,9 @@ const createUserSettings = async (id, gender) => {
     let age = getRandomInt(18, 120)
     let sexual_pref = ["bisexual", "male", "female"].random()
     let biography = faker.lorem.paragraph()
-    //  \/ 5000 km away at max, true for units in kilometers instead of miles.
+    // The loop ensures we skip any trash locations in the ocean.
     while (true) {
+        //  \/ 5000 km away at max, true for units in kilometers instead of miles.
         var coordinates = faker.address.nearbyGPSCoordinate([60.179700, 24.934400], 5000, true)
         var city_data = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates[0]},${coordinates[1]}&key=${process.env.GOOGLE_API}`)
         var user_location
