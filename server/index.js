@@ -36,8 +36,23 @@ const pool = new Pool({
   user: pgUser,
   password: pgPassword,
   host: pgHost,
-  database: pgDatabase
+  database: pgDatabase,
+  port: 5432
 })
+
+const connectToDatabase = () => {
+	pool.connect((err, client, release) => {
+		if (err) {
+			console.log('Error acquiring client', err.stack)
+			console.log('Retrying in 5 seconds...')
+			setTimeout(connectToDatabase, 5000)
+		} else {
+			console.log('Connected to database')
+		}
+	})
+}
+connectToDatabase()
+
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',

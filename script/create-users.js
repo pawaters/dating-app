@@ -165,7 +165,7 @@ const createPicture = async (id) => {
 const initUsers = async () => {
     console.log("User creation started")
 
-    for (let i = 0; i < 400; i++) {
+    for (let i = 0; i < 500; i++) {
         console.log("Creating user: " + i)
         let gender = gender_list.random()
         let id = await createUser(gender)

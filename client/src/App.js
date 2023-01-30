@@ -79,6 +79,7 @@ const App = () => {
 
         console.log("APP.JS l82 :", socket)
 		if (!socket) return
+
 		socket.on('connect', () => {
 			setSocketConnected(true)
 		})
@@ -108,7 +109,7 @@ const App = () => {
 		}
 	}, [user, socket, socketConnected])
 
-    // if (!socketConnected) return <Loader text="Waiting for socket..." />
+    if (!socketConnected) return <Loader text="Waiting for socket..." />
 
     return (
             <ThemeProvider theme={theme}>

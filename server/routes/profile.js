@@ -443,4 +443,20 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
             }
         }
     })
+
+    app.delete('/api/profile/notification/:id', (request, response) => {
+		const sess = request.session
+
+		if (sess.userid) {
+			try {
+				const notification_id = request.params.id
+				var sql = `DELETE FROM notifications WHERE user_id = $1 AND notification_id = $2`
+				pool.query(sql, [sess.userid, notification_id])
+				response.send(true)
+			} catch (error) {
+				console.log(error)
+				response.send("Failed to delete notification")
+			}
+		}
+	})
 }
