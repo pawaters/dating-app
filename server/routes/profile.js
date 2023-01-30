@@ -540,4 +540,31 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
 			}
 		}
 	})
+
+    app.delete('/api/profile/deleteuser', (request, response) => {
+		const sess = request.session
+
+		if (sess.userid) {
+			try {
+				var sql = `DELETE FROM users WHERE id = $1`
+				pool.query(sql, [sess.userid])
+				var sql = `DELETE FROM likes WHERE target_id = $1`
+				pool.query(sql, [sess.userid])
+				var sql = `DELETE FROM blocks WHERE target_id = $1`
+				pool.query(sql, [sess.userid])
+				var sql = `DELETE FROM watches WHERE target_id = $1`
+				pool.query(sql, [sess.userid])
+				var sql = `DELETE FROM reports WHERE target_id = $1`
+				pool.query(sql, [sess.userid])
+				var sql = `DELETE FROM connections WHERE user2_id = $1`
+				pool.query(sql, [sess.userid])
+				var sql = `DELETE FROM notifications WHERE sender_id = $1`
+				pool.query(sql, [sess.userid])
+				response.send(true)
+			} catch (error) {
+				console.log(error)
+				response.send("Failed to delete user!")
+			}
+		}
+	})
 }
