@@ -132,7 +132,6 @@ const App = () => {
                             <Route path={"/profile/:id"} element={<UserProfile />} />
                             <Route path={"/chat"} element={<Chat socket={socket} />} />
                             <Route path={"/chat/:id"} element={<Chat socket={socket} />} />
-                            {/* <Route path={"/swipe"} element={<Swipe />} /> */}
                             <Route path={"/logout"} element={<Logout socket={socket}/>} />
                             <Route path='*' element={<PathNotExists />} />
                         </Routes>
