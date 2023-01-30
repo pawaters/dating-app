@@ -18,7 +18,7 @@ const ChatBody = ({ connections }) => {
 				.then(
 					data => dispatch(setMessages(data),
 					console.log("chatbody.js l20 data:", data),
-					console.log("chatbody.js l19 room:", room)
+					console.log("chatbody.js l32 room:", room)
 					))
 		}
 	}, [room, dispatch])

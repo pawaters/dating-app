@@ -15,10 +15,12 @@ const ChatFooter = ({ socket, connections }) => {
 		e.preventDefault()
 		if (message.trim() && user && receiver_user) {
 			console.log("HANDLE SEND MESSAGE : socket=", socket)
+			console.log("receiver_user=",receiver_user)
+			console.log("user=",user)
 			socket.emit('send_message', {
 				text: message,
 				sender_id: user.id,
-				receiver_id: receiver_user.id,
+				receiver_id: receiver_user.user_id,
 				name: user.name,
 				room: room,
 				key: `${user.id}-${room}-${Date.now()}`

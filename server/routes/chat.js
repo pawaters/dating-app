@@ -41,7 +41,6 @@ module.exports = (pool, socketIO) => {
                 var sql = `INSERT INTO chat (connection_id, sender_id, message)
 							VALUES ($1, $2, $3)`
                 pool.query(sql, variables)
-
                 var notification = `You received a new message from ${data.name}`
                 var sql = `INSERT INTO notifications (user_id, notification_text, redirect_path, sender_id)
 							VALUES ($1, $2, $3, $4)
@@ -56,7 +55,8 @@ module.exports = (pool, socketIO) => {
             const connections = await pool.query(sql, [data.room])
 
             if (connections.rows.length > 0) {
-                socketIO.in(`room-${data.room}`).emit('receive_message', data) // Send to all users in the room, including sender,
+                socketIO.in(`room-${data.room}`).emit('receive_message', data)
+                console.log("chat.js L44 - socketio send message: DATA = ", data) // Send to all users in the room, including sender,
                 sendToDatabase(data) // and save message to database.
             }
         })

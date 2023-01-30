@@ -79,7 +79,7 @@ const App = () => {
 
         console.log("APP.JS l82 :", socket)
 		if (!socket) return
-
+        socket.heartbeatTimeout = 20000;
 		socket.on('connect', () => {
 			setSocketConnected(true)
 		})

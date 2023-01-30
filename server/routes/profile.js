@@ -30,62 +30,61 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         if (forbiddenTags.length !== 0)
             return response.send("Allowed characters in tags are a-z, å, ä, ö and dash (-). The maximum length of a tag is 23 characters.")
 
-        if (session.userid) {
-            try {
-                await pool.query(
-                    `INSERT INTO user_settings (user_id, gender, age, user_location, sexual_pref, biography, ip_location)
-                    VALUES ($1, $2, $3, $4, $5, $6, point($7,$8))`,
-                    [session.userid, gender, age, location, sexual_pref, biography, gps[0], gps[1]])
-                // Will be needed later in browsing.
-                session.location = { x: Number(gps[0]), y: Number(gps[1]) }
+        try {
+            await pool.query(
+                `INSERT INTO user_settings (user_id, gender, age, user_location, sexual_pref, biography, ip_location)
+                VALUES ($1, $2, $3, $4, $5, $6, point($7,$8))`,
+                [session.userid, gender, age, location, sexual_pref, biography, gps[0], gps[1]])
+            // Will be needed later in browsing.
+            session.location = { x: Number(gps[0]), y: Number(gps[1]) }
 
-                // Fame rates. Adjust later.
-                sql = `UPDATE fame_rates SET setup_pts = setup_pts + 5, total_pts = total_pts + 5
-				        WHERE user_id = $1 AND setup_pts < 5 AND total_pts <= 95`
-                pool.query(sql, [session.userid])
+            // Fame rates. Adjust later.
+            sql = `UPDATE fame_rates SET setup_pts = setup_pts + 5, total_pts = total_pts + 5
+                    WHERE user_id = $1 AND setup_pts < 5 AND total_pts <= 95`
+            pool.query(sql, [session.userid])
 
-                // We are removing the user from all the tags they didn't pick as their tags. This is useful in profile settings, but is this necessary in Onboarding?
-                var sql = `UPDATE tags SET tagged_users = array_remove(tagged_users, $1)
-                            WHERE (array[LOWER($2)] @> array[LOWER(tag_content)]::TEXT[]) IS NOT TRUE;`
-                await pool.query(sql, [session.userid, tags_of_user])
+            // We are removing the user from all the tags they didn't pick as their tags. This is useful in profile settings, but is this necessary in Onboarding?
+            var sql = `UPDATE tags SET tagged_users = array_remove(tagged_users, $1)
+                        WHERE (array[LOWER($2)] @> array[LOWER(tag_content)]::TEXT[]) IS NOT TRUE;`
+            await pool.query(sql, [session.userid, tags_of_user])
 
-                // We go through all of the tags that the user chose and see if they already exist in the table 'tags.'
-                // 'await Promise.all' ensures all of them are mapped before the code speeds on forward.
-                await Promise.all(tags_of_user.map(async (tag_name) => {
-                    sql = `SELECT * FROM tags
-                            WHERE LOWER(tag_content) = LOWER($1)`
-                    const tagAlreadyExistsCheck = await pool.query(sql, [tag_name])
+            // We go through all of the tags that the user chose and see if they already exist in the table 'tags.'
+            // 'await Promise.all' ensures all of them are mapped before the code speeds on forward.
+            await Promise.all(tags_of_user.map(async (tag_name) => {
+                sql = `SELECT * FROM tags
+                        WHERE LOWER(tag_content) = LOWER($1)`
+                const tagAlreadyExistsCheck = await pool.query(sql, [tag_name])
 
-                    // If the tag doesn't exist i.e. it's a completely new tag, we insert it as a new row into the 'tags' table.
-                    if (tagAlreadyExistsCheck.rows.length < 1) {
-                        sql = `INSERT INTO tags (tag_content, tagged_users)
-                                VALUES (LOWER($1), array[$2]::INT[]);`
-                        await pool.query(sql, [tag_name, session.userid])
-                        console.log('User created a new tag!: ', tag_name)
-                    } else {
-                        // If the tag is an existing tag, we insert the user_id into the tagged_users for the tag.
-                        // We check again that the tag exists and that the user is not already in that tag.
-                        sql = `UPDATE tags SET tagged_users = array_append(tagged_users, $1)
-                                WHERE LOWER(tag_content) = LOWER($2)
-                                AND (tagged_users @> array[$1]::INT[]) IS NOT TRUE;`
-                        await pool.query(sql, [session.userid, tag_name])
-                        console.log('User chose an existing tag: ', tag_name)
-                    }
-                }))
+                // If the tag doesn't exist i.e. it's a completely new tag, we insert it as a new row into the 'tags' table.
+                if (tagAlreadyExistsCheck.rows.length < 1) {
+                    sql = `INSERT INTO tags (tag_content, tagged_users)
+                            VALUES (LOWER($1), array[$2]::INT[]);`
+                    await pool.query(sql, [tag_name, session.userid])
+                    console.log('User created a new tag!: ', tag_name)
+                } else {
+                    // If the tag is an existing tag, we insert the user_id into the tagged_users for the tag.
+                    // We check again that the tag exists and that the user is not already in that tag.
+                    sql = `UPDATE tags SET tagged_users = array_append(tagged_users, $1)
+                            WHERE LOWER(tag_content) = LOWER($2)
+                            AND (tagged_users @> array[$1]::INT[]) IS NOT TRUE;`
+                    await pool.query(sql, [session.userid, tag_name])
+                    console.log('User chose an existing tag: ', tag_name)
+                }
+            }))
 
-                // Fame rates. Adjust later.
-                var tagPoints = tags_of_user.length
-                if (tagPoints > 5)
-                    tagPoints = 5
-                var sql = `UPDATE fame_rates SET total_pts = total_pts - tag_pts + $2, tag_pts = $2
-							WHERE user_id = $1`
-                await pool.query(sql, [session.userid, tagPoints])
+            // Fame rates. Adjust later.
+            var tagPoints = tags_of_user.length
+            if (tagPoints > 5)
+                tagPoints = 5
+            var sql = `UPDATE fame_rates SET total_pts = total_pts - tag_pts + $2, tag_pts = $2
+                        WHERE user_id = $1`
+            await pool.query(sql, [session.userid, tagPoints])
 
-                response.send(true)
-            } catch (error) {
-                response.send('An error has occurred in Onboarding: ', error)
-            }
+            response.send(true)
+        } catch (error) {
+            response.send('An error has occurred in Onboarding: ', error)
         }
+        
     })
 
     app.get('/api/profile', async (request, response) => {
