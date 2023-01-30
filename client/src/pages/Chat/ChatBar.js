@@ -59,6 +59,7 @@ const ChatBar = ({ connections, joinRoom }) => {
 										m: 'auto', pt: 1, pb: 1,
 									}}>
 										<ChatIcon
+											key={user.id}
 											username={user.username}
 											image={user.picture_data}
 										/>

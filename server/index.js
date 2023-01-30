@@ -83,6 +83,8 @@ require('./routes/resetpassword.js')(app, pool, bcrypt, transporter)
 require('./routes/chat_api.js')(app, pool)
 require('./routes/chat.js')(pool, socketIO)
 
+const PORT = config.PORT || 3001
+
 http.listen(config.PORT, () => {
   console.log(` Server running on port ${config.PORT}`)
 })

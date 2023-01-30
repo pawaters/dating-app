@@ -1,6 +1,5 @@
 node_modules
 .DS_Store
-pgdata
 .env
 /server/images/*
 !*server/images/default_profilepic.jpeg
