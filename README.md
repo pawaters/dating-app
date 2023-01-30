@@ -88,4 +88,6 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 - Browsing sorted by country by default
 - jira organisation
 - UI theme
-- Reduc store
+- Redux store
+- delete user
+- delete notif
