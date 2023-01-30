@@ -30,7 +30,7 @@ module.exports = (app, pool, transporter, socketIO) => {
 
     if (session.userid && session.location) {
       try {
-        const doTags = async (rows) => {
+        const retrieveEveryonesTags = async (rows) => {
           for (let i = 0; i < rows.length; i++) {
             var sql = `SELECT tag_content FROM tags WHERE tagged_users @> array[$1]::INT[]`
             var { rows: tags } = await pool.query(sql, [rows[i].id])
@@ -65,9 +65,7 @@ module.exports = (app, pool, transporter, socketIO) => {
           await pool.query(sql, [session.userid, min_age, max_age, min_fame, max_fame,
           session.location.x, session.location.y, min_distance, max_distance, 'YES'])
 
-        // Check rows if not working.
-        console.log('Made it here.')
-        doTags(rows)
+        retrieveEveryonesTags(rows)
           .then((rows) => {
             console.log('rows in browsing/sorted: ', rows)
             response.send(rows)
@@ -137,19 +135,19 @@ module.exports = (app, pool, transporter, socketIO) => {
       try {
         const profile_id = request.params.id
         var sql = `SELECT users.id AS id, username, firstname, lastname,
-                gender, user_location, age, biography,
-                sexual_pref, fame_rating,
-                TO_CHAR(last_connection AT time zone 'UTC' AT time zone 'Europe/Helsinki', 'dd.mm.yyyy hh24:mi:ss') AS connection_time
-                FROM users
-                INNER JOIN user_settings ON users.id = user_settings.user_id
-                INNER JOIN fame_rates ON users.id = fame_rates.user_id
-                WHERE users.id = $1;`
+                  gender, user_location, age, biography,
+                  sexual_pref, fame_rating,
+                  TO_CHAR(last_connection AT time zone 'UTC' AT time zone 'Europe/Helsinki', 'dd.mm.yyyy hh24:mi:ss') AS connection_time
+                  FROM users
+                  INNER JOIN user_settings ON users.id = user_settings.user_id
+                  INNER JOIN fame_rates ON users.id = fame_rates.user_id
+                  WHERE users.id = $1;`
         const requestedUserData = await pool.query(sql, [profile_id])
         const { ...profileData } = requestedUserData.rows[0]
 
         sql = `SELECT * FROM tags
-            WHERE tagged_users @> array[$1]::INT[]
-            ORDER BY tag_id ASC`
+              WHERE tagged_users @> array[$1]::INT[]
+              ORDER BY tag_id ASC`
         const requestedUserTags = await pool.query(sql, [profile_id])
 
         // Test if this needs a promise operation.
@@ -204,7 +202,7 @@ module.exports = (app, pool, transporter, socketIO) => {
       } else {
         const liked_person_id = request.params.id
 
-        // preventing multiple press of the like button
+        // preventing multiple presses of the like button
         var sql = `SELECT * FROM likes WHERE liker_id = $1 AND target_id = $2`
         const likeAlreadyExistsCheck = await pool.query(sql, [session.userid, liked_person_id])
 
@@ -213,8 +211,8 @@ module.exports = (app, pool, transporter, socketIO) => {
           await pool.query(sql, [session.userid, liked_person_id])
 
           var sql = `UPDATE fame_rates SET like_pts = like_pts + 10, total_pts = total_pts + 10
-                      WHERE user_id = $1
-                      AND like_pts <= 40 AND total_pts <= 90`
+                    WHERE user_id = $1
+                    AND like_pts <= 40 AND total_pts <= 90`
           pool.query(sql, [liked_person_id])
 
           var sql = `SELECT * FROM likes WHERE liker_id = $1 AND target_id = $2`
@@ -294,9 +292,9 @@ module.exports = (app, pool, transporter, socketIO) => {
       }
 
       sql = `DELETE FROM connections
-					    WHERE (user1_id = $1 AND user2_id = $2)
-              OR (user1_id = $2 AND user2_id = $1)
-              RETURNING *`
+					  WHERE (user1_id = $1 AND user2_id = $2)
+            OR (user1_id = $2 AND user2_id = $1)
+            RETURNING *`
       const { rows } = await pool.query(sql, [session.userid, unliked_person_id])
 
       if (rows.length !== 0) {

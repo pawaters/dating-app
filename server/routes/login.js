@@ -1,22 +1,21 @@
 module.exports = function (app, pool, bcrypt) {
-
   app.post('/api/login', async (request, response) => {
 
     const username = request.body.username
     const password = request.body.password
 
     const verifyLoginAttempt = async () => {
-      // To ponder: do we actually need to join users with user_settings because at this point we just need created accounts?
       const userInfo = await pool.query(
         `SELECT * FROM users
         LEFT JOIN user_settings
         ON users.id = user_settings.user_id
-        WHERE username = $1`,
+        WHERE username = $1
+        OR email = $1`,
         [username]
       )
       if (userInfo.rows.length === 0) {
         console.log('User not found')
-        throw ('Wrong username/password combination.')
+        throw ('Wrong login details!')
       } else if (userInfo.rows[0]['verified'] === 'NO') {
         console.log('Account not yet verified')
         throw ('Please check your email and verify your account before trying to log in!')
@@ -31,7 +30,7 @@ module.exports = function (app, pool, bcrypt) {
           return session
         } else {
           console.log('Auth fail!')
-          throw ('Wrong username/password combination!')
+          throw ('Wrong login details!')
         }
       }
     }
@@ -57,7 +56,7 @@ module.exports = function (app, pool, bcrypt) {
       if (error) {
         return console.log(error)
       }
-      // The End method causes the Web server to stop processing the script and return the current result.
+      // The End method causes the web server to stop processing the script and returns the current result.
       response.end()
     })
   })

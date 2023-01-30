@@ -20,7 +20,7 @@ const pool = new Pool({
 })
 
 Array.prototype.random = function () {
-	return this[Math.floor((Math.random() * this.length))];
+    return this[Math.floor((Math.random() * this.length))];
 }
 
 function getRandomInt(min, max) {
@@ -98,15 +98,21 @@ const createUserSettings = async (id, gender) => {
     let age = getRandomInt(18, 120)
     let sexual_pref = ["bisexual", "male", "female"].random()
     let biography = faker.lorem.paragraph()
-    //  \/ 5000 km away at max, true for units in kilometers instead of miles.
-    let coordinates = faker.address.nearbyGPSCoordinate([60.179700, 24.934400], 5000, true)
-    let city_data = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates[0]},${coordinates[1]}&key=${process.env.GOOGLE_API}`)
-    let user_location
-    let length = city_data.data.results.length
-    if (city_data.data.results.length > 0)
-        user_location = city_data.data.results[length - 1].formatted_address
-    else
-        user_location = "Unknown"
+    // The loop ensures we skip any trash locations in the ocean.
+    while (true) {
+        //  \/ 5000 km away at max, true for units in kilometers instead of miles.
+        var coordinates = faker.address.nearbyGPSCoordinate([60.179700, 24.934400], 5000, true)
+        var city_data = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates[0]},${coordinates[1]}&key=${process.env.GOOGLE_API}`)
+        var user_location
+        var length = city_data.data.results.length
+        if (city_data.data.results.length > 0
+            && (city_data.data.results[length - 1].formatted_address.match(/[a-z]+/)
+                && !city_data.data.results[length - 1].formatted_address.match(/\+/i))) {
+            user_location = city_data.data.results[length - 1].formatted_address
+            break
+        } else
+            continue
+    }
     console.log('user_location: ', user_location)
     let ip_location = `(${coordinates[0]}, ${coordinates[1]})`
     let sql = `INSERT INTO user_settings (user_id, gender, age, sexual_pref, biography, user_location, ip_location)

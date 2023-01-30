@@ -34,7 +34,7 @@ module.exports = (pool, socketIO) => {
             socket.leave(`room-${data.room}`)
         })
 
-        socket.on('send_message', async (data) => { // When sending a message...
+        socket.on('send_message', async (data) => { // When sending a message... || data is coming through from ChatFooter.js
             const sendToDatabase = async (data) => {
                 var variables = [data.room, data.sender_id, data.text]
 
@@ -61,6 +61,7 @@ module.exports = (pool, socketIO) => {
             }
         })
 
+        // Add a new user to the users array.
         socket.on('newUser', (data) => {
             const userNames = users.map(user => user.name)
             if (userNames.includes(data.name) === false) {
