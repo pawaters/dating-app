@@ -13,7 +13,7 @@ const ChatFooter = ({ socket, connections }) => {
 
 	const handleSendMessage = (e) => {
 		e.preventDefault()
-		if (message.trim() && user) {
+		if (message.trim() && user && receiver_user) {
 			console.log("HANDLE SEND MESSAGE : socket=", socket)
 			socket.emit('send_message', {
 				text: message,
