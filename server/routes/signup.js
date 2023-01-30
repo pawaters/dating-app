@@ -38,7 +38,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
           var sql = 'INSERT INTO email_verify (user_id, email, verify_code) VALUES ($1, $2, $3);'
           pool.query(sql, [user_id, email, code])
         }).catch(error => {
-          console.log(error)
+          console.error('Error in signup: ', error)
         })
 
       return (code)
@@ -51,8 +51,8 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
         to: email,
         subject: 'Verify your email address for Matcha',
         html: `<p>Click the link below to verify your account for Matcha</p>
-                    <a href="http://localhost:3000/confirm/${username}/${code}">Link</a>
-                    <p>- Matcha team</p>`
+                <a href="http://localhost:3000/confirm/${username}/${code}">Link</a>
+                <p>- Matcha team</p>`
       }
 
       transporter.sendMail(mailOptions, function (error, info) {
@@ -101,11 +101,12 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
     const checkCodeValidity = async () => {
       var sql =
         `SELECT * FROM email_verify
-                INNER JOIN users
-                ON email_verify.user_id = users.id
-                WHERE email_verify.code = $1;`
+          INNER JOIN users
+          ON email_verify.user_id = users.id
+          WHERE email_verify.verify_code = $1;`
       const result = await pool.query(sql, [code])
       if (result.rows.length < 1) {
+        console.error('Verification failed.')
         throw ('Invalid code!')
       } else {
         return (true)
@@ -126,29 +127,5 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
       }).catch((error) => {
         response.send(error)
       })
-  })
-
-  // These ones below are for testing.
-  // VIEW USERS CREATED IN SIGNUP
-  app.get('/signup/users', async (request, response) => {
-
-    try {
-      const allUsers = await pool.query('SELECT * FROM users')
-      response.json(allUsers.rows)
-    } catch (err) {
-      console.error(err.message)
-    }
-  })
-
-  // GET A SPECIFIC SIGNED UP USER
-  app.get('/signup/users/:id', async (request, response) => {
-    try {
-      const { id } = request.params
-      const user = await pool.query('SELECT * FROM users WHERE id = $1', [id])
-
-      response.json(user.rows[0])
-    } catch (err) {
-      console.error(err.message)
-    }
   })
 }

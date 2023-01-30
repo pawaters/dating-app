@@ -79,7 +79,7 @@ require('./routes/login.js')(app, pool, bcrypt)
 require('./routes/profile.js')(app, pool, upload, fs, path, bcrypt)
 require('./routes/signup.js')(app, pool, bcrypt, transporter, crypto)
 require('./routes/browsing.js')(app, pool, transporter, socketIO)
-require('./routes/resetpassword.js')(app, pool, bcrypt, transporter)
+require('./routes/resetpassword.js')(app, pool, bcrypt, transporter, crypto)
 require('./routes/chat_api.js')(app, pool)
 require('./routes/chat.js')(pool, socketIO)
 
