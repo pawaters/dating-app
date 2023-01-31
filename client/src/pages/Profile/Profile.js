@@ -49,10 +49,10 @@ const Profile = () => {
     // console.log('profileData.id in Profile.js: ', profileData.id)
     // console.log('profileData.total_pts: ', profileData.total_pts)
 
-    if (!profileData.id) {
-        // console.log('Tried to go to Onboarding')
-        return <Onboarding />
-    }
+    // if (!profileData.id) {
+    //     // console.log('Tried to go to Onboarding')
+    //     return <Onboarding />
+    // }
 
     const profile_pic = profileData.profile_pic['picture_data']
     const other_pictures = profileData.other_pictures
