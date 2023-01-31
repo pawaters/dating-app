@@ -4,7 +4,7 @@ import { Box, Container } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { getProfileData, setProfileData } from '../../reducers/profileReducer'
+import { getProfileData } from '../../reducers/profileReducer'
 import Loader from '../../components/Loader'
 import Onboarding from '../../pages/Profile/Onboarding'
 import profileService from "../../services/profileService"
@@ -12,6 +12,7 @@ import { changeSeverity } from "../../reducers/severityReducer"
 import { changeNotification } from "../../reducers/notificationReducer"
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
+import Notification from '../../components/notification/Notification'
 
 const ProfileInput = ({ text, input }) => {
     return (
@@ -216,6 +217,14 @@ const Profile = () => {
                         <label>   Change profile picture : </label>
                         <input type="file" name="file" id="set_profilepic" accept="image/jpeg, image/png, image/jpg" onChange={setProfilePicture}></input>
                     </Button>
+                    <div id="other_pictures">
+                        {other_pictures.map((picture, i) =>
+                            <div key={i}>
+                                <img key={picture.picture_id} alt="random_picture" height="100px" src={picture.picture_data}></img>
+                                <Button onClick={() => { deleteImage(picture.picture_id) }} >Delete picture</Button>
+                            </div>
+                        )}
+				    </div>
                     <Button>
                         <label>   Add new picture : </label>
                         <input type="file" name="file" id="image_upload" accept="image/jpeg, image/png, image/jpg" onChange={uploadImage}></input>
@@ -223,6 +232,7 @@ const Profile = () => {
                     <Button variant='outlined' onClick={() => deleteUser(userid)}>Delete user </Button>
                 </Stack>
             </Paper>
+            <Notification />
         </Container>
         
     )

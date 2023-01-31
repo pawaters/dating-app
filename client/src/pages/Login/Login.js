@@ -1,7 +1,6 @@
 import { Button, Paper, TextField, Typography } from "@mui/material"
 import { Container } from "@mui/system"
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import Notification from "../../components/notification/Notification"
 import { changeNotification } from "../../reducers/notificationReducer"
