@@ -2,8 +2,8 @@ import React from "react"
 import { useEffect, useState } from 'react'
 import "./style/App.css"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { ThemeProvider, createTheme, Container, responsiveFontSizes } from "@mui/material"
-import { Provider, useDispatch, useSelector } from "react-redux"
+import { ThemeProvider, createTheme, Container } from "@mui/material"
+import { useDispatch, useSelector } from "react-redux"
 import signUpService from './services/signUpService'
 
 //pages & components
@@ -25,7 +25,6 @@ import Chat from "./pages/Chat/Chat"
 import Logout from "./pages/Logout"
 import Footer from "./components/Footer"
 import { grey, pink } from "@mui/material/colors"
-import { borderRadius } from "@mui/system"
 import PathNotExists from "./pages/PathNotExists"
 import { getProfileData } from "./reducers/profileReducer"
 import { getUserLists } from "./reducers/userListsReducer"

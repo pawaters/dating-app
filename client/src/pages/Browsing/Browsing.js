@@ -192,9 +192,9 @@ const Browsing = () => {
 		getUsers()
 	}, [dispatch, navigate, browsingCriteria])
 
-	// if (isLoading || !profileData) {
-	// 	return <Loader text="Getting users data.." />
-	// }
+	if (isLoading || !profileData) {
+		return <Loader text="Getting users data.." />
+	}
 
 	let filters = { nameFilter: nameFilter, locationFilter: locationFilter, tagFilter: tagFilter }
 	let filteredUsers = filterUsers(users, filters, profileData)
