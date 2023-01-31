@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-	Typography, Paper, Box, Grid, Rating, styled, Button, createTheme
+	Typography, Paper, Box, Grid, Button, createTheme
 } from '@mui/material'
 import { Container } from '@mui/system'
 import browsingService from '../../services/browsingService'
@@ -67,8 +67,6 @@ const UserProfile = () => {
 			dispatch(changeNotification(''))
 		}
 		getData()
-		console.log("userData.total_pts", userData.total_pts)
-		console.log("userData", userData)
 	}, [params, dispatch])
 
 	if (isLoading) {

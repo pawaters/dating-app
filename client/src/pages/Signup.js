@@ -2,7 +2,7 @@ import { Button, Paper, TextField, Typography } from "@mui/material"
 import { Container } from "@mui/system"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import signUpService from '../services/signUpService'
 import { changeSeverity } from "../reducers/severityReducer"
 import { changeNotification } from "../reducers/notificationReducer"
