@@ -69,7 +69,6 @@ const App = () => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
 
-    // SOCKET SETUP TO UPDATE
     useEffect(() => {
         setSocket(socketIO('http://localhost:3001'))
     }, [])
@@ -78,7 +77,7 @@ const App = () => {
 
         console.log("APP.JS l82 :", socket)
 		if (!socket) return
-        socket.heartbeatTimeout = 20000;
+
 		socket.on('connect', () => {
 			setSocketConnected(true)
 		})

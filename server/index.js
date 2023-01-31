@@ -10,7 +10,6 @@ const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 const { pgUser, pgPassword, pgDatabase, pgHost, EMAIL_ADDRESS, EMAIL_PASSWORD } = require('./config')
-// const { getMaxListeners } = require('process')
 const http = require('http').Server(app) //required for socket to work
 
 // middleware
