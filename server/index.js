@@ -15,12 +15,17 @@ const http = require('http').Server(app) //required for socket to work
 // middleware
 app.use(cors())
 app.use(express.json())
-app.use('/images', express.static('./images')) // to serve static files to path /images, from images folder
 app.use(session({
   secret: 'secret',
   saveUninitialized: true,
   resave: true
 }))
+// no cache
+app.use(function (req, res, next) {
+  res.header('Cache-Control', 'no-cache');
+  next()
+});
+app.use('/images', express.static('./images')) // to serve static files to path /images, from images folder
 
 const socketIO = require('socket.io')(http, {
 	cors: {
