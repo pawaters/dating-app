@@ -134,9 +134,7 @@ module.exports = (app, pool, transporter, socketIO) => {
     if (session.userid) {
       try {
         const profile_id = request.params.id
-        var sql = `SELECT users.id AS id, username, firstname, lastname,
-                  gender, user_location, age, biography,
-                  sexual_pref, fame_rating,
+        var sql = `SELECT *,
                   TO_CHAR(last_connection AT time zone 'UTC' AT time zone 'Europe/Helsinki', 'dd.mm.yyyy hh24:mi:ss') AS connection_time
                   FROM users
                   INNER JOIN user_settings ON users.id = user_settings.user_id

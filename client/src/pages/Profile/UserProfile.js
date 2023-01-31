@@ -4,8 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import {
 	Typography, Paper, Box, Grid, Rating, styled, Button, createTheme
 } from '@mui/material'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import { Container } from '@mui/system'
 import browsingService from '../../services/browsingService'
 import { getUserLists } from '../../reducers/userListsReducer'
@@ -36,16 +34,7 @@ const themeunlike = createTheme({
 			main: '#F5F5F5',
 		},
 	}
-})
-
-const StyledRating = styled(Rating)({
-	'& .MuiRating-iconFilled': {
-		color: '#ff6d75',
-	},
-	'& .MuiRating-iconHover': {
-		color: '#ff3d47',
-	},
-})
+}) 
 
 const ProfileInput = ({ text, input }) => {
 	return (
@@ -78,6 +67,8 @@ const UserProfile = () => {
 			dispatch(changeNotification(''))
 		}
 		getData()
+		console.log("userData.total_pts", userData.total_pts)
+		console.log("userData", userData)
 	}, [params, dispatch])
 
 	if (isLoading) {

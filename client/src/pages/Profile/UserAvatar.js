@@ -1,7 +1,5 @@
 import { Box, Avatar } from '@mui/material'
-// import AspectRatio from '@mui/joy/AspectRatio'
 import { useSelector } from 'react-redux'
-import { AspectRatio } from 'tabler-icons-react'
 
 const UserAvatar = ({ userData }) => {
 	const onlineUsers = useSelector(state => state.onlineUsers)
