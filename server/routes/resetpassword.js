@@ -16,8 +16,8 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
             const username = rows[0]['username']
             const email = rows[0]['email']
 
-            console.log('username: ', username)
-            console.log('email: ', email)
+            // console.log('username: ', username)
+            // console.log('email: ', email)
 
             // Generating a code and checking for the very unlikely case that a similar code already exists in the table.
             while (true) {
@@ -38,7 +38,7 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
                 var sql = `INSERT INTO password_reset (user_id, reset_code, expire_time)
                             VALUES ($1, $2, (CURRENT_TIMESTAMP + interval '6 hours'))`;
                 await pool.query(sql, [rows[0]['id'], reset_code])
-                console.log('Made it here!')
+                // console.log('Made it here!')
                 const paramsForMail = { username: username, email: email, reset_code: reset_code }
                 return (paramsForMail)
             } catch (error) {

@@ -67,7 +67,7 @@ module.exports = (app, pool, transporter, socketIO) => {
 
         retrieveEveryonesTags(rows)
           .then((rows) => {
-            console.log('rows in browsing/sorted: ', rows)
+            // console.log('rows in browsing/sorted: ', rows)
             response.send(rows)
           })
       } catch (error) {
@@ -406,7 +406,7 @@ module.exports = (app, pool, transporter, socketIO) => {
               if (error) {
                 console.error(error)
               } else {
-                console.log('Email sent: ' + info.response)
+                // console.log('Email sent: ' + info.response)
               }
             })
           }

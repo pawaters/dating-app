@@ -14,9 +14,9 @@ const ChatFooter = ({ socket, connections }) => {
 	const handleSendMessage = (e) => {
 		e.preventDefault()
 		if (message.trim() && user && receiver_user) {
-			console.log("HANDLE SEND MESSAGE : socket=", socket)
-			console.log("receiver_user=",receiver_user)
-			console.log("user=",user)
+			// console.log("HANDLE SEND MESSAGE : socket=", socket)
+			// console.log("receiver_user=",receiver_user)
+			// console.log("user=",user)
 			socket.emit('send_message', {
 				text: message,
 				sender_id: user.id,

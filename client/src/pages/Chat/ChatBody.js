@@ -17,8 +17,8 @@ const ChatBody = ({ connections }) => {
 			chatService.getRoomMessages(room)
 				.then(
 					data => dispatch(setMessages(data),
-					console.log("chatbody.js l20 data:", data),
-					console.log("chatbody.js l32 room:", room)
+					// console.log("chatbody.js l20 data:", data),
+					// console.log("chatbody.js l32 room:", room)
 					))
 		}
 	}, [room, dispatch])

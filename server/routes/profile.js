@@ -60,7 +60,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     sql = `INSERT INTO tags (tag_content, tagged_users)
                             VALUES (LOWER($1), array[$2]::INT[]);`
                     await pool.query(sql, [tag_name, session.userid])
-                    console.log('User created a new tag!: ', tag_name)
+                    // console.log('User created a new tag!: ', tag_name)
                 } else {
                     // If the tag is an existing tag, we insert the user_id into the tagged_users for the tag.
                     // We check again that the tag exists and that the user is not already in that tag.
@@ -68,7 +68,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                             WHERE LOWER(tag_content) = LOWER($2)
                             AND (tagged_users @> array[$1]::INT[]) IS NOT TRUE;`
                     await pool.query(sql, [session.userid, tag_name])
-                    console.log('User chose an existing tag: ', tag_name)
+                    // console.log('User chose an existing tag: ', tag_name)
                 }
             }))
 
@@ -269,7 +269,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                         sql = `INSERT INTO tags (tag_content, tagged_users)
                         VALUES (LOWER($1), array[$2]::INT[]);`
                         await pool.query(sql, [tag_name, session.userid])
-                        console.log('User created a new tag!: ', tag_name)
+                        // console.log('User created a new tag!: ', tag_name)
                     } else {
                         // If the tag is an existing tag, we insert the user_id into the tagged_users for the tag.
                         // We check again that the tag exists and that the user is not already in that tag.
@@ -277,7 +277,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                         WHERE LOWER(tag_content) = LOWER($2)
                         AND (tagged_users @> array[$1]::INT[]) IS NOT TRUE;`
                         await pool.query(sql, [session.userid, tag_name])
-                        console.log('User chose an existing tag: ', tag_name)
+                        // console.log('User chose an existing tag: ', tag_name)
                     }
                 }))
 
@@ -297,7 +297,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
     })
 
     app.post('/api/profile/setprofilepic', upload.single('file'), async (request, response) => {
-        console.log('Made it here!')
+        // console.log('Made it here!')
         const session = request.session
         const picture = 'http://localhost:3000/images/' + request.file.filename
         if (session.userid) {
@@ -314,7 +314,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     sql = `INSERT INTO user_pictures (user_id, picture_data, profile_pic)
                             VALUES ($1, $2, $3);`
                     await pool.query(sql, [session.userid, picture, 'YES'])
-                    console.log('session.userid: ', session.userid)
+                    // console.log('session.userid: ', session.userid)
 
                     // Fame rates. Adjust later.
                     sql = `UPDATE fame_rates SET picture_pts = picture_pts + 2, total_pts = total_pts + 2
@@ -326,9 +326,9 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     const oldImage = path.resolve(__dirname, '../images') + oldImageData.replace('http://localhost:3000/images', '')
                     // fs.existsSync checks if the image already exists, so if there is already an image with same name
                     // in the images folder
-                    console.log('Set a new profile picture to replace the old one.')
+                    // console.log('Set a new profile picture to replace the old one.')
                     if (fs.existsSync(oldImage)) {
-                        console.log('Went to fs.existSync')
+                        // console.log('Went to fs.existSync')
                         // If it is, we remove it with fs.unlink
                         fs.unlink(oldImage, (error) => {
                             if (error) {
@@ -386,9 +386,9 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         const session = request.session
         const { oldPassword, newPassword, confirmPassword } = request.body
 
-        console.log(oldPassword)
-        console.log(newPassword)
-        console.log(confirmPassword)
+        // console.log(oldPassword)
+        // console.log(newPassword)
+        // console.log(confirmPassword)
 
         // We use return response.send because we want the headers to be set max once per scenario,
         // so if we fail the initial change (because of a lacking password, etc.), we can try again.
@@ -467,7 +467,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 const notificationsData = await pool.query(sql, ['YES', session.userid])
                 response.send(notificationsData.rows)
             } catch (error) {
-                console.log('Something went wrong when trying to retrieve notifications: ', error)
+                // console.log('Something went wrong when trying to retrieve notifications: ', error)
                 response.send(false)
             }
         } else {
@@ -534,7 +534,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
 				pool.query(sql, [sess.userid, notification_id])
 				response.send(true)
 			} catch (error) {
-				console.log(error)
+				// console.log(error)
 				response.send("Failed to delete notification")
 			}
 		}
@@ -561,7 +561,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
 				pool.query(sql, [sess.userid])
 				response.send(true)
 			} catch (error) {
-				console.log(error)
+				// console.log(error)
 				response.send("Failed to delete user!")
 			}
 		}

@@ -33,8 +33,8 @@ const NoResults = () => {
 }
 
 const RecommendedPreviews = ({ users, browsingCriteria }) => {
-	console.log("RecommendedPreviews - users:", users)
-	console.log("RecommendedPreviews - browsingCriteria:", browsingCriteria)
+	// console.log("RecommendedPreviews - users:", users)
+	// console.log("RecommendedPreviews - browsingCriteria:", browsingCriteria)
 	const userLists = useSelector(state => state.userLists)
 	const navigate = useNavigate()
 	const dispatch = useDispatch()

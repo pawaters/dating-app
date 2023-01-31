@@ -56,7 +56,7 @@ module.exports = (pool, socketIO) => {
 
             if (connections.rows.length > 0) {
                 socketIO.in(`room-${data.room}`).emit('receive_message', data)
-                console.log("chat.js L44 - socketio send message: DATA = ", data) // Send to all users in the room, including sender,
+                // console.log("chat.js L44 - socketio send message: DATA = ", data) // Send to all users in the room, including sender,
                 sendToDatabase(data) // and save message to database.
             }
         })

@@ -55,7 +55,7 @@ const Chat = ({ socket }) => {
 	useEffect(() => {
 		const getConnections = async () => {
 			const connections = await chatService.chat_connections()
-			console.log("chat.js l58 - connections =", connections)
+			// console.log("chat.js l58 - connections =", connections)
 			setConnections(connections)
 		}
 		getConnections()

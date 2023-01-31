@@ -14,16 +14,16 @@ export const TagsInput = ({ tags, setTags, formerTags }) => {
 	useEffect(() => {
 		const getTags = async () => {
 			const allTags = await browsingService.getAllTags()
-			console.log("tags:", allTags)
+			// console.log("tags:", allTags)
 			setMenuTags(allTags)
 			setLoading(false)
 		}
 		getTags()
 	}, [])
 
-	// if (isLoading) {
-	// 	return <Loader  text="Getting user tags..." />
-	// }
+	if (isLoading) {
+		return <Loader  text="Getting user tags..." />
+	}
 
 	const handleTagFilter = (value) => {
 		setTags(value)

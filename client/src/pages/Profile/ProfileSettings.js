@@ -57,7 +57,7 @@ const ProfileSettings = () => {
 
     const submitSettings = (event) => {
         event.preventDefault()
-        console.log('profile sent from edit profile to backend: ', settings)
+        // console.log('profile sent from edit profile to backend: ', settings)
 
         profileService.editUserSettings(settings).then((result) => {
             
