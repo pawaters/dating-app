@@ -19,7 +19,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         if (location.length > 50)
             return response.send("Maximum length for location is 50 characters.")
         if (!location.match(/^[a-z, åäö-]+$/i))
-            return response.send("Invalid characters in location! Allowed characters are a-z, å, ä, ö, comma (,) and dash (-).")
+            return response.send("Invalid characters in location! Allowed characters are a to z, å, ä, ö, comma (,), and hyphen (-).")
         if (isNaN(gps[0]) || isNaN(gps[1]) || gps[0] < -90 || gps[0] > 90 || gps[1] < -180 || gps[1] > 180)
             return response.send("Invalid coordinates! The range for latitude is -90 to 90, and for longitude -180 to 180.")
         if (sexual_pref !== 'male' && sexual_pref !== 'female' && sexual_pref !== 'bisexual')
@@ -94,14 +94,14 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         if (session.userid) {
             try {
                 var sql = `SELECT * FROM users
-                                INNER JOIN user_settings ON users.id = user_settings.user_id
-                                LEFT JOIN fame_rates ON users.id = fame_rates.user_id
-                                WHERE users.id = $1`
+                            INNER JOIN user_settings ON users.id = user_settings.user_id
+                            LEFT JOIN fame_rates ON users.id = fame_rates.user_id
+                            WHERE users.id = $1`
                 var { rows } = await pool.query(sql, [session.userid])
                 const { password: censored, ...profileData } = rows[0]
 
                 sql = `SELECT * FROM tags WHERE tagged_users @> array[$1]::INT[]
-						        ORDER BY tag_id`
+						ORDER BY tag_id`
                 var tags_of_user = await pool.query(sql, [session.userid])
                 profileData.tags = tags_of_user.rows.map(tag => tag.tag_content)
 
@@ -121,23 +121,23 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 }
 
                 sql = `SELECT target_id, username
-						        FROM likes INNER JOIN users on likes.target_id = users.id
-						        WHERE liker_id = $1
-						        GROUP BY target_id, username`
+						FROM likes INNER JOIN users on likes.target_id = users.id
+						WHERE liker_id = $1
+						GROUP BY target_id, username`
                 const liked = await pool.query(sql, [session.userid])
                 profileData.liked = liked.rows
 
                 sql = `SELECT watcher_id, username
-						    FROM watches INNER JOIN users on watches.watcher_id = users.id
-						    WHERE target_id = $1
-						    GROUP BY watcher_id, username`
+					    FROM watches INNER JOIN users on watches.watcher_id = users.id
+					    WHERE target_id = $1
+					    GROUP BY watcher_id, username`
                 const watchers = await pool.query(sql, [session.userid])
                 profileData.watchers = watchers.rows
 
                 sql = `SELECT liker_id, username
-						    FROM likes INNER JOIN users on likes.liker_id = users.id
-						    WHERE target_id = $1
-						    GROUP BY liker_id, username`
+						FROM likes INNER JOIN users on likes.liker_id = users.id
+						WHERE target_id = $1
+						GROUP BY liker_id, username`
                 const likers = await pool.query(sql, [session.userid])
                 profileData.likers = likers.rows
 
@@ -177,7 +177,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         if (firstname.length > 50 || lastname.length > 50)
             return response.send("Maximum length for firstname and lastname is 50 characters.")
         if (!firstname.match(/^[a-zåäö-]+$/i) || !lastname.match(/^[a-zåäö-]+$/i))
-            return response.send("First name and last name can only include characters a-z, å, ä, ö and dash (-).")
+            return response.send("First name and last name can only include characters a to z, å, ä, ö, and hyphen (-).")
         if (email.length > 254 || !email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/))
             return response.send("Please enter a valid e-mail address.")
         if (gender !== 'male' && gender !== 'female' && gender !== 'other')
@@ -187,7 +187,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         if (location.length > 50)
             return response.send("Maximum length for location is 50 characters.")
         if (!location.match(/^[a-z, åäö-]+$/i))
-            return response.send("Invalid characters in location! Allowed characters are a-z, å, ä, ö, comma (,) and dash (-).")
+            return response.send("Invalid characters in location! Allowed characters are a to z, å, ä, ö, comma (,), and hyphen (-).")
         if (isNaN(gps_lat) || isNaN(gps_lon) || gps_lat < -90 || gps_lat > 90 || gps_lon < -180 || gps_lon > 180)
             return response.send("Invalid coordinates! The range for latitude is -90 to 90, and for longitude -180 to 180.")
         if (sexual_pref !== 'male' && sexual_pref !== 'female' && sexual_pref !== 'bisexual')
@@ -196,7 +196,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
             return response.send("The maximum length for biography is 500 characters!")
         const forbiddenTags = tags.filter(tag => !tag.match(/(?=^.{1,23}$)[a-z åäö-]+$/i))
         if (forbiddenTags.length !== 0)
-            return response.send("Allowed characters in tags are a-z, å, ä, ö and dash (-). The maximum length is 23 characters.")
+            return response.send("Allowed characters in tags are a to z, å, ä, ö, and hyphen (-). The maximum length is 23 characters.")
 
         if (session.userid) {
             try {
@@ -351,17 +351,13 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         const session = request.session
         const { oldPassword, newPassword, confirmPassword } = request.body
 
-        // console.log(oldPassword)
-        // console.log(newPassword)
-        // console.log(confirmPassword)
-
         // We use return response.send because we want the headers to be set max once per scenario,
         // so if we fail the initial change (because of a lacking password, etc.), we can try again.
         if (newPassword !== confirmPassword) {
             return response.send("The entered new passwords don't match!")
         }
         else if (!newPassword.match(/(?=^.{8,30}$)(?=.*\d)(?=.*[!.@#$%^&*]+)(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-            return response.send("Please enter a password with a length between 8 and 30 characters, at least one lowercase character (a-z), at least one uppercase character (A-Z), at least one numeric character (0-9), and at least one special character (!.@#$%^&*)")
+            return response.send("Please enter a password with a length between 8 and 30 characters, at least one lowercase alphabetical character (a to z), at least one uppercase alphabetical character (A-Z), at least one numeric character (0-9), and at least one special character (!.@#$%^&*)")
         }
 
         var sql = `SELECT * FROM users WHERE id = $1`;

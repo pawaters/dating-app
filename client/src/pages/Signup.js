@@ -8,8 +8,6 @@ import { changeSeverity } from "../reducers/severityReducer"
 import { changeNotification } from "../reducers/notificationReducer"
 import Notification from "../components/notification/Notification"
 
-
-
 const Signup = () => {
 
     const dispatch = useDispatch()
@@ -40,8 +38,7 @@ const Signup = () => {
 
         signUpService.createUser(signedUpUser)
             .then(result => {
-                // console.log(signedUpUser)
-                if (result) {
+                if (result === true) {
                     dispatch(changeSeverity('success'))
                     dispatch(changeNotification('User created successfully - Email sent with link for verification '))
                     navigate('/login')
