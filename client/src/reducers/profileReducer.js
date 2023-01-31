@@ -28,7 +28,7 @@ export const getProfileData = () => {
             dispatch(setProfileData(profile))
         } else {
             // console.log('ProfileReducer: Profile is empty - setProfileData to empty')
-            dispatch(setProfileData({}))
+            dispatch(resetProfileData())
         }
     }
 }

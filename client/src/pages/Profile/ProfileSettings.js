@@ -63,7 +63,7 @@ const ProfileSettings = () => {
             
             if (result === true) {
                 dispatch(changeSeverity('success'))
-                dispatch(changeNotification("Profile updated"))
+                dispatch(changeNotification("Profile updated. Loading now with new data..."))
                 navigate('/profile')
             } else {
                 dispatch(changeSeverity('error'))

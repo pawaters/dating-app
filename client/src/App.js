@@ -123,7 +123,6 @@ const App = () => {
                             <Route path={"/changepassword"} element={<ChangePassword />} />
                             <Route path={"/confirm/:user/:code"} element={<ConfirmMail />} />
                             <Route path={"/browsing"} element={<Browsing />} />
-                            <Route path={"/onboarding"} element={<Onboarding />} />
                             <Route path={"/profile"} element={<Profile />} />
                             <Route path={"/profile/:id"} element={<UserProfile />} />
                             <Route path={"/chat"} element={<Chat socket={socket} />} />

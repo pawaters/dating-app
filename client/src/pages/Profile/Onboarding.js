@@ -25,7 +25,7 @@ const Onboarding = () => {
     const [isLoading, setLoading] = useState(true)
     const [tags, setTagState] = useState([])
 
-    const getLocationData = async() => {
+    const getLocationData = async () => {
         var locationData = await axios.get('https://ipapi.co/json')
         var newGPSLocation = {
             latitude: Number(locationData.data.latitude),
@@ -91,7 +91,7 @@ const Onboarding = () => {
                 
                 if (result === true) {
                     dispatch(changeSeverity('success'))
-                    dispatch(changeNotification('Profile updated successfully'))
+                    dispatch(changeNotification('Profile updated successfully. Loading Profile now with new data...'))
                     dispatch(getProfileData())
                     navigate('/profile')
                 } else {

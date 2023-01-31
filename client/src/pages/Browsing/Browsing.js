@@ -185,7 +185,7 @@ const Browsing = () => {
 			} else {
 				dispatch(changeSeverity('error'))
 				dispatch(changeNotification('Fetching users failed'))
-				// navigate('/profile')
+				navigate('/profile')
 			}
 			await dispatch(getUserLists())
 		}

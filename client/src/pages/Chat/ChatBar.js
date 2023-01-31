@@ -15,8 +15,8 @@ const theme = createTheme({
 
 const ChatBar = ({ connections, joinRoom }) => {
 	const room = useSelector(state => state.room)
-	// console.log("ChatBar l18: room)", room)
-	// console.log("ChatBar l19: connections)", connections)
+	console.log("ChatBar l18: room)", room)
+	console.log("ChatBar l19: connections)", connections)
 
 	const textColor = {
 		true: 'white',
@@ -61,11 +61,10 @@ const ChatBar = ({ connections, joinRoom }) => {
 										m: 'auto', pt: 1, pb: 1,
 									}}>
 										<ChatIcon
-											key={user.id}
 											username={user.username}
 											image={user.picture_data}
 										/>
-										<Typography theme={theme}
+										<Typography
 											key={user.id} variant='h6'
 											sx={{
 												width: 'fit-content',
