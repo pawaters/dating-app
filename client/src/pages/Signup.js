@@ -43,7 +43,7 @@ const Signup = () => {
                 // console.log(signedUpUser)
                 if (result) {
                     dispatch(changeSeverity('success'))
-                    dispatch(changeNotification('User created successfully [PENDING DEVELOPMENT OF EMAIL CONFIRMATION]' ))
+                    dispatch(changeNotification('User created successfully - Email sent with code for verification '))
                     navigate('/login')
                 } else {
                     dispatch(changeSeverity('error'))

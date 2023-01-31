@@ -74,8 +74,6 @@ const App = () => {
     }, [])
 
     useEffect(() => {
-
-        console.log("APP.JS l82 :", socket)
 		if (!socket) return
 
 		socket.on('connect', () => {
