@@ -40,23 +40,22 @@ const ChatBar = ({ connections, joinRoom }) => {
 									}
 								}}
 							>
-								<Box key={user.id} sx={{
+								<Box key={user.connection_id} sx={{
 									display: 'flex',
 									borderBottom: '1px solid #e0e0e0',
 									width: 1
 								}}>
-									<Box key={user.id} sx={{
+									<Box key={user.connection_id} sx={{
 										display: 'inline-flex',
 										alignItems: 'center',
 										m: 'auto', pt: 1, pb: 1,
 									}}>
 										<ChatIcon
-											key={user.id}
 											username={user.username}
 											image={user.picture_data}
 										/>
 										<Typography
-											key={user.id} variant='h6'
+											key={user.connection_id} variant='h6'
 											sx={{
 												width: 'fit-content',
 												ml: 1,
