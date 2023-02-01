@@ -98,8 +98,15 @@ const Profile = () => {
 
     const deleteImage = async (id) => {
         if (window.confirm("Are you sure you want to delete this picture?")) {
-            await profileService.deletePicture(id)
-            dispatch(getProfileData())
+            const result = await profileService.deletePicture(id)
+            if (result === 'Picture deleted') {
+                dispatch(getProfileData())
+                dispatch(changeSeverity('success'))
+                dispatch(changeNotification("Picture deleted successfully!"))
+            } else {
+                dispatch(changeSeverity('error'))
+                dispatch(changeNotification(result))
+            }
         }
     }
 

@@ -28,7 +28,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
             return response.send("The maximum length for biography is 500 characters!")
         const forbiddenTags = tags_of_user.filter(tag => !tag.match(/(?=^.{1,23}$)[a-z åäö-]+$/i))
         if (forbiddenTags.length !== 0)
-            return response.send("Allowed characters in tags are a-z, å, ä, ö and dash (-). The maximum length of a tag is 23 characters.")
+            return response.send("Allowed characters in tags are a to z, å, ä, ö and hyphen (-). The maximum length of a tag is 23 characters.")
 
         try {
             await pool.query(
@@ -409,6 +409,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 response.status(200).send("Picture deleted")
             } catch (error) {
                 console.error("Something went wrong when trying to delete the picture: ", error)
+                response.send("Something went wrong when trying to delete the picture.")
                 return
             }
         }
@@ -428,7 +429,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 const notificationsData = await pool.query(sql, ['YES', session.userid])
                 response.send(notificationsData.rows)
             } catch (error) {
-                // console.log('Something went wrong when trying to retrieve notifications: ', error)
                 response.send(false)
             }
         } else {
@@ -495,7 +495,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 pool.query(sql, [sess.userid, notification_id])
                 response.send(true)
             } catch (error) {
-                // console.log(error)
                 response.send("Failed to delete notification")
             }
         }
