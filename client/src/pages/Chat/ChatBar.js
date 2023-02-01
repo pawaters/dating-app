@@ -4,8 +4,8 @@ import ChatIcon from './ChatIcon'
 
 const ChatBar = ({ connections, joinRoom }) => {
 	const room = useSelector(state => state.room)
-	console.log("ChatBar l18: room)", room)
-	console.log("ChatBar l19: connections)", connections)
+	// console.log("ChatBar l18: room)", room)
+	// console.log("ChatBar l19: connections)", connections)
 
 	const textColor = {
 		true: 'white',
