@@ -6,13 +6,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import { getProfileData } from '../../reducers/profileReducer'
 import Loader from '../../components/Loader'
-import Onboarding from '../../pages/Profile/Onboarding'
 import profileService from "../../services/profileService"
 import { changeSeverity } from "../../reducers/severityReducer"
 import { changeNotification } from "../../reducers/notificationReducer"
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Notification from '../../components/notification/Notification'
+import Onboarding from './Onboarding'
 
 const ProfileInput = ({ text, input }) => {
     return (
@@ -33,7 +33,6 @@ const Profile = () => {
     const navigate = useNavigate()
     const profileData = useSelector(state => state.profile)
 
-    // The await is necessary af despite the three dots warning.
     useEffect(() => {
         const getData = async () => {
             await dispatch(getProfileData())
@@ -49,10 +48,10 @@ const Profile = () => {
     // console.log('profileData.id in Profile.js: ', profileData.id)
     // console.log('profileData.total_pts: ', profileData.total_pts)
 
-    // if (!profileData.id) {
-    //     // console.log('Tried to go to Onboarding')
-    //     return <Onboarding />
-    // }
+    if (!profileData.id) {
+        // console.log('Tried to go to Onboarding')
+        return <Onboarding />
+    }
 
     const profile_pic = profileData.profile_pic['picture_data']
     const other_pictures = profileData.other_pictures
@@ -104,7 +103,6 @@ const Profile = () => {
 		}
 	}
 
-    // //replace with a hook as this code is repeated from other parts?
 
     const uploadImage = async (event) => {
 		const image = event.target.files[0]
@@ -153,7 +151,6 @@ const Profile = () => {
 		// console.log("USER ID:", id)
         if (window.confirm("Are you sure you want to completely delete your account?")) {
 			if (window.confirm("Are you sure? There is no way to retrieve your data afterwards.")) {
-                //add some check of state.
                 profileService.deleteUser().then(result => {
                     if (result === true) {
                         dispatch(changeSeverity('success'))

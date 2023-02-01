@@ -4,3 +4,4 @@
 !*server/images/default_profilepic.jpeg
 pgdata
 node_modules
+client/build

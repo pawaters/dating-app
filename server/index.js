@@ -11,20 +11,26 @@ const path = require('path')
 const fs = require('fs')
 const { pgUser, pgPassword, pgDatabase, pgHost, EMAIL_ADDRESS, EMAIL_PASSWORD } = require('./config')
 const http = require('http').Server(app) //required for socket to work
+const nocache = require('nocache');
 
 // middleware
 app.use(cors())
 app.use(express.json())
+app.use(
+  express.static(path.join(__dirname, "../client/build"))
+)
+app.use(nocache());
 app.use(session({
   secret: 'secret',
   saveUninitialized: true,
   resave: true
 }))
 // no cache
-app.use(function (req, res, next) {
-  res.header('Cache-Control', 'no-cache');
+app.set('etag', false)
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store')
   next()
-});
+})
 app.use('/images', express.static('./images')) // to serve static files to path /images, from images folder
 
 const socketIO = require('socket.io')(http, {

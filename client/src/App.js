@@ -38,8 +38,6 @@ const theme = createTheme({
     palette: {
         primary: {
             main: pink[500],
-            // TO DO: GRADIENT TO IMPLEMENT
-            // mainGradient: "linear-gradient(to right, tomato, cyan)"
         },
         secondary: {
             main: grey[500],
