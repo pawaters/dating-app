@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Avatar, Tooltip, styled, Badge } from '@mui/material'
 
-const ChatIcon = ({ username, image, user}) => {
+const ChatIcon = ({ username, image}) => {
 	const onlineUsers = useSelector(state => state.onlineUsers)
 	const usernames = onlineUsers.map(user => user.name)
 
@@ -37,13 +37,12 @@ const ChatIcon = ({ username, image, user}) => {
 	if (usernames.includes(username)) {
 		return (
 			<StyledBadge
-				key={user.id}
 				overlap="circular"
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				variant="dot"
 			>
-				<Tooltip title={username} key={user.id} > 
-					<Avatar key={user.id} src={image} alt={username} />
+				<Tooltip title={username}> 
+					<Avatar src={image} alt={username} />
 				</Tooltip>
 			</StyledBadge>
 		)
