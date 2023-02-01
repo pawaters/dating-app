@@ -30,7 +30,7 @@ const MenuButton = ({ unread, setAnchorElNotifications }) => {
 		)
 	}
 
-	if (unread === 0) {
+	if (unread == 0) {
 		return (
 			<Badge onClick={(event) => setAnchorElNotifications(event.currentTarget)}
 				sx={{ mr: 1 }}>

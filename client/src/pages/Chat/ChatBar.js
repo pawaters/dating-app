@@ -1,22 +1,11 @@
-import { Paper, Typography, Box, Button, createTheme } from '@mui/material'
+import { Paper, Typography, Box, Button } from '@mui/material'
 import { useSelector } from 'react-redux'
 import ChatIcon from './ChatIcon'
 
-const theme = createTheme({
-	palette: {
-		primary: {
-			main: '#1c1c1c',
-		},
-		secondary: {
-			main: '#FF1E56',
-		},
-	}
-})
-
 const ChatBar = ({ connections, joinRoom }) => {
 	const room = useSelector(state => state.room)
-	console.log("ChatBar l18: room)", room)
-	console.log("ChatBar l19: connections)", connections)
+	// console.log("ChatBar l18: room)", room)
+	// console.log("ChatBar l19: connections)", connections)
 
 	const textColor = {
 		true: 'white',
@@ -29,15 +18,16 @@ const ChatBar = ({ connections, joinRoom }) => {
 	}
 
 	return (
-		<Paper className='chat_sidebar' theme={theme} color='gray'>
+		<Paper color='gray'>
 			<Typography variant='h5' align='center' sx={{ pt: 1 }}>Connected</Typography>
 			<Box sx={{ p: 1 }} >
 				<Box>
 					{connections.map(user => {
+						// console.log()
+						// console.log("CHATBAR - user.id", user.connection_id)
 						return (
 							<Button
-								key={user.id}
-								theme={theme}
+								key={user.connection_id}
 								onClick={() => joinRoom(user.connection_id)}
 								sx={{
 									mb: 1,
@@ -50,12 +40,12 @@ const ChatBar = ({ connections, joinRoom }) => {
 									}
 								}}
 							>
-								<Box key={user.id} sx={{
+								<Box key={user.connection_id} sx={{
 									display: 'flex',
 									borderBottom: '1px solid #e0e0e0',
 									width: 1
 								}}>
-									<Box key={user.id} sx={{
+									<Box key={user.connection_id} sx={{
 										display: 'inline-flex',
 										alignItems: 'center',
 										m: 'auto', pt: 1, pb: 1,
@@ -65,7 +55,7 @@ const ChatBar = ({ connections, joinRoom }) => {
 											image={user.picture_data}
 										/>
 										<Typography
-											key={user.id} variant='h6'
+											key={user.connection_id} variant='h6'
 											sx={{
 												width: 'fit-content',
 												ml: 1,
