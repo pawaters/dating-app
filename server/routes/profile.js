@@ -486,13 +486,13 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
     })
 
     app.delete('/api/profile/notification/:id', (request, response) => {
-        const sess = request.session
+        const session = request.session
 
-        if (sess.userid) {
+        if (session.userid) {
             try {
                 const notification_id = request.params.id
                 var sql = `DELETE FROM notifications WHERE user_id = $1 AND notification_id = $2`
-                pool.query(sql, [sess.userid, notification_id])
+                pool.query(sql, [session.userid, notification_id])
                 response.send(true)
             } catch (error) {
                 response.send("Failed to delete notification")
@@ -501,24 +501,24 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
     })
 
     app.delete('/api/profile/deleteuser', (request, response) => {
-        const sess = request.session
+        const session = request.session
 
-        if (sess.userid) {
+        if (session.userid) {
             try {
                 var sql = `DELETE FROM users WHERE id = $1`
-                pool.query(sql, [sess.userid])
+                pool.query(sql, [session.userid])
                 var sql = `DELETE FROM likes WHERE target_id = $1`
-                pool.query(sql, [sess.userid])
+                pool.query(sql, [session.userid])
                 var sql = `DELETE FROM blocks WHERE target_id = $1`
-                pool.query(sql, [sess.userid])
+                pool.query(sql, [session.userid])
                 var sql = `DELETE FROM watches WHERE target_id = $1`
-                pool.query(sql, [sess.userid])
+                pool.query(sql, [session.userid])
                 var sql = `DELETE FROM reports WHERE target_id = $1`
-                pool.query(sql, [sess.userid])
+                pool.query(sql, [session.userid])
                 var sql = `DELETE FROM connections WHERE user2_id = $1`
-                pool.query(sql, [sess.userid])
+                pool.query(sql, [session.userid])
                 var sql = `DELETE FROM notifications WHERE sender_id = $1`
-                pool.query(sql, [sess.userid])
+                pool.query(sql, [session.userid])
                 response.send(true)
             } catch (error) {
                 // console.log(error)
