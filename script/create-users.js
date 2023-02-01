@@ -99,20 +99,22 @@ const createUserSettings = async (id, gender) => {
     let sexual_pref = ["bisexual", "male", "female"].random()
     let biography = faker.lorem.paragraph()
     // The loop ensures we skip any trash locations in the ocean.
-    while (true) {
+    // while (true) {
         //  \/ 5000 km away at max, true for units in kilometers instead of miles.
         var coordinates = faker.address.nearbyGPSCoordinate([60.179700, 24.934400], 5000, true)
-        var city_data = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates[0]},${coordinates[1]}&key=${process.env.GOOGLE_API}`)
-        var user_location
-        var length = city_data.data.results.length
-        if (city_data.data.results.length > 0
-            && (city_data.data.results[length - 1].formatted_address.match(/[a-z]+/)
-                && !city_data.data.results[length - 1].formatted_address.match(/\+/i))) {
-            user_location = city_data.data.results[length - 1].formatted_address
-            break
-        } else
-            continue
-    }
+        // var city_data = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates[0]},${coordinates[1]}&key=${process.env.GOOGLE_API}`)
+        
+        var user_location = 'Helsinki'
+        // var length = city_data.data.results.length
+        // if (city_data.data.results.length > 0
+        //     && (city_data.data.results[length - 1].formatted_address.match(/[a-z]+/)
+        //         && !city_data.data.results[length - 1].formatted_address.match(/\+/i))) 
+        // {
+        //     user_location = city_data.data.results[length - 1].formatted_address
+        //     break
+        // } else
+        //     continue
+    // }
     console.log('user_location: ', user_location)
     let ip_location = `(${coordinates[0]}, ${coordinates[1]})`
     let sql = `INSERT INTO user_settings (user_id, gender, age, sexual_pref, biography, user_location, ip_location)
