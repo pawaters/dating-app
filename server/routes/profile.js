@@ -90,61 +90,67 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
     app.get('/api/profile', async (request, response) => {
 
         const session = request.session
+        console.log("REQUEST ARRIVED FOR /api/profile")
+        if (!session.userid) return response.send(false)
+        
+        try {
+            var sql = `SELECT * FROM users
+                        INNER JOIN user_settings ON users.id = user_settings.user_id
+                        LEFT JOIN fame_rates ON users.id = fame_rates.user_id
+                        WHERE users.id = $1`
+            var { rows } = await pool.query(sql, [session.userid])
+            const { password: censored, ...profileData } = rows[0]
 
-        if (session.userid) {
-            try {
-                var sql = `SELECT * FROM users
-                            INNER JOIN user_settings ON users.id = user_settings.user_id
-                            LEFT JOIN fame_rates ON users.id = fame_rates.user_id
-                            WHERE users.id = $1`
-                var { rows } = await pool.query(sql, [session.userid])
-                const { password: censored, ...profileData } = rows[0]
+            sql = `SELECT * FROM tags WHERE tagged_users @> array[$1]::INT[]
+                    ORDER BY tag_id`
+            var tags_of_user = await pool.query(sql, [session.userid])
+            console.log("/api/profile: QUERY 1 done")
+            profileData.tags = tags_of_user.rows.map(tag => tag.tag_content)
 
-                sql = `SELECT * FROM tags WHERE tagged_users @> array[$1]::INT[]
-						ORDER BY tag_id`
-                var tags_of_user = await pool.query(sql, [session.userid])
-                profileData.tags = tags_of_user.rows.map(tag => tag.tag_content)
+            sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'YES'`
+            var profile_pic = await pool.query(sql, [session.userid])
+            console.log("/api/profile: QUERY 2 done")
 
-                sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'YES'`
-                var profile_pic = await pool.query(sql, [session.userid])
-
-                if (profile_pic.rows[0]) {
-                    profileData.profile_pic = profile_pic.rows[0]
-                } else {
-                    profileData.profile_pic = { user_id: session.userid, picture_data: null }
-                }
-
-                sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'NO' ORDER BY picture_id`
-                var other_pictures = await pool.query(sql, [session.userid])
-                if (other_pictures.rows) {
-                    profileData.other_pictures = other_pictures.rows
-                }
-
-                sql = `SELECT target_id, username
-						FROM likes INNER JOIN users on likes.target_id = users.id
-						WHERE liker_id = $1
-						GROUP BY target_id, username`
-                const liked = await pool.query(sql, [session.userid])
-                profileData.liked = liked.rows
-
-                sql = `SELECT watcher_id, username
-					    FROM watches INNER JOIN users on watches.watcher_id = users.id
-					    WHERE target_id = $1
-					    GROUP BY watcher_id, username`
-                const watchers = await pool.query(sql, [session.userid])
-                profileData.watchers = watchers.rows
-
-                sql = `SELECT liker_id, username
-						FROM likes INNER JOIN users on likes.liker_id = users.id
-						WHERE target_id = $1
-						GROUP BY liker_id, username`
-                const likers = await pool.query(sql, [session.userid])
-                profileData.likers = likers.rows
-
-                response.send(profileData)
-            } catch (error) {
-                response.send(false)
+            if (profile_pic.rows[0]) {
+                profileData.profile_pic = profile_pic.rows[0]
+            } else {
+                profileData.profile_pic = { user_id: session.userid, picture_data: null }
             }
+
+            sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'NO' ORDER BY picture_id`
+            var other_pictures = await pool.query(sql, [session.userid])
+            console.log("/api/profile: QUERY 3 done")
+            if (other_pictures.rows) {
+                profileData.other_pictures = other_pictures.rows
+            }
+
+            sql = `SELECT target_id, username
+                    FROM likes INNER JOIN users on likes.target_id = users.id
+                    WHERE liker_id = $1
+                    GROUP BY target_id, username`
+            const liked = await pool.query(sql, [session.userid])
+            console.log("/api/profile: QUERY 4 done")
+            profileData.liked = liked.rows
+
+            sql = `SELECT watcher_id, username
+                    FROM watches INNER JOIN users on watches.watcher_id = users.id
+                    WHERE target_id = $1
+                    GROUP BY watcher_id, username`
+            const watchers = await pool.query(sql, [session.userid])
+            console.log("/api/profile: QUERY 5 done")
+            profileData.watchers = watchers.rows
+
+            sql = `SELECT liker_id, username
+                    FROM likes INNER JOIN users on likes.liker_id = users.id
+                    WHERE target_id = $1
+                    GROUP BY liker_id, username`
+            const likers = await pool.query(sql, [session.userid])
+            console.log("/api/profile: QUERY 6 done")
+            profileData.likers = likers.rows
+
+            response.send(profileData)
+        } catch (error) {
+            response.send(false)
         }
     })
 

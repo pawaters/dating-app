@@ -86,6 +86,7 @@ const NotificationMenu = ({ socket }) => {
 	const allNotifications = useSelector(state => state.userNotifications)
 	const unreadNotifications = allNotifications.filter(notification => notification.read === 'NO')
 	const dispatch = useDispatch()
+	// const [notificationAmount, setNotificationAmount] = useState(null);
 
 	useEffect(() => {
 		socket.on('new_notification', (data) => {
@@ -100,7 +101,14 @@ const NotificationMenu = ({ socket }) => {
 		profileService.readNotification(id)
 		dispatch(setNotificationRead(id))
 	}
-
+	// useEffect(() => {
+	// 	setNotificationAmount(unreadNotifications.length)
+		
+	// 	if (unreadNotifications.length !== 0)
+	// 		notificationAmount = `${unreadNotifications.length} unread notifications`
+	// 	else
+	// 		notificationAmount = `no new notifications`
+	// }, [])
 	var notificationAmount
 	if (unreadNotifications.length !== 0)
 		notificationAmount = `${unreadNotifications.length} unread notifications`
