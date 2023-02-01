@@ -1,17 +1,6 @@
-import { Paper, Typography, Box, Button, createTheme } from '@mui/material'
+import { Paper, Typography, Box, Button } from '@mui/material'
 import { useSelector } from 'react-redux'
 import ChatIcon from './ChatIcon'
-
-const theme = createTheme({
-	palette: {
-		primary: {
-			main: '#1c1c1c',
-		},
-		secondary: {
-			main: '#FF1E56',
-		},
-	}
-})
 
 const ChatBar = ({ connections, joinRoom }) => {
 	const room = useSelector(state => state.room)
@@ -29,15 +18,16 @@ const ChatBar = ({ connections, joinRoom }) => {
 	}
 
 	return (
-		<Paper className='chat_sidebar' theme={theme} color='gray'>
+		<Paper color='gray'>
 			<Typography variant='h5' align='center' sx={{ pt: 1 }}>Connected</Typography>
 			<Box sx={{ p: 1 }} >
 				<Box>
 					{connections.map(user => {
+						// console.log()
+						// console.log("CHATBAR - user.id", user.connection_id)
 						return (
 							<Button
-								key={user.id}
-								theme={theme}
+								key={user.connection_id}
 								onClick={() => joinRoom(user.connection_id)}
 								sx={{
 									mb: 1,
@@ -61,6 +51,7 @@ const ChatBar = ({ connections, joinRoom }) => {
 										m: 'auto', pt: 1, pb: 1,
 									}}>
 										<ChatIcon
+											key={user.id}
 											username={user.username}
 											image={user.picture_data}
 										/>
