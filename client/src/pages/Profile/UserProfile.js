@@ -34,7 +34,7 @@ const themeunlike = createTheme({
 			main: '#F5F5F5',
 		},
 	}
-}) 
+})
 
 const ProfileInput = ({ text, input }) => {
 	return (
@@ -208,7 +208,11 @@ const UserProfile = () => {
 				</Grid>
 				<Box>
 					{other_pictures.map((picture, i) =>
-						<img key={picture.picture_id} alt="random_picture" height="200px" src={picture.picture_data}></img>
+						<img onError={({ currentTarget }) => {
+							currentTarget.onerror = null
+							currentTarget.src = 'http://localhost:3000/images/default_profilepic.jpeg'
+						}}
+							key={picture.picture_id} alt="random_picture" height="200px" src={picture.picture_data}></img>
 					)}
 				</Box>
 			</Paper>

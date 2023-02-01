@@ -195,7 +195,7 @@ module.exports = (app, pool, transporter, socketIO) => {
       var sql = `SELECT picture_data FROM user_pictures
 						    WHERE user_id = $1 AND profile_pic = 'YES'`
       const { rows } = await pool.query(sql, [session.userid])
-      if (rows[0] == undefined || rows[0]['picture_data'] === null || rows[0]['picture_data'] === 'http://localhost:3000/images/default_profilepic.jpg') {
+      if (rows[0] == undefined || rows[0]['picture_data'] === null || rows[0]['picture_data'] === 'http://localhost:3000/images/default_profilepic.jpeg') {
         return response.send('No profile picture')
       } else {
         const liked_person_id = request.params.id

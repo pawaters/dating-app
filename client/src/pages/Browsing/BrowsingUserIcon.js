@@ -7,6 +7,8 @@ const BrowsingUserIcon = ({ user }) => {
 	const onlineUsers = useSelector(state => state.onlineUsers)
 	const usernames = onlineUsers.map(user => user.name)
 
+	const placeholderImage = 'http://localhost:3000/images/default_profilepic.jpeg'
+
 	const StyledBadge = styled(Badge)(({ theme }) => ({
 		'& .MuiBadge-badge': {
 			backgroundColor: '#44b700',
@@ -52,7 +54,16 @@ const BrowsingUserIcon = ({ user }) => {
 						src={user.profile_pic}
 						onClick={() => navigate(`/profile/${user.id}`)}
 						sx={{ width: '200px', height: '200px', cursor: 'pointer' }}
-					/>
+					>
+						<img
+							variant="rounded"
+							key={user.id}
+							alt="profile_picture"
+							src={placeholderImage}
+							onClick={() => navigate(`/profile/${user.id}`)}
+							sx={{ width: '200px', height: '200px', cursor: 'pointer' }}
+						/>
+					</Avatar>
 				</StyledBadge>
 			</Box>
 		)
@@ -66,7 +77,16 @@ const BrowsingUserIcon = ({ user }) => {
 					src={user.profile_pic}
 					onClick={() => navigate(`/profile/${user.id}`)}
 					sx={{ width: '200px', height: '200px', cursor: 'pointer' }}
-				/>
+				>
+					<img
+						variant="rounded"
+						key={user.id}
+						alt="profile_picture"
+						src={placeholderImage}
+						onClick={() => navigate(`/profile/${user.id}`)}
+						sx={{ width: '200px', height: '200px', cursor: 'pointer' }}
+					/>
+				</Avatar>
 			</Box>
 		)
 	}
