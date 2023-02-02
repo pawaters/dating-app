@@ -27,8 +27,11 @@ services:
       - ./server:/app
     ports:
       - "3001:3001"
+    depends_on:
+      - postgres-db
     env_file:
       - .env
+    restart: on-failure
   client: 
     build:
       dockerfile: Dockerfile.dev
