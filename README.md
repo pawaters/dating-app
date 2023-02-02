@@ -90,4 +90,6 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 - UI theme
 - Redux store
 - delete user
-- delete notif
+- delete notif / marking read/unread / clear
+- delete image
+- all dockerized, even user creation script
