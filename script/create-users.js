@@ -98,24 +98,18 @@ const createUserSettings = async (id, gender) => {
     let age = getRandomInt(18, 120)
     let sexual_pref = ["bisexual", "male", "female"].random()
     let biography = faker.lorem.paragraph()
-    // The loop ensures we skip any trash locations in the ocean.
-    // while (true) {
-        //  \/ 5000 km away at max, true for units in kilometers instead of miles.
-        var coordinates = faker.address.nearbyGPSCoordinate([60.179700, 24.934400], 5000, true)
-        // var city_data = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates[0]},${coordinates[1]}&key=${process.env.GOOGLE_API}`)
-        
-        var user_location = 'Helsinki'
-        // var length = city_data.data.results.length
-        // if (city_data.data.results.length > 0
-        //     && (city_data.data.results[length - 1].formatted_address.match(/[a-z]+/)
-        //         && !city_data.data.results[length - 1].formatted_address.match(/\+/i))) 
-        // {
-        //     user_location = city_data.data.results[length - 1].formatted_address
-        //     break
-        // } else
-        //     continue
-    // }
-    console.log('user_location: ', user_location)
+        var coordinates = faker.address.nearbyGPSCoordinate([60.179700, 24.934400], 50, true)
+        // var city_data = await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${coordinates[0]}&longitude=${coordinates[1]}&localityLanguage=en`)
+        // var city_data = await axios.get(`https://api.tomtom.com/search/2/reverseGeocode/crossStreet/${coordinates[0]}-${coordinates[1]}.json?limit=0&spatialKeys=false&radius=10000&allowFreeformNewLine=false&view=Unified&key=${process.env.GEO_API}`)
+        // var city_data = await axios.get(`https://api.geoapify.com/v1/geocode/reverse?lat=${coordinates[0]}&lon=${coordinates[1]}&type=city&lang=en&limit=1&format=json&apiKey=${process.env.GEO_API}`)
+        // console.log("CITY_DATA", city_data)
+        // console.log("CITY_DATA.DATA.RESULTS[0].formatted", city_data.data.results[0].formatted)
+        // var user_location = city_data.data.results[0].formatted
+        var user_location = "Finland" 
+        // if (!user_location) {
+        //     user_location = "World"
+        // }
+
     let ip_location = `(${coordinates[0]}, ${coordinates[1]})`
     let sql = `INSERT INTO user_settings (user_id, gender, age, sexual_pref, biography, user_location, ip_location)
 				VALUES ($1, $2, $3, $4, $5, $6, $7)`
@@ -162,7 +156,7 @@ const getImageUrl = async (picture) => {
 
 const createPicture = async (id) => {
     // Replace 'people' with what we want the user pics to be about.
-    let picture = faker.image.people(640, 640, true)
+    let picture = faker.image.people(640, 640)
     let image = await getImageUrl(picture)
     let sql = `INSERT INTO user_pictures (user_id, picture_data, profile_pic)
 				VALUES ($1, $2, $3)`

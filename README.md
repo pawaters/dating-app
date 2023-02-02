@@ -22,15 +22,9 @@ EMAIL_PASSWORD={INCLUDE YOUR GMAIL PASSWORD}
 
 GOOGLE_API={INCLUDE YOUR GOOGLE API with geocode API activated}
 
-8. Run `docker-compose up --build` (takes 1-2 minutes). All fake users' password is Matcha1!
+8. Run `docker-compose up --build` (takes 3-4 minutes to create 500 users). All fake users' password is Matcha1!
 9. Go to `localhost:3000` in your browser, `localhost:8080` for db admin
 
-Bonus: if needed, clean up your docker if the "lack of space" docker error comes up:
-- docker volume rm $(docker volume ls -qf dangling=true)
-- docker rmi $(docker images -a -q) 
-- docker system prune --all --force
-
-Careful, this will delete all you have going on your docker.
 
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
