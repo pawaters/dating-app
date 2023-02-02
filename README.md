@@ -1,5 +1,7 @@
 # matcha #
 
+This a web app created to replicate the functionalities of Tinder, from scratch, to learn and show our skills
+
 **Installation:**
 Prep: Please make sure you have [Docker](https://www.docker.com/) installed on your machine.
 
