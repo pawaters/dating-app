@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material"
+import { BottomNavigation, BottomNavigationAction, Paper, Typography } from "@mui/material"
 
 const Footer = () => {
 
