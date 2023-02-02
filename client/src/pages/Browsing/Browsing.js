@@ -30,10 +30,8 @@ const filterUsers = (users, filters, profileData) => {
 
 	if (filters.tagFilter) {
 		filteredUsers = filteredUsers.filter(user => {
-			// console.log("BROWSING.JS 34 - user.id =", user.id)
 			
 			return filters.tagFilter.every(tag => {
-				// console.log("BROWSING.JS 34 - tag =", tag)
 				return tag.tagged_users.includes(user.id)
 			})
 		})

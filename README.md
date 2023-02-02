@@ -93,3 +93,4 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 - delete notif / marking read/unread / clear
 - delete image
 - all dockerized, even user creation script
+- in browsing, amounts of results per page

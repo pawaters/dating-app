@@ -39,6 +39,8 @@ const BrowsingUserIcon = ({ user }) => {
 		},
 	}))
 
+
+
 	if (usernames.includes(user.username)) {
 		return (
 			<Box sx={{ padding: 1 }}>
