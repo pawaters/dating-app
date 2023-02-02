@@ -90,7 +90,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
     app.get('/api/profile', async (request, response) => {
 
         const session = request.session
-        console.log("REQUEST ARRIVED FOR /api/profile")
         if (!session.userid) return response.send(false)
         
         try {
@@ -104,12 +103,10 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
             sql = `SELECT * FROM tags WHERE tagged_users @> array[$1]::INT[]
                     ORDER BY tag_id`
             var tags_of_user = await pool.query(sql, [session.userid])
-            console.log("/api/profile: QUERY 1 done")
             profileData.tags = tags_of_user.rows.map(tag => tag.tag_content)
 
             sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'YES'`
             var profile_pic = await pool.query(sql, [session.userid])
-            console.log("/api/profile: QUERY 2 done")
 
             if (profile_pic.rows[0]) {
                 profileData.profile_pic = profile_pic.rows[0]
@@ -119,7 +116,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
 
             sql = `SELECT * FROM user_pictures WHERE user_id = $1 AND profile_pic = 'NO' ORDER BY picture_id`
             var other_pictures = await pool.query(sql, [session.userid])
-            console.log("/api/profile: QUERY 3 done")
             if (other_pictures.rows) {
                 profileData.other_pictures = other_pictures.rows
             }
@@ -129,7 +125,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     WHERE liker_id = $1
                     GROUP BY target_id, username`
             const liked = await pool.query(sql, [session.userid])
-            console.log("/api/profile: QUERY 4 done")
             profileData.liked = liked.rows
 
             sql = `SELECT watcher_id, username
@@ -137,7 +132,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     WHERE target_id = $1
                     GROUP BY watcher_id, username`
             const watchers = await pool.query(sql, [session.userid])
-            console.log("/api/profile: QUERY 5 done")
             profileData.watchers = watchers.rows
 
             sql = `SELECT liker_id, username
@@ -145,7 +139,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     WHERE target_id = $1
                     GROUP BY liker_id, username`
             const likers = await pool.query(sql, [session.userid])
-            console.log("/api/profile: QUERY 6 done")
             profileData.likers = likers.rows
 
             response.send(profileData)
