@@ -10,6 +10,8 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         const biography = request.body.biography
         const tags_of_user = request.body.tags
 
+        console.log('session.userid', session.userid)
+
         if (!session.userid)
             return response.send("User not signed in!")
         if (gender !== 'male' && gender !== 'female' && gender !== 'other')
@@ -193,7 +195,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
             return response.send("Invalid sexual preference!")
         if (biography.length > 500)
             return response.send("The maximum length for biography is 500 characters!")
-        const forbiddenTags = tags.filter(tag => !tag.match(/(?=^.{1,23}$)[a-z åäö-]+$/i))
+        const forbiddenTags = tags_of_user.filter(tag => !tag.match(/(?=^.{1,23}$)[a-z åäö-]+$/i))
         if (forbiddenTags.length !== 0)
             return response.send("Allowed characters in tags are a to z, å, ä, ö, and hyphen (-). The maximum length is 23 characters.")
 

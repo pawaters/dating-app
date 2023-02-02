@@ -23,7 +23,10 @@ app.use(nocache());
 app.use(session({
   secret: 'secret',
   saveUninitialized: true,
-  resave: true
+  resave: true,
+  cookie: {
+    sameSite: 'strict'
+  }
 }))
 // no cache
 app.set('etag', false)
@@ -31,12 +34,13 @@ app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store')
   next()
 })
+
 app.use('/images', express.static('./images')) // to serve static files to path /images, from images folder
 
 const socketIO = require('socket.io')(http, {
-	cors: {
-		origin: "http://localhost:3000"
-	}
+  cors: {
+    origin: "http://localhost:3000"
+  }
 });
 
 // POSTGRES SETUP
@@ -51,15 +55,15 @@ const pool = new Pool({
 })
 
 const connectToDatabase = () => {
-	pool.connect((err, client, release) => {
-		if (err) {
-			console.log('Error acquiring client', err.stack)
-			console.log('Retrying in 5 seconds...')
-			setTimeout(connectToDatabase, 5000)
-		} else {
-			console.log('Connected to database')
-		}
-	})
+  pool.connect((err, client, release) => {
+    if (err) {
+      console.log('Error acquiring client', err.stack)
+      console.log('Retrying in 5 seconds...')
+      setTimeout(connectToDatabase, 5000)
+    } else {
+      console.log('Connected to database')
+    }
+  })
 }
 connectToDatabase()
 
