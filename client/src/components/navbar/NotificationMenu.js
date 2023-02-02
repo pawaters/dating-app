@@ -86,14 +86,14 @@ const NotificationMenu = ({ socket }) => {
 	const allNotifications = useSelector(state => state.userNotifications)
 	const unreadNotifications = allNotifications.filter(notification => notification.read === 'NO')
 	const dispatch = useDispatch()
-	// const [notificationAmount, setNotificationAmount] = useState(null);
+	const notificationAmount = allNotifications.length
 
 	useEffect(() => {
 		socket.on('new_notification', (data) => {
 			dispatch(addUserNotification(data))
 		})
 		return () => socket.off('new_notification')
-	}, [socket, dispatch])
+	}, [socket, dispatch, notificationAmount])
 
 	const handleNotificationClick = (id, redirect_path) => {
 		if (redirect_path)
@@ -101,19 +101,12 @@ const NotificationMenu = ({ socket }) => {
 		profileService.readNotification(id)
 		dispatch(setNotificationRead(id))
 	}
-	// useEffect(() => {
-	// 	setNotificationAmount(unreadNotifications.length)
-		
-	// 	if (unreadNotifications.length !== 0)
-	// 		notificationAmount = `${unreadNotifications.length} unread notifications`
-	// 	else
-	// 		notificationAmount = `no new notifications`
-	// }, [])
-	var notificationAmount
+	
+	var notificationAmountText
 	if (unreadNotifications.length !== 0)
-		notificationAmount = `${unreadNotifications.length} unread notifications`
+		notificationAmountText = `${unreadNotifications.length} unread notifications`
 	else
-		notificationAmount = `no new notifications`
+		notificationAmountText = `no new notifications`
 
 	return (
 		<>
@@ -128,7 +121,7 @@ const NotificationMenu = ({ socket }) => {
 				onClose={() => setAnchorElNotifications(null)}
 			>
 				<Box sx={{ p: '0 5px', maxHeight: 500, overflow: 'auto' }}>
-					{notificationAmount}
+					{notificationAmountText}
 					{allNotifications.map((notification, i) => {
 						var is_read = notification.read
 						return (
