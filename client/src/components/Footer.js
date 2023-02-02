@@ -8,6 +8,7 @@ const Footer = () => {
             <BottomNavigation showLabels sx={{ width: '100%', position: 'absolute', bottom: 0, left:0, right:0  }}>
                 <BottomNavigationAction label="Github" href='https://github.com/pawaters/matcha' />
                 <BottomNavigationAction label="Contact" href='mailto:pierre.alban.waters@gmail.com' />
+                <BottomNavigationAction label="About" href='https://github.com/pawaters/matcha#readme'/>
             </BottomNavigation>
         </Paper>
     )
