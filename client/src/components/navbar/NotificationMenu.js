@@ -1,12 +1,14 @@
 import CloseIcon from '@mui/icons-material/Close'
 import NotificationsIcon from '@mui/icons-material/Notifications'
-import { clearUserNotifications, deleteUserNotification } from '../../reducers/userNotificationsReducer'
+import { clearUserNotifications, deleteUserNotification, getUserNotifications } from '../../reducers/userNotificationsReducer'
 import { Button, Typography, Box, IconButton, Menu, Card, Avatar, Badge } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import profileService from '../../services/profileService'
 import { setNotificationRead, setAllNotificationsRead, addUserNotification } from '../../reducers/userNotificationsReducer'
+import { getUserLists } from '../../reducers/userListsReducer'
+import { getProfileData } from '../../reducers/profileReducer'
 
 const MenuButton = ({ unread, setAnchorElNotifications }) => {
 	const BaseButton = () => {
@@ -89,11 +91,15 @@ const NotificationMenu = ({ socket }) => {
 	const notificationAmount = allNotifications.length
 
 	useEffect(() => {
+		dispatch(getProfileData())
+        dispatch(getUserLists())
+        dispatch(getUserNotifications())
 		socket.on('new_notification', (data) => {
 			dispatch(addUserNotification(data))
 		})
 		return () => socket.off('new_notification')
-	}, [socket, dispatch, notificationAmount])
+		
+	}, [socket, dispatch, notificationAmount, allNotifications])
 
 	const handleNotificationClick = (id, redirect_path) => {
 		if (redirect_path)
