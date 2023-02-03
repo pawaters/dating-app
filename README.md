@@ -77,7 +77,6 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 
 **Bonuses**
 Features:
-- Little green point when a user is live and connected in browsing view
 - delete user
 - delete notif / marking read/unread / clear
 - delete image
@@ -85,6 +84,7 @@ Features:
 - search by username
 - fame rating decreased when deleting imgs etc...
 - add tags
+- Little green point when a user is live and connected in browsing view
 
 Others:
 - jira organisation
