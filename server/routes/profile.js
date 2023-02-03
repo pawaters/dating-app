@@ -261,7 +261,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
     })
 
     app.post('/api/profile/setprofilepic', upload.single('file'), async (request, response) => {
-        // console.log('Made it here!')
         const session = request.session
         const picture = 'http://localhost:3000/images/' + request.file.filename
         if (session.userid) {
@@ -292,7 +291,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     // in the images folder
                     // console.log('Set a new profile picture to replace the old one.')
                     if (fs.existsSync(oldImage)) {
-                        // console.log('Went to fs.existSync')
                         // If it is, we remove it with fs.unlink
                         fs.unlink(oldImage, (error) => {
                             if (error) {
