@@ -30,6 +30,14 @@ Design pattern: Single-Page Application.
 - 10 points per like
 - 5 points per match
 
+**our strategy to display a list of suggestions**
+We have a react component "recommended previews" that takes 2 inputs: 
+- max browsing criteria, in store (age, fame, distance)
+- filtered users, in state --> according to sex orientation, a max distance
+then with at least one common tag, then those are sorted by dividing the distance from the user by the amount of common tags to the power of 2.
+
+Within the component, 
+
 **Project constraints:**
 Forbidden tech: ORM, Validators,User Accounts manager: do your own!
 DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented platform) --> PostgreSQL.
