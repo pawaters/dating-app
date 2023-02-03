@@ -7,7 +7,7 @@ Prep: Please make sure you have [Docker](https://www.docker.com/) running on you
 
 1. git clone https://github.com/pawaters/matcha
 3. `docker-compose up --build` in the root directory (takes 3 minutes)
-4. To create users, go to /script folder, Run `docker-compose up --build` (takes 3-4 minutes to create 500 users)
+4. To create users, go to /script folder, Run `docker-compose up --build` (takes 3 minutes)
 5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin, All fake users' password is Matcha1!
 
 **Stack:**
@@ -16,11 +16,12 @@ Socket.io for chat. Docker (docker-compose).
 Architectural pattern: MVC. Basically:
 - View: The react front end part, each with components for each part
 - Models: db. (no ORM like Mongoose allowed by subject)
-- Controllers: How you use the data and give it to frontend.
+- Controllers: Mainly server/routes. How you use the data and give it to frontend.
+
 Design pattern: Single-Page Application.
 - Model for UI: https://tinder.com/
 - Project Management: Jira: https://pawaters.atlassian.net/jira/core/projects/MA/board
-- Style guide: Airbnb Javascript style guide, implemented thanks to Airbnb's ESLint config.
+- Style guide: Eslint standard, Full stack open style.
 
 
 **Project constraints:**
@@ -65,7 +66,7 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 - Little green point when a user is live and connected in browsing view
 - Browsing sorted by country by default
 - jira organisation
-- UI theme
+- UI general theme
 - Redux store
 - delete user
 - delete notif / marking read/unread / clear

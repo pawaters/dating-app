@@ -26,7 +26,7 @@ const ProfileSettings = () => {
     const [tags, setTagState] = useState([])
 
     useEffect(() => {
-        dispatch(resetNotification())
+        // dispatch(resetNotification())
         if (profileData) {
             changeSettings({
                 username: profileData.username,
