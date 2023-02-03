@@ -6,7 +6,7 @@ This a web app created to replicate the functionalities of Tinder, from scratch,
 Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
 
 1. git clone https://github.com/pawaters/matcha
-3. `docker-compose up --build` in the root directory (takes 1-2 minutes)
+3. `docker-compose up --build` in the root directory (takes 3 minutes)
 4. To create users, go to /script folder, Run `docker-compose up --build` (takes 3-4 minutes to create 500 users)
 5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin, All fake users' password is Matcha1!
 
