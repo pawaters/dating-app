@@ -82,6 +82,8 @@ Features:
 - delete notif / marking read/unread / clear
 - delete image
 - in browsing, amounts of results per page
+- search by username
+- fame rating decreased when deleting imgs etc...
 
 Others:
 - jira organisation
