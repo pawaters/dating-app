@@ -1,5 +1,4 @@
 .DS_Store
-.env
 /server/images/*
 !*server/images/default_profilepic.jpeg
 pgdata

@@ -6,27 +6,10 @@ This a web app created to replicate the functionalities of Tinder, from scratch,
 Prep: Please make sure you have [Docker](https://www.docker.com/) installed on your machine.
 
 1. Clone the repository: git clone https://github.com/pawaters/matcha
-2. Start your docker app (or install if needed)
-3. Add a .env file at the root directory level with the following info:
-
-PORT=3001
-PGUSER=postgres
-PGDATABASE=matcha
-PGPASSWORD=postgres
-PGPORT=5432
-PGHOST=db
-
-EMAIL_ADDRESS={INCLUDE YOUR GMAIL ADDRESS}
-EMAIL_PASSWORD={INCLUDE YOUR GMAIL PASSWORD}
-
-5.  Run `docker-compose up --build` in the root directory (takes 1 minutes)
-6. To create users, go to /script folder, add a .env file at the root of /script folder, with the following info:
-
-GOOGLE_API={INCLUDE YOUR GOOGLE API with geocode API activated}
-
-8. Run `docker-compose up --build` (takes 3-4 minutes to create 500 users). All fake users' password is Matcha1!
-9. Go to `localhost:3000` in your browser, `localhost:8080` for db admin
-
+2. Start your docker app (or install if needed, use init_docker.sh script if not working)
+3. Run `docker-compose up --build` in the root directory (takes 1-2 minutes)
+4. To create users, go to /script folder, Run `docker-compose up --build` (takes 3-4 minutes to create 500 users). All fake users' password is Matcha1!
+5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin
 
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
