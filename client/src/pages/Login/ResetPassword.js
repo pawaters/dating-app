@@ -68,7 +68,6 @@ const ResetPasswordForm = () => {
 		const resetInfo = {
 			resetvalue: event.target.reset.value
 		}
-        // console.log("ResetInfo sent to backend:", resetInfo)
 
 		signUpService.resetPassword(resetInfo).then((result) => {
 			const message = `If an account with these details was found, a reset email was sent.

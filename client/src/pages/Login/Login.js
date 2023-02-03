@@ -29,7 +29,6 @@ const Login = ({ socket }) => {
             .then(result => {
                 if (result.userid) {
                     const sessionUser = { name: result.username, id: result.userid }
-                    // console.log("sessionUser sent to dispatch", sessionUser)
                     dispatch(setUser(sessionUser))
 
                     dispatch(getUserLists())

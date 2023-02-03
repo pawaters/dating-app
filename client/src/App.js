@@ -25,7 +25,7 @@ import Footer from "./components/Footer"
 import { grey, pink } from "@mui/material/colors"
 import PathNotExists from "./pages/PathNotExists"
 import { getProfileData } from "./reducers/profileReducer"
-import { getUserLists } from "./reducers/userListsReducer"
+// import { getUserLists } from "./reducers/userListsReducer"
 import { getUserNotifications } from "./reducers/userNotificationsReducer"
 import { setUser } from "./reducers/userReducer"
 import { changeOnlineUsers } from './reducers/onlineUsersReducer'

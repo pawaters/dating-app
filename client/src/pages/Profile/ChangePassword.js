@@ -29,7 +29,6 @@ const ChangePassword = () => {
 			newPassword: event.target.new_password.value,
 			confirmPassword: event.target.confirm_password.value
 		}
-        // console.log("password info sent for change password :", passWords)
 		profileService.changePassword(passWords).then(result => {
 			if (result === true) {
 				dispatch(changeSeverity('success'))

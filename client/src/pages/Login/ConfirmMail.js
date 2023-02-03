@@ -12,11 +12,8 @@ const ConfirmMail = () => {
 		username: useParams().user,
 		code: useParams().code
 	}
-    // console.log("ConfirmMail - username: ", userToVerify.username);
-    // console.log("ConfirmMail - code: ",  userToVerify.code);
 
 	signUpService.verifyUser(userToVerify).then((result) => {
-        console.log()
 		if (result === true) {
 			dispatch(changeSeverity('success'))
 			dispatch(changeNotification("User verified successfully! Please log in."))
