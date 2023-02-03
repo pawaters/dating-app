@@ -10,8 +10,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         const biography = request.body.biography
         const tags_of_user = request.body.tags
 
-        console.log('session.userid', session.userid)
-
         if (!session.userid)
             return response.send("User not signed in!")
         if (gender !== 'male' && gender !== 'female' && gender !== 'other')
@@ -433,7 +431,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 response.send(false)
             }
         } else {
-            response.send(false)
+            return response.send(false)
         }
     })
 
