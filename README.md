@@ -76,14 +76,15 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 - Joonas: Backend, testing
 
 **Bonuses**
+Features:
 - Little green point when a user is live and connected in browsing view
-- Browsing sorted by country by default
-- jira organisation
-- UI general theme
-- Redux store
 - delete user
 - delete notif / marking read/unread / clear
 - delete image
-- all dockerized, even user creation script
 - in browsing, amounts of results per page
-- different sorts, for recommend previews, not only recommended 
+
+Others:
+- jira organisation
+- UI general theme
+- Redux store
+- all dockerized, even user creation script
