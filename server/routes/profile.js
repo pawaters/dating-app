@@ -431,7 +431,7 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                 response.send(false)
             }
         } else {
-            return response.send(false)
+            response.send(false)
         }
     })
 
