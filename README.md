@@ -84,6 +84,7 @@ Features:
 - in browsing, amounts of results per page
 - search by username
 - fame rating decreased when deleting imgs etc...
+- add tags
 
 Others:
 - jira organisation
