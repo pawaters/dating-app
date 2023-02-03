@@ -91,7 +91,7 @@ const NotificationMenu = ({ socket }) => {
 	const notificationAmount = allNotifications.length
 
 	useEffect(() => {
-		// dispatch(getProfileData())
+		dispatch(getProfileData())
         dispatch(getUserLists())
         dispatch(getUserNotifications())
 		socket.on('new_notification', (data) => {

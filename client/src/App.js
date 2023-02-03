@@ -82,7 +82,7 @@ const App = () => {
 
     useEffect(() => {
         dispatch(getProfileData())
-        dispatch(getUserLists())
+        // dispatch(getUserLists())
         dispatch(getUserNotifications())
         signUpService
             .getSessionUser()
