@@ -23,6 +23,12 @@ Design pattern: Single-Page Application.
 - Project Management: Jira: https://pawaters.atlassian.net/jira/core/projects/MA/board
 - Style guide: Eslint standard, Full stack open style.
 
+**fame rating**
+- 5 pts for profile setup
+- 2 pts per picture
+- 1 pt per tag
+- 10 points per like
+- 5 points per match
 
 **Project constraints:**
 Forbidden tech: ORM, Validators,User Accounts manager: do your own!
