@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom'
 import Loader from "../../components/Loader";
-import { changeNotification, resetNotification } from "../../reducers/notificationReducer";
+import { changeNotification } from "../../reducers/notificationReducer";
 import { changeSeverity } from "../../reducers/severityReducer";
 import profileService from "../../services/profileService";
 import Onboarding from "./Onboarding";
