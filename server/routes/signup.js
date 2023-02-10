@@ -38,7 +38,6 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
       const checkUsername = async () => {
         var sql = "SELECT * FROM users WHERE username = $1";
         const { rows } = await pool.query(sql, [username])
-        console.log('got here')
         if (rows.length) {
           throw ("Username already exists! Choose a different username")
         } else
@@ -83,10 +82,10 @@ module.exports = function (app, pool, bcrypt, transporter, crypto) {
           var sql = 'SELECT * FROM email_verify WHERE verify_code = $1;'
           const result = await pool.query(sql, [code])
           if (result.rows.length < 1) {
-            console.log('No duplicates found for the newly generated code in signup.')
+            console.log('No duplicates found for the newly generated verification code in signup.')
             break
           } else {
-            console.log('Found a duplicate for the newly generated code in signup. Proceeding to generate a new code.')
+            console.log('Found a duplicate for the newly generated verification code in signup. Proceeding to generate a new code.')
             continue
           }
         }
