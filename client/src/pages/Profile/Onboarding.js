@@ -82,9 +82,6 @@ const Onboarding = () => {
             biography: event.target.biography.value,
             tags: tags
         }
-        // console.log('Profile:', ProfileSettings)
-        // console.log('FormData:', FormData)
-        // console.log('TAAAAGS:', tags,"<- is this empty before?")
 
         profileService.setUpProfile(ProfileSettings)
             .then(result => {
@@ -131,7 +128,6 @@ const Onboarding = () => {
 
     const uploadImage = async (event) => {
         const image = event.target.files[0]
-        // console.log('image sent from uploadImage', image)
         if (image.size > 5242880) {
             dispatch(changeSeverity('error'))
 			dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))
@@ -153,7 +149,6 @@ const Onboarding = () => {
 
     const setProfilePicture = async (event) => {
         const image = event.target.files[0]
-        // console.log('image sent from setProfilePicture:', image)
         if (image.size > 5242880) {
             dispatch(changeSeverity('error'))
 			dispatch(changeNotification("The maximum size for uploaded images is 5 megabytes."))

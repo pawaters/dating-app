@@ -23,6 +23,19 @@ Design pattern: Single-Page Application.
 - Project Management: Jira: https://pawaters.atlassian.net/jira/core/projects/MA/board
 - Style guide: Eslint standard, Full stack open style.
 
+**fame rating**
+- 5 pts for profile setup
+- 2 pts per picture
+- 1 pt per tag
+- 10 points per like
+- 5 points per match
+
+**our strategy to display a list of suggestions**
+We have a react component "recommended previews" that takes 2 inputs: 
+- max browsing criteria, in store (age, fame, distance)
+- filtered users, in state --> according to sex orientation, a max distance
+then with at least one common tag, then those are sorted by dividing the distance from the user by the amount of common tags to the power of 2.
+This is the default "recommended" sort. 
 
 **Project constraints:**
 Forbidden tech: ORM, Validators,User Accounts manager: do your own!
@@ -63,13 +76,18 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 - Joonas: Backend, testing
 
 **Bonuses**
-- Little green point when a user is live and connected in browsing view
-- Browsing sorted by country by default
-- jira organisation
-- UI general theme
-- Redux store
+Features:
 - delete user
 - delete notif / marking read/unread / clear
 - delete image
-- all dockerized, even user creation script
 - in browsing, amounts of results per page
+- search by username
+- fame rating decreased when deleting imgs etc...
+- add tags
+- Little green point when a user is live and connected in browsing view
+
+Others:
+- jira organisation
+- UI general theme
+- Redux store
+- all dockerized, even user creation script

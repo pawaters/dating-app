@@ -4,8 +4,7 @@ import ChatIcon from './ChatIcon'
 
 const ChatBar = ({ connections, joinRoom }) => {
 	const room = useSelector(state => state.room)
-	// console.log("ChatBar l18: room)", room)
-	// console.log("ChatBar l19: connections)", connections)
+
 
 	const textColor = {
 		true: 'white',
@@ -23,8 +22,6 @@ const ChatBar = ({ connections, joinRoom }) => {
 			<Box sx={{ p: 1 }} >
 				<Box>
 					{connections.map(user => {
-						// console.log()
-						// console.log("CHATBAR - user.id", user.connection_id)
 						return (
 							<Button
 								key={user.connection_id}

@@ -26,15 +26,13 @@ const NoResults = () => {
 			<Paper sx={{ m: 2, p: 2, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
 				<Typography variant='h1'>😔</Typography>
 				<Typography variant='h5' color='#1c1c1c'>No Results</Typography>
-				<Typography variant='body2'>PLEASE ADJUST YOUR FILTERS</Typography>
+				<Typography variant='body2'>PLEASE ADJUST YOUR TAGS AND/OR FILTERS</Typography>
 			</Paper>
 		</Box>
 	)
 }
 
 const RecommendedPreviews = ({ users, browsingCriteria }) => {
-	// console.log("RecommendedPreviews - users:", users)
-	// console.log("RecommendedPreviews - browsingCriteria:", browsingCriteria)
 	const userLists = useSelector(state => state.userLists)
 	const navigate = useNavigate()
 	const dispatch = useDispatch()

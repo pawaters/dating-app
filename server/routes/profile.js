@@ -10,8 +10,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
         const biography = request.body.biography
         const tags_of_user = request.body.tags
 
-        console.log('session.userid', session.userid)
-
         if (!session.userid)
             return response.send("User not signed in!")
         if (gender !== 'male' && gender !== 'female' && gender !== 'other')
@@ -263,7 +261,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
     })
 
     app.post('/api/profile/setprofilepic', upload.single('file'), async (request, response) => {
-        // console.log('Made it here!')
         const session = request.session
         const picture = 'http://localhost:3000/images/' + request.file.filename
         if (session.userid) {
@@ -294,7 +291,6 @@ module.exports = (app, pool, upload, fs, path, bcrypt) => {
                     // in the images folder
                     // console.log('Set a new profile picture to replace the old one.')
                     if (fs.existsSync(oldImage)) {
-                        // console.log('Went to fs.existSync')
                         // If it is, we remove it with fs.unlink
                         fs.unlink(oldImage, (error) => {
                             if (error) {

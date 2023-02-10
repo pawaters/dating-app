@@ -45,19 +45,12 @@ const Profile = () => {
         return <Loader text="Getting profile data ..." />
     }
 
-    // console.log('profileData.id in Profile.js: ', profileData.id)
-    // console.log('profileData.total_pts: ', profileData.total_pts)
-
     if (!profileData.id) {
-        // console.log('Tried to go to Onboarding')
         return <Onboarding />
     }
 
     const profile_pic = profileData.profile_pic['picture_data']
     const other_pictures = profileData.other_pictures
-
-    // console.log('profile_pic: ', profile_pic)
-    // console.log('other_pictures: ', other_pictures)
 
     const userid = profileData.id;
     const ProfileData = {
@@ -155,7 +148,6 @@ const Profile = () => {
     }
 
     const deleteUser = (id) => {
-        // console.log("USER ID:", id)
         if (window.confirm("Are you sure you want to completely delete your account?")) {
             if (window.confirm("Are you sure? There is no way to retrieve your data afterwards.")) {
                 profileService.deleteUser().then(result => {

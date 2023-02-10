@@ -99,7 +99,7 @@ const NotificationMenu = ({ socket }) => {
 		})
 		return () => socket.off('new_notification')
 		
-	}, [socket, dispatch, notificationAmount, allNotifications])
+	}, [socket, dispatch, notificationAmount])
 
 	const handleNotificationClick = (id, redirect_path) => {
 		if (redirect_path)

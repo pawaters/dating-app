@@ -15,7 +15,6 @@ const NavBar = ({ socket }) => {
 	const user = useSelector(state => state.user)
 
 	let pages = {}
-	// console.log("When navbar loads, user = useSelector(state => state.user) is :", user)
 
 	if (user === '') {
 		pages = {
