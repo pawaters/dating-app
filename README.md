@@ -1,4 +1,4 @@
-# dating app - Matcha #
+# dating app #
 
 This a web app created to replicate the functionalities of Tinder, from scratch, for learning purposes and for showing our skills.
 The main limitation is that we could not use ORM, Validators nor User Accounts manager - which we all did manually.
