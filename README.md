@@ -60,34 +60,4 @@ DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented
 In terms of UI/design, the goal is to make it look as close to tinder as possible:
 - screenshots of what each page should look like:  https://docs.google.com/document/d/1c18F3lTgLd5f-Wyzs96uWyAMgPfUeKDstlJScuaYvVk/edit?usp=sharing
 
-**Backend Structure**
-- recommended file structure: https://medium.com/codechef-vit/a-better-project-structure-with-express-and-node-js-c23abc2d736f
-
-**Database schema**
-- db/init.sql. 
-- diagram: https://dbdiagram.io/d/638a0414bae3ed7c45445946
-
-**best examples**
-- github repos list: https://github.com/stars/pawaters/lists/matcha
-- youtube list: https://youtube.com/playlist?list=PL4tYF4IwV9AtvZdZjP1cVs1p83KeMrEAn
-
-**Summary of task division**
-- Pierre: Frontend, organisation
-- Joonas: Backend, testing
-
-**Bonuses**
-Features:
-- delete user
-- delete notif / marking read/unread / clear
-- delete image
-- in browsing, amounts of results per page
-- search by username
-- fame rating decreased when deleting imgs etc...
-- add tags
-- Little green point when a user is live and connected in browsing view
-
-Others:
-- jira organisation
-- UI general theme
-- Redux store
-- all dockerized, even user creation script
+**Database schema**: https://dbdiagram.io/d/638a0414bae3ed7c45445946
