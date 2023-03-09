@@ -5,6 +5,14 @@ The main limitation is that we could not use ORM, Validators nor User Accounts m
 
 **LIVE ONLINE SOON**
 
+**Instructions for Installation on local**
+Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
+
+1. git clone https://github.com/pawaters/matcha
+3. `docker-compose up --build` in the root directory (takes 3 minutes)
+4. To create users, go to /script folder, Run `docker-compose up --build` (takes 3 minutes)
+5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin, All fake users' password is Matcha1!
+
 **Stack:**
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
 Socket.io for chat. Docker (docker-compose).
@@ -57,10 +65,3 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 
 **Database schema**: https://dbdiagram.io/d/638a0414bae3ed7c45445946
 
-**Installation on local**
-Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
-
-1. git clone https://github.com/pawaters/matcha
-3. `docker-compose up --build` in the root directory (takes 3 minutes)
-4. To create users, go to /script folder, Run `docker-compose up --build` (takes 3 minutes)
-5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin, All fake users' password is Matcha1!
