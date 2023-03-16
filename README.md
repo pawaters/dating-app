@@ -5,8 +5,9 @@ This a web app created to replicate the functionalities of Tinder, from scratch,
 You can check it deployed here:
 http://ec2-13-48-249-22.eu-north-1.compute.amazonaws.com/
 
-I recommend using one of our 500 generated users: Nestor4.
-Password is: Matcha1!
+I recommend using one of our 500 generated users: 
+- username: Nestor4
+- Password: Matcha1!
 Or you can create your own user by going to signup, creating your own user, with a profile pic, some interests, so you can get matched.
 
 **Instructions for Installation on local**
