@@ -1,7 +1,6 @@
 # dating app #
 
 This a web app created to replicate the functionalities of Tinder, from scratch, for learning purposes and for showing our skills.
-The main limitation is that we could not use ORM, Validators nor User Accounts manager - which we all did manually.
 
 **LIVE ONLINE SOON**
 
@@ -14,7 +13,9 @@ Prep: Please make sure you have [Docker](https://www.docker.com/) running on you
 5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin, All fake users' password is Matcha1!
 
 **Stack:**
+
 Node.js, Express, React, Redux, Material UI and PostgreSQL.
+The main limitation is that we could not use ORM, Validators nor User Accounts manager - which we all did manually.
 Socket.io for chat. Docker (docker-compose).
 Architectural pattern: MVC. Basically:
 - View: The react front end part, each with components for each part
