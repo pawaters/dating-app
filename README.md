@@ -2,7 +2,7 @@
 
 This a web app created to replicate the functionalities of Tinder, from scratch, for learning purposes and for showing our skills.
 
-You can check it deployed here:
+#You can check it deployed here:#
 http://ec2-13-48-249-22.eu-north-1.compute.amazonaws.com/
 
 I recommend using one of our 500 generated users: 
