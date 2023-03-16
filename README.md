@@ -2,8 +2,6 @@
 
 This a web app created to replicate the functionalities of Tinder, from scratch, for learning purposes and for showing our skills.
 
-**LIVE ONLINE SOON**
-
 **Instructions for Installation on local**
 Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
 
