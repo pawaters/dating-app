@@ -12,6 +12,8 @@ I recommend using one of our 500 generated users:
 Or you can create your own user by going to signup, creating your own user, with a profile pic, some interests, so you can get matched.
 
 **Instructions for Installation on local**
+
+If you prefer to install on your local machine and inspect the code live, here are the instructions to install.
 Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
 
 1. git clone https://github.com/pawaters/matcha
