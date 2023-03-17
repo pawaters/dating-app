@@ -16,7 +16,7 @@ Or you can create your own user by going to signup, creating your own user, with
 If you prefer to install on your local machine and inspect the code live, here are the instructions to install.
 Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
 
-1. git clone https://github.com/pawaters/matcha
+1. git clone https://github.com/pawaters/dating-app
 3. `docker-compose up --build` in the root directory (takes 3 minutes)
 4. To create users, go to /script folder, Run `docker-compose up --build` (takes 3 minutes)
 5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin, All fake users' password is Matcha1!
