@@ -2,7 +2,7 @@
 
 This a web app was created to replicate the functionalities of the dating app, Tinder, from scratch, for learning purposes and for showing our skills.
 
-## Check our live version deployed on AWS: 
+## Check our live version: 
 http://ec2-13-48-249-22.eu-north-1.compute.amazonaws.com/
 
 I recommend using one of our 500 generated users: 
