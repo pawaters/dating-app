@@ -26,6 +26,10 @@ Design pattern: Single-Page Application.
 - Project Management: Jira: https://pawaters.atlassian.net/jira/core/projects/MA/board
 - Style guide: Eslint standard, Full stack open style.
 
+Testing was done following this 8 page checklist, through 5 code reviews: 
+https://drive.google.com/file/d/1hz3gyfPtxPVSupyhQobf11oACNEK45tm/view?usp=sharing
+
+
 **fame rating**
 - 5 pts for profile setup
 - 2 pts per picture
