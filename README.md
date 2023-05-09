@@ -2,7 +2,7 @@
 
 Web app created to replicate the functionalities of the dating app, Tinder, from scratch.
 
-## Check our live version: 
+## Check the live version: 
 http://ec2-13-48-249-22.eu-north-1.compute.amazonaws.com/
 
 I recommend using one of the 500 generated users: 
