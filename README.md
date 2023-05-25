@@ -48,7 +48,7 @@ This is the default "recommended" sort.
 Forbidden tech: ORM, Validators,User Accounts manager: do your own!
 DB: has to be relational or graph-oriented (no Mongo - it is a document-oriented platform) --> PostgreSQL.
 
-**List of features - summary of subject:**
+**List of features:**
 - User interface (nav, search, UI. )
 - User registration and login with email verification. 
 - User can edit his profile. 
