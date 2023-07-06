@@ -2,8 +2,15 @@
 
 Web app created to replicate the functionalities of the dating app, Tinder, from scratch.
 
-## Check the live version: 
-http://ec2-13-48-249-22.eu-north-1.compute.amazonaws.com/
+## Instructions for Installation on local
+
+To install on your local machine and inspect the code live, here are the instructions:
+Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
+
+1. git clone https://github.com/pawaters/dating-app
+3. `docker-compose up --build` in the root directory (takes 3 minutes)
+4. To create users, go to /script folder, Run `docker-compose up --build` (takes 3 minutes)
+5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin, All fake users' password is Matcha1!
 
 I recommend using one of the 500 generated users: 
 - username: Nestor4
@@ -69,12 +76,4 @@ In terms of UI/design, the goal is to make it look as close to tinder as possibl
 
 **Database schema**: https://dbdiagram.io/d/638a0414bae3ed7c45445946
 
-## Instructions for Installation on local
 
-If you prefer to install on your local machine and inspect the code live, here are the instructions to install.
-Prep: Please make sure you have [Docker](https://www.docker.com/) running on your machine (or install if needed, use init_docker.sh script if not working)
-
-1. git clone https://github.com/pawaters/dating-app
-3. `docker-compose up --build` in the root directory (takes 3 minutes)
-4. To create users, go to /script folder, Run `docker-compose up --build` (takes 3 minutes)
-5. Go to `localhost:3000` in your browser, `localhost:8080` for db admin, All fake users' password is Matcha1!
